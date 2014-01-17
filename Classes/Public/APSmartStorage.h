@@ -10,4 +10,15 @@
 
 @interface APSmartStorage : NSObject
 
+// initialization
+- (id)initWithCustomSessionConfiguration:(NSURLSessionConfiguration *)configuration;
+// load object
+- (void)loadObjectWithURL:(NSURL *)objectURL keepInMemory:(BOOL)keepInMemory
+                 callback:(void (^)(id object, NSError *))callback;
+- (void)reloadObjectWithURL:(NSURL *)objectURL keepInMemory:(BOOL)keepInMemory
+                   callback:(void (^)(id object, NSError *))callback;
+// remove object
+- (void)removeObjectWithURL:(NSURL *)objectURL;
+- (void)removeAllObjects;
+
 @end
