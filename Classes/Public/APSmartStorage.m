@@ -74,7 +74,7 @@
     [self loadDataWithNetworkURL:objectURL localURL:localURL
                         callback:^(NSData *data, NSError *error)
     {
-        NSObject *object = data;
+        NSObject *object = weakSelf.parsingBlock ? weakSelf.parsingBlock(data, objectURL) : data;
         // save object to memory if it necessary
         if (keepInMemory && object && !error)
         {

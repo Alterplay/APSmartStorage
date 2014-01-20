@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+typedef id (^APParsingBlock)(NSData *data, NSURL *url);
+
 @interface APSmartStorage : NSObject
+
+@property (nonatomic, copy) APParsingBlock parsingBlock;
 
 // initialization
 - (id)initWithCustomSessionConfiguration:(NSURLSessionConfiguration *)configuration;

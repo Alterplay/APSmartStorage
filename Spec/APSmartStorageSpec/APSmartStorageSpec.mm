@@ -39,6 +39,7 @@ describe(@"APSmartStorage", ^
     afterEach((id)^
     {
         [storage cleanAllObjects];
+        storage.parsingBlock = nil;
         [OHHTTPStubs removeAllStubs];
         checkObject = nil;
     });
@@ -206,6 +207,29 @@ describe(@"APSmartStorage", ^
         in_time(isFileExists) should equal(NO);
         in_time(isObjectInMemory) should equal(NO);
     });
+    it(@"should parse loaded object with block", ^
+    {
+        // mocking network request
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request)
+        {
+            return YES;
+        }                   withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request)
+        {
+            return [OHHTTPStubsResponse responseWithData:responseObject statusCode:200 headers:nil];
+        }];
+        // loading object
+        storage.parsingBlock = ^(NSData *data, NSURL *url)
+        {
+            return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        };
+        [storage loadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
+        {
+            checkObject = object;
+        }];
+        in_time(checkObject) should_not be_nil;
+        in_time(checkObject) should equal(@"APSmartStorage string");
+    });
+
 });
 
 SPEC_END
