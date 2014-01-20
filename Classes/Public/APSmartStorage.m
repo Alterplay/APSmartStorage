@@ -28,17 +28,18 @@
 - (id)init
 {
     NSURLSessionConfiguration *config = NSURLSessionConfiguration.defaultSessionConfiguration;
-    return [self initWithCustomSessionConfiguration:config];
+    return [self initWithCustomSessionConfiguration:config maxObjectCount:0];
 }
 
 - (id)initWithCustomSessionConfiguration:(NSURLSessionConfiguration *)configuration
+                          maxObjectCount:(NSUInteger)count
 {
     self = [super init];
     if (self)
     {
         networkLoader = [[APNetworkLoader alloc] initWithURLSessionConfiguration:configuration];
         fileManager = [[APFileManager alloc] init];
-        _memoryStorage = [[APMemoryStorage alloc] initWithMaxObjectCount:0];
+        _memoryStorage = [[APMemoryStorage alloc] initWithMaxObjectCount:count];
     }
     return self;
 }

@@ -15,7 +15,8 @@ typedef id (^APParsingBlock)(NSData *data, NSURL *url);
 @property (nonatomic, copy) APParsingBlock parsingBlock;
 
 // initialization
-- (id)initWithCustomSessionConfiguration:(NSURLSessionConfiguration *)configuration;
+- (id)initWithCustomSessionConfiguration:(NSURLSessionConfiguration *)configuration
+                          maxObjectCount:(NSUInteger)count;
 // load object
 - (void)loadObjectWithURL:(NSURL *)objectURL keepInMemory:(BOOL)keepInMemory
                  callback:(void (^)(id object, NSError *))callback;

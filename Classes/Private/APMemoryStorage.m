@@ -8,12 +8,11 @@
 
 #import "APMemoryStorage.h"
 #import "APAsyncDictionary.h"
+#import "APAsyncDictionary+RemoveAnyObject.h"
 
 @interface APMemoryStorage ()
-{
-    APAsyncDictionary *dictionary;
-}
-@property (assign, readonly) NSUInteger maxCount;
+@property (nonatomic, readonly) APAsyncDictionary *dictionary;
+@property (nonatomic, readonly) NSUInteger maxCount;
 @end
 
 @implementation APMemoryStorage
@@ -25,7 +24,7 @@
     self = [super init];
     if (self)
     {
-        dictionary = [[APAsyncDictionary alloc] init];
+        _dictionary = [[APAsyncDictionary alloc] init];
         _maxCount = count;
     }
     return self;
@@ -35,7 +34,7 @@
 
 - (void)objectForLocalURL:(NSURL *)localURL callback:(void (^)(id object))callback
 {
-    [dictionary objectForKey:localURL.path callback:^(id <NSCopying> key, id object)
+    [self.dictionary objectForKey:localURL.path callback:^(id <NSCopying> key, id object)
     {
         callback ? callback(object) : nil;
     }];
@@ -43,18 +42,22 @@
 
 - (void)setObject:(id)object forLocalURL:(NSURL *)localURL
 {
-#warning add max count check
-    [dictionary setObject:object forKey:localURL.path];
+    // is need to check stored object count
+    if (self.maxCount > 0)
+    {
+        [self.dictionary removeAnyObjectIfCountGreaterThen:self.maxCount];
+    }
+    [self.dictionary setObject:object forKey:localURL.path];
 }
 
 - (void)removeObjectForLocalURL:(NSURL *)localURL
 {
-    [dictionary removeObjectForKey:localURL.path];
+    [self.dictionary removeObjectForKey:localURL.path];
 }
 
 - (void)removeAllObjects
 {
-    [dictionary removeAllObjects];
+    [self.dictionary removeAllObjects];
 }
 
 @end

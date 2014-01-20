@@ -27,11 +27,12 @@ describe(@"APSmartStorage", ^
     __block APSmartStorage *storage;
     __block NSURL *objectURL;
     __block id responseObject;
-    __block id checkObject;
 
     beforeEach((id)^
     {
-        storage = [[APSmartStorage alloc] init];
+        NSURLSessionConfiguration *config = NSURLSessionConfiguration.defaultSessionConfiguration;
+        storage = [[APSmartStorage alloc] initWithCustomSessionConfiguration:config
+                                                              maxObjectCount:1];
         objectURL = [NSURL URLWithString:@"http://example.com/object_data"];
         responseObject = [@"APSmartStorage string" dataUsingEncoding:NSUTF8StringEncoding];
     });
@@ -41,7 +42,6 @@ describe(@"APSmartStorage", ^
         [storage cleanAllObjects];
         storage.parsingBlock = nil;
         [OHHTTPStubs removeAllStubs];
-        checkObject = nil;
     });
 
     it(@"should run callback on the same thread as method call", ^
@@ -66,6 +66,7 @@ describe(@"APSmartStorage", ^
             return [OHHTTPStubsResponse responseWithData:responseObject statusCode:200 headers:nil];
         }];
         // loading object
+        __block id checkObject = nil;
         [storage loadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
         {
             checkObject = object;
@@ -80,6 +81,7 @@ describe(@"APSmartStorage", ^
         NSURL *url = [APStoragePathHelper storageURLForNetworkURL:objectURL];
         [responseObject writeToURL:url atomically:YES];
         // loading object
+        __block id checkObject = nil;
         [storage loadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
         {
             checkObject = object;
@@ -94,6 +96,7 @@ describe(@"APSmartStorage", ^
         NSURL *url = [APStoragePathHelper storageURLForNetworkURL:objectURL];
         [storage.memoryStorage setObject:responseObject forLocalURL:url];
         // loading object
+        __block id checkObject = nil;
         [storage loadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
         {
             checkObject = object;
@@ -207,6 +210,7 @@ describe(@"APSmartStorage", ^
         in_time(isFileExists) should equal(NO);
         in_time(isObjectInMemory) should equal(NO);
     });
+
     it(@"should parse loaded object with block", ^
     {
         // mocking network request
@@ -217,19 +221,62 @@ describe(@"APSmartStorage", ^
         {
             return [OHHTTPStubsResponse responseWithData:responseObject statusCode:200 headers:nil];
         }];
-        // loading object
+        // parsing block
         storage.parsingBlock = ^(NSData *data, NSURL *url)
         {
             return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         };
+        // loading object
+        __block id checkObject = nil;
         [storage loadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
         {
             checkObject = object;
         }];
+
         in_time(checkObject) should_not be_nil;
         in_time(checkObject) should equal(@"APSmartStorage string");
     });
 
+    it(@"should parse loaded object with block", ^
+    {
+        // mocking network request
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request)
+        {
+            return YES;
+        }                   withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request)
+        {
+            NSData *anotherData = [@"another response" dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *data = [request.URL.absoluteString isEqualToString:objectURL.absoluteString] ?
+                           responseObject : anotherData;
+            return [OHHTTPStubsResponse responseWithData:data statusCode:200 headers:nil];
+        }];
+        // parsing block
+        storage.parsingBlock = ^(NSData *data, NSURL *url)
+        {
+            return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        };
+        // loading object
+        NSURL *anotherURL = [NSURL URLWithString:@"http://example.com/another_object"];
+        NSURL *objectLocalURL = [APStoragePathHelper storageURLForNetworkURL:objectURL];
+        NSURL *anotherLocalURL = [APStoragePathHelper storageURLForNetworkURL:anotherURL];
+        __block id checkObject = [[NSObject alloc] init];
+        __block id anotherObject = nil;
+        [storage loadObjectWithURL:objectURL keepInMemory:YES callback:nil];
+        [storage loadObjectWithURL:anotherURL keepInMemory:YES callback:^(id object, NSError *error)
+        {
+            [storage.memoryStorage objectForLocalURL:objectLocalURL callback:^(id object)
+            {
+                checkObject = object;
+            }];
+            [storage.memoryStorage objectForLocalURL:anotherLocalURL callback:^(id object)
+            {
+                anotherObject = object;
+            }];
+        }];
+        in_time(checkObject) should be_nil;
+        in_time(anotherObject) should_not be_nil;
+        in_time(anotherObject) should equal(@"another response");
+    });
 });
 
 SPEC_END
