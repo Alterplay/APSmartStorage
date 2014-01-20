@@ -12,7 +12,6 @@
 #import "APMemoryStorage.h"
 #import "OHHTTPStubs.h"
 
-
 using namespace Cedar::Matchers;
 using namespace Cedar::Doubles;
 
@@ -172,7 +171,7 @@ describe(@"APSmartStorage", ^
         {
             // remove object
             [storage removeObjectWithURL:objectURL];
-            // check existance
+            // check existence
             NSURL *url = [APStoragePathHelper storageURLForNetworkURL:objectURL];
             isFileExists = [NSFileManager.defaultManager fileExistsAtPath:url.path];
             [storage.memoryStorage objectForLocalURL:url callback:^(id objectAfterRemove)
@@ -314,6 +313,32 @@ describe(@"APSmartStorage", ^
         in_time(checkObject) should be_nil;
         in_time(anotherObject) should be_nil;
     });
+
+    it(@"should rewrite file on reload", ^
+    {
+        // mocking file
+        NSURL *url = [APStoragePathHelper storageURLForNetworkURL:objectURL];
+        [responseObject writeToURL:url atomically:YES];
+        // mocking network request
+        NSData *anotherData = [@"another response" dataUsingEncoding:NSUTF8StringEncoding];
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request)
+        {
+            return YES;
+        }                   withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request)
+        {
+            return [OHHTTPStubsResponse responseWithData:anotherData statusCode:200 headers:nil];
+        }];
+        // loading object
+        __block id checkData;
+        [storage reloadObjectWithURL:objectURL keepInMemory:YES
+                            callback:^(id object, NSError *error)
+        {
+            checkData = [NSData dataWithContentsOfURL:url];
+        }];
+        in_time(checkData) should_not be_nil;
+        in_time(checkData) should equal(anotherData);
+    });
+
 });
 
 SPEC_END

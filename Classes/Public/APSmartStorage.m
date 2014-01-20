@@ -76,7 +76,8 @@ fileManager = _fileManager, memoryStorage = _memoryStorage;
         // load object from file or network
         else
         {
-            [weakSelf reloadObjectWithURL:objectURL keepInMemory:keepInMemory callback:callback];
+            [weakSelf parseDataWithNetworkURL:objectURL keepInMemory:keepInMemory skipFileStorage:NO
+                                     callback:callback];
         }
     }];
 }
@@ -84,24 +85,8 @@ fileManager = _fileManager, memoryStorage = _memoryStorage;
 - (void)reloadObjectWithURL:(NSURL *)objectURL keepInMemory:(BOOL)keepInMemory
                    callback:(void (^)(id object, NSError *))callback
 {
-    NSURL *localURL = [APStoragePathHelper storageURLForNetworkURL:objectURL];
-    __weak __typeof(self) weakSelf = self;
-    __weak NSThread *weakThread = NSThread.currentThread;
-    [self loadDataWithNetworkURL:objectURL localURL:localURL
-                        callback:^(NSData *data, NSError *error)
-    {
-        NSObject *object = weakSelf.parsingBlock ? weakSelf.parsingBlock(data, objectURL) : data;
-        // save object to memory if it necessary
-        if (keepInMemory && object && !error)
-        {
-            [weakSelf.memoryStorage setObject:object forLocalURL:localURL];
-        }
-        // perform callback on caller thread
-        [weakThread performBlockOnThread:^
-        {
-            callback ? callback(object, error) : nil;
-        }];
-    }];
+    [self parseDataWithNetworkURL:objectURL keepInMemory:keepInMemory skipFileStorage:YES
+                         callback:callback];
 }
 
 - (void)removeObjectWithURL:(NSURL *)objectURL
@@ -164,11 +149,36 @@ fileManager = _fileManager, memoryStorage = _memoryStorage;
 
 #pragma mark - private
 
-- (void)loadDataWithNetworkURL:(NSURL *)networkURL localURL:(NSURL *)localURL
+- (void)parseDataWithNetworkURL:(NSURL *)objectURL keepInMemory:(BOOL)keepInMemory
+                skipFileStorage:(BOOL)isSkipFileStorage callback:(void (^)(id, NSError *))callback
+{
+    NSURL *localURL = [APStoragePathHelper storageURLForNetworkURL:objectURL];
+    __weak __typeof(self) weakSelf = self;
+    __weak NSThread *weakThread = NSThread.currentThread;
+    [self loadDataWithNetworkURL:objectURL skipFileStorage:isSkipFileStorage
+                        callback:^(NSData *data, NSError *error)
+    {
+        NSObject *object = weakSelf.parsingBlock ?
+                           weakSelf.parsingBlock(data, objectURL) : data;
+        // save object to memory if it necessary
+        if (keepInMemory && object && !error)
+        {
+            [weakSelf.memoryStorage setObject:object forLocalURL:localURL];
+        }
+        // perform callback on caller thread
+        [weakThread performBlockOnThread:^
+        {
+            callback ? callback(object, error) : nil;
+        }];
+    }];
+}
+
+- (void)loadDataWithNetworkURL:(NSURL *)networkURL skipFileStorage:(BOOL)isSkipFileStorage
                       callback:(void (^)(NSData *data, NSError *error))callback
 {
+    NSURL *localURL = [APStoragePathHelper storageURLForNetworkURL:networkURL];
     // object found at file
-    if ([self.fileManager isFileExistsForURL:localURL])
+    if (!isSkipFileStorage && [self.fileManager isFileExistsForURL:localURL])
     {
         [self.fileManager loadFileAtURL:localURL callback:callback];
     }

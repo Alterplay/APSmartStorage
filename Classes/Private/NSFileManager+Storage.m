@@ -13,8 +13,12 @@
 + (void)moveFileAtURL:(NSURL *)sourceURL toURL:(NSURL *)destinationURL
 {
     NSError *error = nil;
-    [NSFileManager.defaultManager moveItemAtPath:sourceURL.path toPath:destinationURL.path
-                                           error:&error];
+    NSFileManager *manager = NSFileManager.defaultManager;
+    if ([manager fileExistsAtPath:destinationURL.path])
+    {
+        [self removeItemAtURL:destinationURL];
+    }
+    [manager moveItemAtPath:sourceURL.path toPath:destinationURL.path error:&error];
     if (error)
     {
         NSLog(@"Error moving file '%@' to '%@'\n%@", sourceURL.path, destinationURL.path,
