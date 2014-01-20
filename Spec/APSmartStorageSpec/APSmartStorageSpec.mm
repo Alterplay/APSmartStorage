@@ -18,6 +18,7 @@ using namespace Cedar::Doubles;
 
 @interface APSmartStorage (Private)
 @property (nonatomic, readonly) APMemoryStorage *memoryStorage;
+- (void)didReceiveMemoryWarning:(NSNotification *)notification;
 @end
 
 SPEC_BEGIN(APSmartStorageSpec)
@@ -237,7 +238,7 @@ describe(@"APSmartStorage", ^
         in_time(checkObject) should equal(@"APSmartStorage string");
     });
 
-    it(@"should parse loaded object with block", ^
+    it(@"should remove any object from memory storage if max count reached", ^
     {
         // mocking network request
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request)
@@ -276,6 +277,42 @@ describe(@"APSmartStorage", ^
         in_time(checkObject) should be_nil;
         in_time(anotherObject) should_not be_nil;
         in_time(anotherObject) should equal(@"another response");
+    });
+
+    it(@"should remove memory objects on memory warning", ^
+    {
+        // mocking network request
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request)
+        {
+            return YES;
+        }                   withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request)
+        {
+            NSData *anotherData = [@"another response" dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *data = [request.URL.absoluteString isEqualToString:objectURL.absoluteString] ?
+                           responseObject : anotherData;
+            return [OHHTTPStubsResponse responseWithData:data statusCode:200 headers:nil];
+        }];
+        // loading object
+        NSURL *anotherURL = [NSURL URLWithString:@"http://example.com/another_object"];
+        NSURL *objectLocalURL = [APStoragePathHelper storageURLForNetworkURL:objectURL];
+        NSURL *anotherLocalURL = [APStoragePathHelper storageURLForNetworkURL:anotherURL];
+        __block id checkObject = [[NSObject alloc] init];
+        __block id anotherObject = [[NSObject alloc] init];
+        [storage loadObjectWithURL:objectURL keepInMemory:YES callback:nil];
+        [storage loadObjectWithURL:anotherURL keepInMemory:YES callback:^(id object, NSError *error)
+        {
+            [storage didReceiveMemoryWarning:nil];
+            [storage.memoryStorage objectForLocalURL:objectLocalURL callback:^(id object)
+            {
+                checkObject = object;
+            }];
+            [storage.memoryStorage objectForLocalURL:anotherLocalURL callback:^(id object)
+            {
+                anotherObject = object;
+            }];
+        }];
+        in_time(checkObject) should be_nil;
+        in_time(anotherObject) should be_nil;
     });
 });
 

@@ -15,33 +15,48 @@
 
 @interface APSmartStorage ()
 {
-    APNetworkLoader *networkLoader;
-    APFileManager *fileManager;
+    NSUInteger maxObjectCount;
 }
+@property (nonatomic, readonly) NSURLSessionConfiguration *sessionConfiguration;
 @property (nonatomic, readonly) APMemoryStorage *memoryStorage;
+@property (nonatomic, readonly) APFileManager *fileManager;
+@property (nonatomic, readonly) APNetworkLoader *networkLoader;
 @end
 
 @implementation APSmartStorage
+
+@synthesize sessionConfiguration = _sessionConfiguration, networkLoader = _networkLoader,
+fileManager = _fileManager, memoryStorage = _memoryStorage;
 
 #pragma mark - life cycle
 
 - (id)init
 {
-    NSURLSessionConfiguration *config = NSURLSessionConfiguration.defaultSessionConfiguration;
-    return [self initWithCustomSessionConfiguration:config maxObjectCount:0];
+    self = [super init];
+    if (self)
+    {
+        NSNotificationCenter *center = NSNotificationCenter.defaultCenter;
+        [center addObserver:self selector:@selector(didReceiveMemoryWarning:)
+                       name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+    }
+    return self;
 }
 
 - (id)initWithCustomSessionConfiguration:(NSURLSessionConfiguration *)configuration
                           maxObjectCount:(NSUInteger)count
 {
-    self = [super init];
+    self = [self init];
     if (self)
     {
-        networkLoader = [[APNetworkLoader alloc] initWithURLSessionConfiguration:configuration];
-        fileManager = [[APFileManager alloc] init];
-        _memoryStorage = [[APMemoryStorage alloc] initWithMaxObjectCount:count];
+        maxObjectCount = count;
+        _sessionConfiguration = configuration;
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
 #pragma mark - public
@@ -104,13 +119,47 @@
 {
     NSURL *fileURL = [APStoragePathHelper storageURLForNetworkURL:objectURL];
     [self.memoryStorage removeObjectForLocalURL:fileURL];
-    [fileManager removeFileAtURL:fileURL];
+    [self.fileManager removeFileAtURL:fileURL];
 }
 
 - (void)cleanAllObjects
 {
     NSURL *directoryURL = [APStoragePathHelper storageDirectoryURL];
-    [fileManager removeDirectoryAtURL:directoryURL];
+    [self.fileManager removeDirectoryAtURL:directoryURL];
+}
+
+#pragma mark - properties
+
+- (NSURLSessionConfiguration *)sessionConfiguration
+{
+    return _sessionConfiguration ?: [NSURLSessionConfiguration defaultSessionConfiguration];
+}
+
+- (APMemoryStorage *)memoryStorage
+{
+    if (!_memoryStorage)
+    {
+        _memoryStorage = [[APMemoryStorage alloc] initWithMaxObjectCount:maxObjectCount];
+    }
+    return _memoryStorage;
+}
+
+- (APFileManager *)fileManager
+{
+    if (!_fileManager)
+    {
+        _fileManager = [[APFileManager alloc] init];
+    }
+    return _fileManager;
+}
+
+- (APNetworkLoader *)networkLoader
+{
+    if (!_networkLoader)
+    {
+        _networkLoader = [[APNetworkLoader alloc] initWithURLSessionConfiguration:self.sessionConfiguration];
+    }
+    return _networkLoader;
 }
 
 #pragma mark - private
@@ -119,15 +168,23 @@
                       callback:(void (^)(NSData *data, NSError *error))callback
 {
     // object found at file
-    if ([fileManager isFileExistsForURL:localURL])
+    if ([self.fileManager isFileExistsForURL:localURL])
     {
-        [fileManager loadFileAtURL:localURL callback:callback];
+        [self.fileManager loadFileAtURL:localURL callback:callback];
     }
     // load object from network
     else
     {
-        [networkLoader loadObjectWithURL:networkURL toFileURL:localURL callback:callback];
+        [self.networkLoader loadObjectWithURL:networkURL toFileURL:localURL callback:callback];
     }
+}
+
+- (void)didReceiveMemoryWarning:(NSNotification *)notification
+{
+    [self.memoryStorage removeAllObjects];
+    _memoryStorage = nil;
+    _fileManager = nil;
+    _networkLoader = nil;
 }
 
 @end
