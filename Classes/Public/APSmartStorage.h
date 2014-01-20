@@ -20,5 +20,8 @@
 // remove object
 - (void)removeObjectWithURL:(NSURL *)objectURL;
 - (void)removeAllObjects;
+// clean object (also remove files)
+- (void)cleanObjectWithURL:(NSURL *)objectURL;
+- (void)cleanAllObjects;
 
 @end

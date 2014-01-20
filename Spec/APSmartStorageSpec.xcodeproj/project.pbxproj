@@ -18,6 +18,7 @@
 		FA6E6FC21887B6C300E8DF46 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6E6FC11887B6C300E8DF46 /* main.m */; };
 		FA6E6FC81887B6C300E8DF46 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA6E6FC71887B6C300E8DF46 /* Images.xcassets */; };
 		FA6E6FE61887B82700E8DF46 /* APSmartStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA6E6FE51887B82700E8DF46 /* APSmartStorageSpec.mm */; };
+		FAB00554188D10BF00A0D654 /* APMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAB00553188D10BF00A0D654 /* APMemoryStorage.m */; };
 		FAE4DAD61887BA5B003541A9 /* APSmartStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE4DAD51887BA5B003541A9 /* APSmartStorage.m */; };
 		FAE4DAF01887DE2D003541A9 /* NSThread+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE4DADE1887DE2D003541A9 /* NSThread+Block.m */; };
 		FAE4DAF11887DE2D003541A9 /* APAsyncDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE4DAE11887DE2D003541A9 /* APAsyncDictionary.m */; };
@@ -44,6 +45,8 @@
 		FA6E6FC71887B6C300E8DF46 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		FA6E6FCE1887B6C300E8DF46 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		FA6E6FE51887B82700E8DF46 /* APSmartStorageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageSpec.mm; sourceTree = "<group>"; };
+		FAB00552188D10BF00A0D654 /* APMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APMemoryStorage.h; sourceTree = "<group>"; };
+		FAB00553188D10BF00A0D654 /* APMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APMemoryStorage.m; sourceTree = "<group>"; };
 		FAE4DAD41887BA5B003541A9 /* APSmartStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APSmartStorage.h; sourceTree = "<group>"; };
 		FAE4DAD51887BA5B003541A9 /* APSmartStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APSmartStorage.m; sourceTree = "<group>"; };
 		FAE4DADD1887DE2D003541A9 /* NSThread+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSThread+Block.h"; sourceTree = "<group>"; };
@@ -143,6 +146,8 @@
 		FAE4DAD21887BA5B003541A9 /* Private */ = {
 			isa = PBXGroup;
 			children = (
+				FAB00552188D10BF00A0D654 /* APMemoryStorage.h */,
+				FAB00553188D10BF00A0D654 /* APMemoryStorage.m */,
 				FAE4DAFE1887FFC5003541A9 /* APFileManager.h */,
 				FAE4DAFF1887FFC5003541A9 /* APFileManager.m */,
 				FA281DC6188927FC00A77EB0 /* APNetworkLoader.h */,
@@ -307,6 +312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA281DCE1889444A00A77EB0 /* NSFileManager+Storage.m in Sources */,
+				FAB00554188D10BF00A0D654 /* APMemoryStorage.m in Sources */,
 				FAE4DAF11887DE2D003541A9 /* APAsyncDictionary.m in Sources */,
 				FA6E6FC21887B6C300E8DF46 /* main.m in Sources */,
 				FA6E6FE61887B82700E8DF46 /* APSmartStorageSpec.mm in Sources */,
