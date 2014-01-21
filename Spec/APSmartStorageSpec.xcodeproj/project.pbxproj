@@ -21,8 +21,6 @@
 		FAB00554188D10BF00A0D654 /* APMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAB00553188D10BF00A0D654 /* APMemoryStorage.m */; };
 		FAB00557188D587C00A0D654 /* APAsyncDictionary+RemoveAnyObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FAB00556188D587C00A0D654 /* APAsyncDictionary+RemoveAnyObject.m */; };
 		FAE4DAD61887BA5B003541A9 /* APSmartStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE4DAD51887BA5B003541A9 /* APSmartStorage.m */; };
-		FAE4DAF01887DE2D003541A9 /* NSThread+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE4DADE1887DE2D003541A9 /* NSThread+Block.m */; };
-		FAE4DAF11887DE2D003541A9 /* APAsyncDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE4DAE11887DE2D003541A9 /* APAsyncDictionary.m */; };
 		FAE4DB001887FFC5003541A9 /* APFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE4DAFF1887FFC5003541A9 /* APFileManager.m */; };
 /* End PBXBuildFile section */
 
@@ -52,10 +50,6 @@
 		FAB00556188D587C00A0D654 /* APAsyncDictionary+RemoveAnyObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "APAsyncDictionary+RemoveAnyObject.m"; sourceTree = "<group>"; };
 		FAE4DAD41887BA5B003541A9 /* APSmartStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APSmartStorage.h; sourceTree = "<group>"; };
 		FAE4DAD51887BA5B003541A9 /* APSmartStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APSmartStorage.m; sourceTree = "<group>"; };
-		FAE4DADD1887DE2D003541A9 /* NSThread+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSThread+Block.h"; sourceTree = "<group>"; };
-		FAE4DADE1887DE2D003541A9 /* NSThread+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSThread+Block.m"; sourceTree = "<group>"; };
-		FAE4DAE01887DE2D003541A9 /* APAsyncDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APAsyncDictionary.h; sourceTree = "<group>"; };
-		FAE4DAE11887DE2D003541A9 /* APAsyncDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APAsyncDictionary.m; sourceTree = "<group>"; };
 		FAE4DAFE1887FFC5003541A9 /* APFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APFileManager.h; sourceTree = "<group>"; };
 		FAE4DAFF1887FFC5003541A9 /* APFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APFileManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -79,7 +73,6 @@
 			isa = PBXGroup;
 			children = (
 				FAE4DAD11887BA5B003541A9 /* Classes */,
-				FAE4DAD81887DE2D003541A9 /* External */,
 				FA6E6FBB1887B6C300E8DF46 /* APSmartStorageSpec */,
 				FA6E6FB41887B6C300E8DF46 /* Frameworks */,
 				FA6E6FB31887B6C300E8DF46 /* Products */,
@@ -170,50 +163,6 @@
 			children = (
 				FAE4DAD41887BA5B003541A9 /* APSmartStorage.h */,
 				FAE4DAD51887BA5B003541A9 /* APSmartStorage.m */,
-			);
-			path = Public;
-			sourceTree = "<group>";
-		};
-		FAE4DAD81887DE2D003541A9 /* External */ = {
-			isa = PBXGroup;
-			children = (
-				FAE4DAD91887DE2D003541A9 /* APAsyncDictionary */,
-			);
-			name = External;
-			path = ../External;
-			sourceTree = "<group>";
-		};
-		FAE4DAD91887DE2D003541A9 /* APAsyncDictionary */ = {
-			isa = PBXGroup;
-			children = (
-				FAE4DADB1887DE2D003541A9 /* Classes */,
-			);
-			path = APAsyncDictionary;
-			sourceTree = "<group>";
-		};
-		FAE4DADB1887DE2D003541A9 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				FAE4DADC1887DE2D003541A9 /* Private */,
-				FAE4DADF1887DE2D003541A9 /* Public */,
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
-		FAE4DADC1887DE2D003541A9 /* Private */ = {
-			isa = PBXGroup;
-			children = (
-				FAE4DADD1887DE2D003541A9 /* NSThread+Block.h */,
-				FAE4DADE1887DE2D003541A9 /* NSThread+Block.m */,
-			);
-			path = Private;
-			sourceTree = "<group>";
-		};
-		FAE4DADF1887DE2D003541A9 /* Public */ = {
-			isa = PBXGroup;
-			children = (
-				FAE4DAE01887DE2D003541A9 /* APAsyncDictionary.h */,
-				FAE4DAE11887DE2D003541A9 /* APAsyncDictionary.m */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -318,11 +267,9 @@
 			files = (
 				FA281DCE1889444A00A77EB0 /* NSFileManager+Storage.m in Sources */,
 				FAB00554188D10BF00A0D654 /* APMemoryStorage.m in Sources */,
-				FAE4DAF11887DE2D003541A9 /* APAsyncDictionary.m in Sources */,
 				FA6E6FC21887B6C300E8DF46 /* main.m in Sources */,
 				FA6E6FE61887B82700E8DF46 /* APSmartStorageSpec.mm in Sources */,
 				FA281DCB18893BE000A77EB0 /* APStoragePathHelper.m in Sources */,
-				FAE4DAF01887DE2D003541A9 /* NSThread+Block.m in Sources */,
 				FAB00557188D587C00A0D654 /* APAsyncDictionary+RemoveAnyObject.m in Sources */,
 				FAE4DAD61887BA5B003541A9 /* APSmartStorage.m in Sources */,
 				FA281DC8188927FC00A77EB0 /* APNetworkLoader.m in Sources */,
