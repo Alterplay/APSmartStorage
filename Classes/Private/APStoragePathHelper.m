@@ -15,7 +15,7 @@
 
 + (NSURL *)storageURLForNetworkURL:(NSURL *)networkURL
 {
-    NSString *md5 = networkURL.absoluteString.MD5;
+    NSString *md5 = networkURL.absoluteString.MD5Digest;
     NSString *path = [self storageDirectoryPath];
     path = [path stringByAppendingPathComponent:md5];
     return [NSURL fileURLWithPath:path];

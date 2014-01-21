@@ -12,7 +12,6 @@
 
 + (void)moveFileAtURL:(NSURL *)sourceURL toURL:(NSURL *)destinationURL;
 + (void)removeItemAtURL:(NSURL *)url;
-+ (void)removeItemAtPath:(NSString *)path;
 + (NSArray *)contentsOfDirectoryAtURL:(NSURL *)url;
 
 @end
