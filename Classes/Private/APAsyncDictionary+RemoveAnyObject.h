@@ -10,6 +10,6 @@
 
 @interface APAsyncDictionary (RemoveAnyObject)
 
-- (void)removeAnyObjectIfCountGreaterThen:(NSUInteger)maxCount;
+- (void)trimObjectsToCount:(NSUInteger)maxCount;
 
 @end

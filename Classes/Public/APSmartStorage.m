@@ -14,9 +14,6 @@
 #import "NSThread+Block.h"
 
 @interface APSmartStorage ()
-{
-    NSUInteger maxObjectCount;
-}
 @property (nonatomic, readonly) NSURLSessionConfiguration *sessionConfiguration;
 @property (nonatomic, readonly) APMemoryStorage *memoryStorage;
 @property (nonatomic, readonly) APFileManager *fileManager;
@@ -48,7 +45,7 @@ fileManager = _fileManager, memoryStorage = _memoryStorage;
     self = [self init];
     if (self)
     {
-        maxObjectCount = count;
+        self.maxObjectCount = count;
         _sessionConfiguration = configuration;
     }
     return self;
@@ -113,7 +110,15 @@ fileManager = _fileManager, memoryStorage = _memoryStorage;
     [self.fileManager removeDirectoryAtURL:directoryURL];
 }
 
-#pragma mark - properties
+#pragma mark - public properties
+
+- (void)setMaxObjectCount:(NSUInteger)maxObjectCount
+{
+    _maxObjectCount = maxObjectCount;
+    self.memoryStorage.maxCount = maxObjectCount;
+}
+
+#pragma mark - private properties
 
 - (NSURLSessionConfiguration *)sessionConfiguration
 {
@@ -124,7 +129,7 @@ fileManager = _fileManager, memoryStorage = _memoryStorage;
 {
     if (!_memoryStorage)
     {
-        _memoryStorage = [[APMemoryStorage alloc] initWithMaxObjectCount:maxObjectCount];
+        _memoryStorage = [[APMemoryStorage alloc] initWithMaxObjectCount:self.maxObjectCount];
     }
     return _memoryStorage;
 }
@@ -147,7 +152,7 @@ fileManager = _fileManager, memoryStorage = _memoryStorage;
     return _networkLoader;
 }
 
-#pragma mark - private
+#pragma mark - private methods
 
 - (void)parseDataWithNetworkURL:(NSURL *)objectURL keepInMemory:(BOOL)keepInMemory
                 skipFileStorage:(BOOL)isSkipFileStorage callback:(void (^)(id, NSError *))callback

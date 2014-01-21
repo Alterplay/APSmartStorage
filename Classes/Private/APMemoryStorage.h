@@ -10,6 +10,8 @@
 
 @interface APMemoryStorage : NSObject
 
+@property (nonatomic, assign) NSUInteger maxCount;
+
 - (id)initWithMaxObjectCount:(NSUInteger)count;
 - (void)objectForLocalURL:(NSURL *)localURL callback:(void(^)(id object))callback;
 - (void)setObject:(id)object forLocalURL:(NSURL *)localURL;

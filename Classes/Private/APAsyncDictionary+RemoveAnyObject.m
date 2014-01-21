@@ -14,11 +14,11 @@
 
 @implementation APAsyncDictionary (RemoveAnyObject)
 
-- (void)removeAnyObjectIfCountGreaterThen:(NSUInteger)maxCount
+- (void)trimObjectsToCount:(NSUInteger)maxCount
 {
     [self runDictionaryOperationBlock:^(NSMutableDictionary *dictionary)
     {
-        if (dictionary.count >= maxCount)
+        while (dictionary.count > maxCount)
         {
             id <NSCopying> anyKey = dictionary.allKeys.firstObject;
             [dictionary removeObjectForKey:anyKey];

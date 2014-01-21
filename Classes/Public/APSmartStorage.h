@@ -13,6 +13,7 @@ typedef id (^APParsingBlock)(NSData *data, NSURL *url);
 @interface APSmartStorage : NSObject
 
 @property (nonatomic, copy) APParsingBlock parsingBlock;
+@property (nonatomic, assign) NSUInteger maxObjectCount;
 
 // initialization
 - (id)initWithCustomSessionConfiguration:(NSURLSessionConfiguration *)configuration

@@ -278,6 +278,49 @@ describe(@"APSmartStorage", ^
         in_time(anotherObject) should equal(@"another response");
     });
 
+    it(@"should store more objects in memory storage if new max count greater then previous", ^
+    {
+        // mocking network request
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request)
+        {
+            return YES;
+        }                   withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request)
+        {
+            NSData *anotherData = [@"another response" dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *data = [request.URL.absoluteString isEqualToString:objectURL.absoluteString] ?
+                           responseObject : anotherData;
+            return [OHHTTPStubsResponse responseWithData:data statusCode:200 headers:nil];
+        }];
+        // parsing block
+        storage.parsingBlock = ^(NSData *data, NSURL *url)
+        {
+            return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        };
+        // loading object
+        NSURL *anotherURL = [NSURL URLWithString:@"http://example.com/another_object"];
+        NSURL *objectLocalURL = [APStoragePathHelper storageURLForNetworkURL:objectURL];
+        NSURL *anotherLocalURL = [APStoragePathHelper storageURLForNetworkURL:anotherURL];
+        __block id checkObject = [[NSObject alloc] init];
+        __block id anotherObject = nil;
+        storage.maxObjectCount = 2;
+        [storage loadObjectWithURL:objectURL keepInMemory:YES callback:nil];
+        [storage loadObjectWithURL:anotherURL keepInMemory:YES callback:^(id object, NSError *error)
+        {
+            [storage.memoryStorage objectForLocalURL:objectLocalURL callback:^(id object)
+            {
+                checkObject = object;
+            }];
+            [storage.memoryStorage objectForLocalURL:anotherLocalURL callback:^(id object)
+            {
+                anotherObject = object;
+            }];
+        }];
+        in_time(checkObject) should_not be_nil;
+        in_time(checkObject) should equal(@"APSmartStorage string");
+        in_time(anotherObject) should_not be_nil;
+        in_time(anotherObject) should equal(@"another response");
+    });
+
     it(@"should remove memory objects on memory warning", ^
     {
         // mocking network request
