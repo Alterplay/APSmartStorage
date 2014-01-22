@@ -13,6 +13,11 @@
 using namespace Cedar::Matchers;
 using namespace Cedar::Doubles;
 
+@interface APSmartStorage (Private)
+- (void)loadDataWithNetworkURLFromMemoryStorage:(NSURL *)objectURL
+                                       callback:(void (^)(id object))callback;
+@end
+
 SPEC_BEGIN(APSmartStorageBaseSpec)
 
 describe(@"APSmartStorage", ^
@@ -96,9 +101,9 @@ describe(@"APSmartStorage", ^
             // remove file
             [NSFileManager.defaultManager removeItemAtPath:filePath error:nil];
             // loading object from memory
-            [storage loadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
+            [storage loadDataWithNetworkURLFromMemoryStorage:objectURL callback:^(id obj)
             {
-                checkObject = object;
+                checkObject = obj;
             }];
         }];
         in_time(checkObject) should_not be_nil;

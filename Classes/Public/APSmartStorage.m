@@ -61,9 +61,8 @@ fileManager = _fileManager, memoryStorage = _memoryStorage;
 - (void)loadObjectWithURL:(NSURL *)objectURL keepInMemory:(BOOL)keepInMemory
                  callback:(void (^)(id object, NSError *))callback
 {
-    NSURL *localURL = [APStoragePathHelper storageURLForNetworkURL:objectURL];
     __weak __typeof(self) weakSelf = self;
-    [self.memoryStorage objectForLocalURL:localURL callback:^(id object)
+    [self loadDataWithNetworkURLFromMemoryStorage:objectURL callback:^(id object)
     {
         // object found in memory storage
         if (object)
@@ -153,6 +152,13 @@ fileManager = _fileManager, memoryStorage = _memoryStorage;
 }
 
 #pragma mark - private methods
+
+- (void)loadDataWithNetworkURLFromMemoryStorage:(NSURL *)objectURL
+                                       callback:(void (^)(id object))callback
+{
+    NSURL *localURL = [APStoragePathHelper storageURLForNetworkURL:objectURL];
+    [self.memoryStorage objectForLocalURL:localURL callback:callback];
+}
 
 - (void)parseDataWithNetworkURL:(NSURL *)objectURL keepInMemory:(BOOL)keepInMemory
                 skipFileStorage:(BOOL)isSkipFileStorage callback:(void (^)(id, NSError *))callback
