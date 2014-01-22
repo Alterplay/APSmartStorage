@@ -25,7 +25,7 @@ describe(@"APSmartStorage", ^
 {
     __block APSmartStorage *storage;
     __block NSURL *objectURL1, *objectURL2;
-    __block NSString *filePath1, *filePath2;
+    __block NSString *filePath1;
     __block id responseObject1, responseObject2;
 
     beforeEach((id)^
@@ -50,7 +50,6 @@ describe(@"APSmartStorage", ^
                                                  attributes:nil error:nil];
         // file path
         filePath1 = [dirPath stringByAppendingPathComponent:@"d9bd5f7d33abe0592f8c3bcdc2ea2f05"];
-        filePath2 = [dirPath stringByAppendingPathComponent:@"dc549a2ae54caf4eb5f9d1967a36f61d"];
     });
 
     afterEach((id)^
@@ -125,23 +124,48 @@ describe(@"APSmartStorage", ^
     {
         // loading object
         __block id object1 = [[NSObject alloc] init];
-        __block id object2 = nil;
-        storage.maxObjectCount = 2;
-        [storage loadObjectWithURL:objectURL1 keepInMemory:YES callback:nil];
-        [storage loadObjectWithURL:objectURL2 keepInMemory:YES callback:^(id object, NSError *error)
+        __block id object2 = [[NSObject alloc] init];
+        [storage loadObjectWithURL:objectURL1 keepInMemory:YES callback:^(id object, NSError *error)
         {
-            [storage loadDataWithNetworkURLFromMemoryStorage:objectURL1 callback:^(id obj)
+            storage.maxObjectCount = 2;
+            [storage loadObjectWithURL:objectURL2 keepInMemory:YES callback:^(id obj, NSError *err)
             {
-                object1 = obj;
-            }];
-            [storage loadDataWithNetworkURLFromMemoryStorage:objectURL2 callback:^(id obj)
-            {
-                object2 = obj;
+                [storage loadDataWithNetworkURLFromMemoryStorage:objectURL1 callback:^(id obj1)
+                {
+                    object1 = obj1;
+                }];
+                [storage loadDataWithNetworkURLFromMemoryStorage:objectURL2 callback:^(id obj2)
+                {
+                    object2 = obj2;
+                }];
             }];
         }];
-        in_time(object1) should_not be_nil;
         in_time(object1) should equal(responseObject1);
-        in_time(object2) should_not be_nil;
+        in_time(object2) should equal(responseObject2);
+    });
+
+    it(@"should remove objects in memory storage if new max count less then previous", ^
+    {
+        // loading object
+        __block id object1 = [[NSObject alloc] init];
+        __block id object2 = [[NSObject alloc] init];
+        storage.maxObjectCount = 2;
+        [storage loadObjectWithURL:objectURL1 keepInMemory:YES callback:^(id object, NSError *error)
+        {
+            storage.maxObjectCount = 1;
+            [storage loadObjectWithURL:objectURL2 keepInMemory:YES callback:^(id obj, NSError *err)
+            {
+                [storage loadDataWithNetworkURLFromMemoryStorage:objectURL1 callback:^(id obj1)
+                {
+                    object1 = obj1;
+                }];
+                [storage loadDataWithNetworkURLFromMemoryStorage:objectURL2 callback:^(id obj2)
+                {
+                    object2 = obj2;
+                }];
+            }];
+        }];
+        in_time(object1) should be_nil;
         in_time(object2) should equal(responseObject2);
     });
 
