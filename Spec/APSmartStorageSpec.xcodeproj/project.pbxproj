@@ -14,6 +14,7 @@
 		FA68F29A188FC56E007CCE3E /* APSmartStorageBaseSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA68F299188FC56E007CCE3E /* APSmartStorageBaseSpec.mm */; };
 		FA68F29C188FC57E007CCE3E /* APSmartStorageFileSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA68F29B188FC57E007CCE3E /* APSmartStorageFileSpec.mm */; };
 		FA68F29E188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA68F29D188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm */; };
+		FA68F2A5188FE84E007CCE3E /* OHHTTPStubs+AllRequests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA68F2A4188FE84E007CCE3E /* OHHTTPStubs+AllRequests.m */; };
 		FA6E6FB61887B6C300E8DF46 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6E6FB51887B6C300E8DF46 /* Foundation.framework */; };
 		FA6E6FB81887B6C300E8DF46 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6E6FB71887B6C300E8DF46 /* CoreGraphics.framework */; };
 		FA6E6FBA1887B6C300E8DF46 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6E6FB91887B6C300E8DF46 /* UIKit.framework */; };
@@ -38,6 +39,8 @@
 		FA68F299188FC56E007CCE3E /* APSmartStorageBaseSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageBaseSpec.mm; sourceTree = "<group>"; };
 		FA68F29B188FC57E007CCE3E /* APSmartStorageFileSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageFileSpec.mm; sourceTree = "<group>"; };
 		FA68F29D188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageRemoveSpec.mm; sourceTree = "<group>"; };
+		FA68F2A3188FE84E007CCE3E /* OHHTTPStubs+AllRequests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OHHTTPStubs+AllRequests.h"; sourceTree = "<group>"; };
+		FA68F2A4188FE84E007CCE3E /* OHHTTPStubs+AllRequests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OHHTTPStubs+AllRequests.m"; sourceTree = "<group>"; };
 		FA6E6FB21887B6C300E8DF46 /* APSmartStorageSpec.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = APSmartStorageSpec.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA6E6FB51887B6C300E8DF46 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FA6E6FB71887B6C300E8DF46 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -73,6 +76,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FA68F29F188FE7D3007CCE3E /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				FA68F2A3188FE84E007CCE3E /* OHHTTPStubs+AllRequests.h */,
+				FA68F2A4188FE84E007CCE3E /* OHHTTPStubs+AllRequests.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		FA6E6FA91887B6C300E8DF46 = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +119,7 @@
 		FA6E6FBB1887B6C300E8DF46 /* APSmartStorageSpec */ = {
 			isa = PBXGroup;
 			children = (
+				FA68F29F188FE7D3007CCE3E /* Categories */,
 				FA6E6FE41887B81400E8DF46 /* Spec */,
 				FA6E6FBC1887B6C300E8DF46 /* Supporting Files */,
 			);
@@ -275,6 +288,7 @@
 				FA281DCE1889444A00A77EB0 /* NSFileManager+Storage.m in Sources */,
 				FAB00554188D10BF00A0D654 /* APMemoryStorage.m in Sources */,
 				FA6E6FC21887B6C300E8DF46 /* main.m in Sources */,
+				FA68F2A5188FE84E007CCE3E /* OHHTTPStubs+AllRequests.m in Sources */,
 				FA68F29E188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm in Sources */,
 				FA68F29A188FC56E007CCE3E /* APSmartStorageBaseSpec.mm in Sources */,
 				FA281DCB18893BE000A77EB0 /* APStoragePathHelper.m in Sources */,

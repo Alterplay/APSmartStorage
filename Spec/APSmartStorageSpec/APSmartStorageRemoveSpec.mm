@@ -153,17 +153,20 @@ describe(@"APSmartStorage", ^
         NSURL *anotherLocalURL = [APStoragePathHelper storageURLForNetworkURL:anotherURL];
         __block id checkObject = [[NSObject alloc] init];
         __block id anotherObject = [[NSObject alloc] init];
-        [storage loadObjectWithURL:objectURL keepInMemory:YES callback:nil];
-        [storage loadObjectWithURL:anotherURL keepInMemory:YES callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
         {
-            [storage didReceiveMemoryWarning:nil];
-            [storage.memoryStorage objectForLocalURL:objectLocalURL callback:^(id object)
+            [storage loadObjectWithURL:anotherURL keepInMemory:YES
+                              callback:^(id object, NSError *error)
             {
-                checkObject = object;
-            }];
-            [storage.memoryStorage objectForLocalURL:anotherLocalURL callback:^(id object)
-            {
-                anotherObject = object;
+                [storage didReceiveMemoryWarning:nil];
+                [storage.memoryStorage objectForLocalURL:objectLocalURL callback:^(id object)
+                {
+                    checkObject = object;
+                }];
+                [storage.memoryStorage objectForLocalURL:anotherLocalURL callback:^(id object)
+                {
+                    anotherObject = object;
+                }];
             }];
         }];
         in_time(checkObject) should be_nil;

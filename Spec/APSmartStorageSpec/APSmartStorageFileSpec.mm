@@ -7,16 +7,11 @@
 //
 
 #import "CedarAsync.h"
-#import "OHHTTPStubs.h"
 #import "APSmartStorage.h"
-#import "APMemoryStorage.h"
+#import "OHHTTPStubs+AllRequests.h"
 
 using namespace Cedar::Matchers;
 using namespace Cedar::Doubles;
-
-@interface APSmartStorage (Private)
-@property (nonatomic, readonly) APMemoryStorage *memoryStorage;
-@end
 
 SPEC_BEGIN(APSmartStorageFileSpec)
 
@@ -40,13 +35,7 @@ describe(@"APSmartStorage", ^
         // file path
         filePath = [dirPath stringByAppendingPathComponent:@"327fa8f97ba3bbd262a1768080d93f46"];
         // mocking network request
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request)
-        {
-            return YES;
-        }                   withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request)
-        {
-            return [OHHTTPStubsResponse responseWithData:responseObject statusCode:200 headers:nil];
-        }];
+        [OHHTTPStubs stubAllRequestsWithResponseData:responseObject];
     });
 
     afterEach((id)^
@@ -57,36 +46,46 @@ describe(@"APSmartStorage", ^
 
     it(@"should load object from network, store it to file and keep it in memory", ^
     {
-        // loading object and check file and memory
-        __block BOOL isFileExists, isObjectInMemory;
+        __block BOOL isFileExists = NO;
+        __block id checkObject = nil;
         [storage loadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
         {
             isFileExists = [NSFileManager.defaultManager fileExistsAtPath:filePath];
-            NSURL *url = [NSURL fileURLWithPath:filePath];
-            [storage.memoryStorage objectForLocalURL:url callback:^(id object)
+            // remove network mock
+            [OHHTTPStubs removeAllStubs];
+            // remove file
+            [NSFileManager.defaultManager removeItemAtPath:filePath error:nil];
+            // loading object
+            [storage loadObjectWithURL:objectURL keepInMemory:YES callback:^(id obj, NSError *err)
             {
-                isObjectInMemory = (object != nil);
+                checkObject = obj;
             }];
         }];
         in_time(isFileExists) should equal(YES);
-        in_time(isObjectInMemory) should equal(YES);
+        in_time(checkObject) should equal(responseObject);
     });
 
     it(@"should load object from network, store it to file and don't keep it in memory", ^
     {
         // loading object and check file and memory
-        __block BOOL isFileExists = NO, isObjectInMemory = YES;
+        __block BOOL isFileExists = NO;
+        __block id checkObject = [[NSObject alloc] init];
         [storage loadObjectWithURL:objectURL keepInMemory:NO callback:^(id object, NSError *error)
         {
             isFileExists = [NSFileManager.defaultManager fileExistsAtPath:filePath];
-            NSURL *url = [NSURL fileURLWithPath:filePath];
-            [storage.memoryStorage objectForLocalURL:url callback:^(id object)
+            // remove network mock
+            [OHHTTPStubs removeAllStubs];
+            [OHHTTPStubs stubAllRequestsWithNetworkDown];
+            // remove file
+            [NSFileManager.defaultManager removeItemAtPath:filePath error:nil];
+            // loading object
+            [storage loadObjectWithURL:objectURL keepInMemory:NO callback:^(id obj, NSError *err)
             {
-                isObjectInMemory = (object != nil);
+                checkObject = obj;
             }];
         }];
         in_time(isFileExists) should equal(YES);
-        in_time(isObjectInMemory) should equal(NO);
+        in_time(checkObject) should be_nil;
     });
 
     it(@"should rewrite file on reload", ^
@@ -96,13 +95,7 @@ describe(@"APSmartStorage", ^
         // mocking network request
         NSData *anotherData = [@"another response" dataUsingEncoding:NSUTF8StringEncoding];
         [OHHTTPStubs removeAllStubs];
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request)
-        {
-            return YES;
-        }                   withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request)
-        {
-            return [OHHTTPStubsResponse responseWithData:anotherData statusCode:200 headers:nil];
-        }];
+        [OHHTTPStubs stubAllRequestsWithResponseData:anotherData];
         // loading object
         __block id checkData;
         [storage reloadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
@@ -112,7 +105,6 @@ describe(@"APSmartStorage", ^
         in_time(checkData) should_not be_nil;
         in_time(checkData) should equal(anotherData);
     });
-
 });
 
 SPEC_END

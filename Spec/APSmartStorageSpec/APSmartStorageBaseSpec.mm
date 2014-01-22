@@ -7,8 +7,8 @@
 //
 
 #import "CedarAsync.h"
-#import "OHHTTPStubs.h"
 #import "APSmartStorage.h"
+#import "OHHTTPStubs+AllRequests.h"
 
 using namespace Cedar::Matchers;
 using namespace Cedar::Doubles;
@@ -35,13 +35,7 @@ describe(@"APSmartStorage", ^
         // file path
         filePath = [dirPath stringByAppendingPathComponent:@"327fa8f97ba3bbd262a1768080d93f46"];
         // mocking network request
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request)
-        {
-            return YES;
-        }                   withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request)
-        {
-            return [OHHTTPStubsResponse responseWithData:responseObject statusCode:200 headers:nil];
-        }];
+        [OHHTTPStubs stubAllRequestsWithResponseData:responseObject];
     });
 
     afterEach((id)^
@@ -77,6 +71,7 @@ describe(@"APSmartStorage", ^
     {
         // remove network mock
         [OHHTTPStubs removeAllStubs];
+        [OHHTTPStubs stubAllRequestsWithNetworkDown];
         // mocking file
         NSURL *url = [NSURL fileURLWithPath:filePath];
         [responseObject writeToURL:url atomically:YES];
@@ -97,6 +92,7 @@ describe(@"APSmartStorage", ^
         {
             // remove network mock
             [OHHTTPStubs removeAllStubs];
+            [OHHTTPStubs stubAllRequestsWithNetworkDown];
             // remove file
             [NSFileManager.defaultManager removeItemAtPath:filePath error:nil];
             // loading object from memory
