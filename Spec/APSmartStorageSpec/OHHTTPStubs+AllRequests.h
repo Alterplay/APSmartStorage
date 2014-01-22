@@ -11,6 +11,7 @@
 @interface OHHTTPStubs (AllRequests)
 
 + (void)stubAllRequestsWithResponseData:(NSData *)data;
++ (void)stubAllRequestsWithStubResponse:(OHHTTPStubsResponseBlock)responseBlock;
 + (void)stubAllRequestsWithNetworkDown;
 
 @end

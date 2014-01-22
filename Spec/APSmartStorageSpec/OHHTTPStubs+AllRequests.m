@@ -19,7 +19,14 @@
     {
         return [OHHTTPStubsResponse responseWithData:data statusCode:200 headers:nil];
     }];
+}
 
++ (void)stubAllRequestsWithStubResponse:(OHHTTPStubsResponseBlock)responseBlock
+{
+    [self stubRequestsPassingTest:^BOOL(NSURLRequest *request)
+    {
+        return YES;
+    }            withStubResponse:responseBlock];
 }
 
 + (void)stubAllRequestsWithNetworkDown
