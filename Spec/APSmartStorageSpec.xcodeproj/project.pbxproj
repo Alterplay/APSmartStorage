@@ -11,13 +11,15 @@
 		FA281DC8188927FC00A77EB0 /* APNetworkLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = FA281DC7188927FC00A77EB0 /* APNetworkLoader.m */; };
 		FA281DCB18893BE000A77EB0 /* APStoragePathHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = FA281DCA18893BE000A77EB0 /* APStoragePathHelper.m */; };
 		FA281DCE1889444A00A77EB0 /* NSFileManager+Storage.m in Sources */ = {isa = PBXBuildFile; fileRef = FA281DCD1889444A00A77EB0 /* NSFileManager+Storage.m */; };
+		FA68F29A188FC56E007CCE3E /* APSmartStorageBaseSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA68F299188FC56E007CCE3E /* APSmartStorageBaseSpec.mm */; };
+		FA68F29C188FC57E007CCE3E /* APSmartStorageFileSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA68F29B188FC57E007CCE3E /* APSmartStorageFileSpec.mm */; };
+		FA68F29E188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA68F29D188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm */; };
 		FA6E6FB61887B6C300E8DF46 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6E6FB51887B6C300E8DF46 /* Foundation.framework */; };
 		FA6E6FB81887B6C300E8DF46 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6E6FB71887B6C300E8DF46 /* CoreGraphics.framework */; };
 		FA6E6FBA1887B6C300E8DF46 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6E6FB91887B6C300E8DF46 /* UIKit.framework */; };
 		FA6E6FC01887B6C300E8DF46 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FA6E6FBE1887B6C300E8DF46 /* InfoPlist.strings */; };
 		FA6E6FC21887B6C300E8DF46 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6E6FC11887B6C300E8DF46 /* main.m */; };
 		FA6E6FC81887B6C300E8DF46 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA6E6FC71887B6C300E8DF46 /* Images.xcassets */; };
-		FA6E6FE61887B82700E8DF46 /* APSmartStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA6E6FE51887B82700E8DF46 /* APSmartStorageSpec.mm */; };
 		FAB00554188D10BF00A0D654 /* APMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAB00553188D10BF00A0D654 /* APMemoryStorage.m */; };
 		FAB00557188D587C00A0D654 /* APAsyncDictionary+RemoveAnyObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FAB00556188D587C00A0D654 /* APAsyncDictionary+RemoveAnyObject.m */; };
 		FAE4DAD61887BA5B003541A9 /* APSmartStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE4DAD51887BA5B003541A9 /* APSmartStorage.m */; };
@@ -33,6 +35,9 @@
 		FA281DCA18893BE000A77EB0 /* APStoragePathHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APStoragePathHelper.m; sourceTree = "<group>"; };
 		FA281DCC1889444A00A77EB0 /* NSFileManager+Storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+Storage.h"; sourceTree = "<group>"; };
 		FA281DCD1889444A00A77EB0 /* NSFileManager+Storage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+Storage.m"; sourceTree = "<group>"; };
+		FA68F299188FC56E007CCE3E /* APSmartStorageBaseSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageBaseSpec.mm; sourceTree = "<group>"; };
+		FA68F29B188FC57E007CCE3E /* APSmartStorageFileSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageFileSpec.mm; sourceTree = "<group>"; };
+		FA68F29D188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageRemoveSpec.mm; sourceTree = "<group>"; };
 		FA6E6FB21887B6C300E8DF46 /* APSmartStorageSpec.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = APSmartStorageSpec.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA6E6FB51887B6C300E8DF46 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FA6E6FB71887B6C300E8DF46 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -43,7 +48,6 @@
 		FA6E6FC31887B6C300E8DF46 /* APSmartStorageSpec-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "APSmartStorageSpec-Prefix.pch"; sourceTree = "<group>"; };
 		FA6E6FC71887B6C300E8DF46 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		FA6E6FCE1887B6C300E8DF46 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		FA6E6FE51887B82700E8DF46 /* APSmartStorageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageSpec.mm; sourceTree = "<group>"; };
 		FAB00552188D10BF00A0D654 /* APMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APMemoryStorage.h; sourceTree = "<group>"; };
 		FAB00553188D10BF00A0D654 /* APMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APMemoryStorage.m; sourceTree = "<group>"; };
 		FAB00555188D587C00A0D654 /* APAsyncDictionary+RemoveAnyObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "APAsyncDictionary+RemoveAnyObject.h"; sourceTree = "<group>"; };
@@ -124,7 +128,9 @@
 		FA6E6FE41887B81400E8DF46 /* Spec */ = {
 			isa = PBXGroup;
 			children = (
-				FA6E6FE51887B82700E8DF46 /* APSmartStorageSpec.mm */,
+				FA68F299188FC56E007CCE3E /* APSmartStorageBaseSpec.mm */,
+				FA68F29B188FC57E007CCE3E /* APSmartStorageFileSpec.mm */,
+				FA68F29D188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm */,
 			);
 			name = Spec;
 			sourceTree = "<group>";
@@ -265,10 +271,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA68F29C188FC57E007CCE3E /* APSmartStorageFileSpec.mm in Sources */,
 				FA281DCE1889444A00A77EB0 /* NSFileManager+Storage.m in Sources */,
 				FAB00554188D10BF00A0D654 /* APMemoryStorage.m in Sources */,
 				FA6E6FC21887B6C300E8DF46 /* main.m in Sources */,
-				FA6E6FE61887B82700E8DF46 /* APSmartStorageSpec.mm in Sources */,
+				FA68F29E188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm in Sources */,
+				FA68F29A188FC56E007CCE3E /* APSmartStorageBaseSpec.mm in Sources */,
 				FA281DCB18893BE000A77EB0 /* APStoragePathHelper.m in Sources */,
 				FAB00557188D587C00A0D654 /* APAsyncDictionary+RemoveAnyObject.m in Sources */,
 				FAE4DAD61887BA5B003541A9 /* APSmartStorage.m in Sources */,
@@ -370,6 +378,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "APSmartStorageSpec/APSmartStorageSpec-Prefix.pch";
 				INFOPLIST_FILE = "APSmartStorageSpec/APSmartStorageSpec-Info.plist";
@@ -385,6 +394,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "APSmartStorageSpec/APSmartStorageSpec-Prefix.pch";
 				INFOPLIST_FILE = "APSmartStorageSpec/APSmartStorageSpec-Info.plist";
