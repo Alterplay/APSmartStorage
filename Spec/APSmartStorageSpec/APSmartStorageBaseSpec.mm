@@ -8,7 +8,6 @@
 
 #import "CedarAsync.h"
 #import "APSmartStorage.h"
-#import "APStoragePathHelper.h"
 #import "APMemoryStorage.h"
 #import "OHHTTPStubs.h"
 
@@ -25,6 +24,7 @@ describe(@"APSmartStorage", ^
 {
     __block APSmartStorage *storage;
     __block NSURL *objectURL;
+    __block NSString *filePath;
     __block id responseObject;
 
     beforeEach((id)^
@@ -32,12 +32,18 @@ describe(@"APSmartStorage", ^
         storage = [[APSmartStorage alloc] init];
         objectURL = [NSURL URLWithString:@"http://example.com/object_data"];
         responseObject = [@"APSmartStorage string" dataUsingEncoding:NSUTF8StringEncoding];
+        // create dir
+        NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *dirPath = [array.firstObject stringByAppendingPathComponent:@"APSmartStorage"];
+        [NSFileManager.defaultManager createDirectoryAtPath:dirPath withIntermediateDirectories:YES
+                                                 attributes:nil error:nil];
+        // file path
+        filePath = [dirPath stringByAppendingPathComponent:@"327fa8f97ba3bbd262a1768080d93f46"];
     });
 
     afterEach((id)^
     {
         [storage cleanAllObjects];
-        storage.parsingBlock = nil;
         [OHHTTPStubs removeAllStubs];
     });
 
@@ -75,7 +81,7 @@ describe(@"APSmartStorage", ^
     it(@"should load object with URL from file", ^
     {
         // mocking file
-        NSURL *url = [APStoragePathHelper storageURLForNetworkURL:objectURL];
+        NSURL *url = [NSURL fileURLWithPath:filePath];
         [responseObject writeToURL:url atomically:YES];
         // loading object
         __block id checkObject = nil;
@@ -90,7 +96,7 @@ describe(@"APSmartStorage", ^
     it(@"should load object from memory storage", ^
     {
         // mock memory
-        NSURL *url = [APStoragePathHelper storageURLForNetworkURL:objectURL];
+        NSURL *url = [NSURL fileURLWithPath:filePath];
         [storage.memoryStorage setObject:responseObject forLocalURL:url];
         // loading object
         __block id checkObject = nil;
