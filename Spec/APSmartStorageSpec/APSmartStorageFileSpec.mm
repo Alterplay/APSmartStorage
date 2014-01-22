@@ -7,10 +7,9 @@
 //
 
 #import "CedarAsync.h"
-#import "APSmartStorage.h"
-#import "APStoragePathHelper.h"
-#import "APMemoryStorage.h"
 #import "OHHTTPStubs.h"
+#import "APSmartStorage.h"
+#import "APMemoryStorage.h"
 
 using namespace Cedar::Matchers;
 using namespace Cedar::Doubles;
@@ -25,6 +24,7 @@ describe(@"APSmartStorage", ^
 {
     __block APSmartStorage *storage;
     __block NSURL *objectURL;
+    __block NSString *filePath;
     __block id responseObject;
 
     beforeEach((id)^
@@ -32,6 +32,13 @@ describe(@"APSmartStorage", ^
         storage = [[APSmartStorage alloc] init];
         objectURL = [NSURL URLWithString:@"http://example.com/object_data"];
         responseObject = [@"APSmartStorage string" dataUsingEncoding:NSUTF8StringEncoding];
+        // create dir
+        NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *dirPath = [array.firstObject stringByAppendingPathComponent:@"APSmartStorage"];
+        [NSFileManager.defaultManager createDirectoryAtPath:dirPath withIntermediateDirectories:YES
+                                                 attributes:nil error:nil];
+        // file path
+        filePath = [dirPath stringByAppendingPathComponent:@"327fa8f97ba3bbd262a1768080d93f46"];
         // mocking network request
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request)
         {
@@ -54,8 +61,8 @@ describe(@"APSmartStorage", ^
         __block BOOL isFileExists, isObjectInMemory;
         [storage loadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
         {
-            NSURL *url = [APStoragePathHelper storageURLForNetworkURL:objectURL];
-            isFileExists = [NSFileManager.defaultManager fileExistsAtPath:url.path];
+            isFileExists = [NSFileManager.defaultManager fileExistsAtPath:filePath];
+            NSURL *url = [NSURL fileURLWithPath:filePath];
             [storage.memoryStorage objectForLocalURL:url callback:^(id object)
             {
                 isObjectInMemory = (object != nil);
@@ -71,8 +78,8 @@ describe(@"APSmartStorage", ^
         __block BOOL isFileExists = NO, isObjectInMemory = YES;
         [storage loadObjectWithURL:objectURL keepInMemory:NO callback:^(id object, NSError *error)
         {
-            NSURL *url = [APStoragePathHelper storageURLForNetworkURL:objectURL];
-            isFileExists = [NSFileManager.defaultManager fileExistsAtPath:url.path];
+            isFileExists = [NSFileManager.defaultManager fileExistsAtPath:filePath];
+            NSURL *url = [NSURL fileURLWithPath:filePath];
             [storage.memoryStorage objectForLocalURL:url callback:^(id object)
             {
                 isObjectInMemory = (object != nil);
@@ -85,8 +92,7 @@ describe(@"APSmartStorage", ^
     it(@"should rewrite file on reload", ^
     {
         // mocking file
-        NSURL *url = [APStoragePathHelper storageURLForNetworkURL:objectURL];
-        [responseObject writeToURL:url atomically:YES];
+        [responseObject writeToFile:filePath atomically:YES];
         // mocking network request
         NSData *anotherData = [@"another response" dataUsingEncoding:NSUTF8StringEncoding];
         [OHHTTPStubs removeAllStubs];
@@ -101,7 +107,7 @@ describe(@"APSmartStorage", ^
         __block id checkData;
         [storage reloadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
         {
-            checkData = [NSData dataWithContentsOfURL:url];
+            checkData = [NSData dataWithContentsOfFile:filePath];
         }];
         in_time(checkData) should_not be_nil;
         in_time(checkData) should equal(anotherData);
