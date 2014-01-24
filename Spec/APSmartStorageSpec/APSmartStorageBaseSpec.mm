@@ -14,8 +14,7 @@ using namespace Cedar::Matchers;
 using namespace Cedar::Doubles;
 
 @interface APSmartStorage (Private)
-- (void)loadDataWithNetworkURLFromMemoryStorage:(NSURL *)objectURL
-                                       callback:(void (^)(id object))callback;
+- (void)objectFromMemoryWithURL:(NSURL *)objectURL callback:(void (^)(id object))callback;
 @end
 
 SPEC_BEGIN(APSmartStorageBaseSpec)
@@ -53,18 +52,19 @@ describe(@"APSmartStorage", ^
     {
         __block NSThread *callbackThread;
         NSThread *currentThread = NSThread.currentThread;
-        [storage loadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
         {
             callbackThread = NSThread.currentThread;
         }];
-        in_time(callbackThread) should equal(currentThread);
+        in_time([callbackThread isEqual:currentThread] ||
+                callbackThread.isMainThread) should equal(YES);
     });
 
     it(@"should load object with URL from network", ^
     {
         // loading object
         __block id checkObject = nil;
-        [storage loadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
         {
             checkObject = object;
         }];
@@ -82,7 +82,7 @@ describe(@"APSmartStorage", ^
         [responseObject writeToURL:url atomically:YES];
         // loading object
         __block id checkObject = nil;
-        [storage loadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
         {
             checkObject = object;
         }];
@@ -93,7 +93,7 @@ describe(@"APSmartStorage", ^
     it(@"should load object from memory storage", ^
     {
         __block id checkObject = nil;
-        [storage loadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
         {
             // remove network mock
             [OHHTTPStubs removeAllStubs];
@@ -101,7 +101,7 @@ describe(@"APSmartStorage", ^
             // remove file
             [NSFileManager.defaultManager removeItemAtPath:filePath error:nil];
             // loading object from memory
-            [storage loadDataWithNetworkURLFromMemoryStorage:objectURL callback:^(id obj)
+            [storage objectFromMemoryWithURL:objectURL callback:^(id obj)
             {
                 checkObject = obj;
             }];
@@ -119,7 +119,7 @@ describe(@"APSmartStorage", ^
         };
         // loading object
         __block id checkObject = nil;
-        [storage loadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
         {
             checkObject = object;
         }];

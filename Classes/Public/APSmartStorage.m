@@ -7,23 +7,24 @@
 //
 
 #import "APSmartStorage.h"
-#import "APNetworkLoader.h"
-#import "APFileManager.h"
+#import "APTaskManager.h"
+#import "APNetworkStorage.h"
+#import "APFileStorage.h"
 #import "APMemoryStorage.h"
-#import "APStoragePathHelper.h"
 #import "NSThread+Block.h"
 
 @interface APSmartStorage ()
+@property (nonatomic, readonly) APTaskManager *taskManager;
 @property (nonatomic, readonly) NSURLSessionConfiguration *sessionConfiguration;
 @property (nonatomic, readonly) APMemoryStorage *memoryStorage;
-@property (nonatomic, readonly) APFileManager *fileManager;
-@property (nonatomic, readonly) APNetworkLoader *networkLoader;
+@property (nonatomic, readonly) APFileStorage *fileStorage;
+@property (nonatomic, readonly) APNetworkStorage *networkStorage;
 @end
 
 @implementation APSmartStorage
 
-@synthesize sessionConfiguration = _sessionConfiguration, networkLoader = _networkLoader,
-fileManager = _fileManager, memoryStorage = _memoryStorage;
+@synthesize sessionConfiguration = _sessionConfiguration, networkStorage = _networkStorage,
+fileStorage = _fileStorage, memoryStorage = _memoryStorage;
 
 #pragma mark - life cycle
 
@@ -32,6 +33,7 @@ fileManager = _fileManager, memoryStorage = _memoryStorage;
     self = [super init];
     if (self)
     {
+        _taskManager = [[APTaskManager alloc] init];
         NSNotificationCenter *center = NSNotificationCenter.defaultCenter;
         [center addObserver:self selector:@selector(didReceiveMemoryWarning:)
                        name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
@@ -58,37 +60,29 @@ fileManager = _fileManager, memoryStorage = _memoryStorage;
 
 #pragma mark - public
 
-- (void)loadObjectWithURL:(NSURL *)objectURL keepInMemory:(BOOL)keepInMemory
-                 callback:(void (^)(id object, NSError *))callback
+- (void)loadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback
 {
     __weak __typeof(self) weakSelf = self;
-    [self loadDataWithNetworkURLFromMemoryStorage:objectURL callback:^(id object)
+    [self.taskManager taskWithURL:url block:callback callback:^(APTaskModel *task)
     {
-        // object found in memory storage
-        if (object)
+        if (task.isShouldRunTask)
         {
-            callback ? callback(object, nil) : nil;
-        }
-        // load object from file or network
-        else
-        {
-            [weakSelf parseDataWithNetworkURL:objectURL keepInMemory:keepInMemory skipFileStorage:NO
-                                     callback:callback];
+            [weakSelf objectFromStorageWithURL:url callback:^(id object, NSError *error)
+            {
+                [weakSelf.taskManager finishTaskWithURL:url object:object error:error];
+            }];
         }
     }];
 }
 
-- (void)reloadObjectWithURL:(NSURL *)objectURL keepInMemory:(BOOL)keepInMemory
-                   callback:(void (^)(id object, NSError *))callback
+- (void)reloadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback
 {
-    [self parseDataWithNetworkURL:objectURL keepInMemory:keepInMemory skipFileStorage:YES
-                         callback:callback];
+    [self objectFromNetworkWithURL:url callback:callback];
 }
 
 - (void)removeObjectWithURL:(NSURL *)objectURL
 {
-    NSURL *fileURL = [APStoragePathHelper storageURLForNetworkURL:objectURL];
-    [self.memoryStorage removeObjectForLocalURL:fileURL];
+    [self.memoryStorage removeObjectForURL:objectURL];
 }
 
 - (void)removeAllObjects
@@ -96,17 +90,16 @@ fileManager = _fileManager, memoryStorage = _memoryStorage;
     [self.memoryStorage removeAllObjects];
 }
 
-- (void)cleanObjectWithURL:(NSURL *)objectURL
+- (void)cleanObjectWithURL:(NSURL *)url
 {
-    NSURL *fileURL = [APStoragePathHelper storageURLForNetworkURL:objectURL];
-    [self.memoryStorage removeObjectForLocalURL:fileURL];
-    [self.fileManager removeFileAtURL:fileURL];
+    [self.memoryStorage removeObjectForURL:url];
+    [self.fileStorage removeFileForURL:url];
 }
 
 - (void)cleanAllObjects
 {
-    NSURL *directoryURL = [APStoragePathHelper storageDirectoryURL];
-    [self.fileManager removeDirectoryAtURL:directoryURL];
+    [self removeAllObjects];
+    [self.fileStorage removeAllFiles];
 }
 
 #pragma mark - public properties
@@ -133,79 +126,89 @@ fileManager = _fileManager, memoryStorage = _memoryStorage;
     return _memoryStorage;
 }
 
-- (APFileManager *)fileManager
+- (APFileStorage *)fileStorage
 {
-    if (!_fileManager)
+    if (!_fileStorage)
     {
-        _fileManager = [[APFileManager alloc] init];
+        _fileStorage = [[APFileStorage alloc] init];
     }
-    return _fileManager;
+    return _fileStorage;
 }
 
-- (APNetworkLoader *)networkLoader
+- (APNetworkStorage *)networkStorage
 {
-    if (!_networkLoader)
+    if (!_networkStorage)
     {
-        _networkLoader = [[APNetworkLoader alloc] initWithURLSessionConfiguration:self.sessionConfiguration];
+        _networkStorage = [[APNetworkStorage alloc] initWithURLSessionConfiguration:self.sessionConfiguration];
     }
-    return _networkLoader;
+    return _networkStorage;
 }
 
 #pragma mark - private methods
 
-- (void)loadDataWithNetworkURLFromMemoryStorage:(NSURL *)objectURL
-                                       callback:(void (^)(id object))callback
+- (void)objectFromStorageWithURL:(NSURL *)url callback:(void (^)(id object, NSError *error))callback
 {
-    NSURL *localURL = [APStoragePathHelper storageURLForNetworkURL:objectURL];
-    [self.memoryStorage objectForLocalURL:localURL callback:callback];
-}
-
-- (void)parseDataWithNetworkURL:(NSURL *)objectURL keepInMemory:(BOOL)keepInMemory
-                skipFileStorage:(BOOL)isSkipFileStorage callback:(void (^)(id, NSError *))callback
-{
-    NSURL *localURL = [APStoragePathHelper storageURLForNetworkURL:objectURL];
     __weak __typeof(self) weakSelf = self;
-    __weak NSThread *weakThread = NSThread.currentThread;
-    [self loadDataWithNetworkURL:objectURL skipFileStorage:isSkipFileStorage
-                        callback:^(NSData *data, NSError *error)
+    [self objectFromMemoryWithURL:url callback:^(id object)
     {
-        NSObject *object = weakSelf.parsingBlock ?
-                           weakSelf.parsingBlock(data, objectURL) : data;
-        // save object to memory if it necessary
-        if (keepInMemory && object && !error)
+        if (object)
         {
-            [weakSelf.memoryStorage setObject:object forLocalURL:localURL];
+            callback(object, nil);
         }
-        // perform callback on caller thread
-        [weakThread performBlockOnThread:^
+        else
         {
-            callback ? callback(object, error) : nil;
-        }];
+            [weakSelf objectFromFileWithURL:url callback:callback];
+        }
     }];
 }
 
-- (void)loadDataWithNetworkURL:(NSURL *)networkURL skipFileStorage:(BOOL)isSkipFileStorage
-                      callback:(void (^)(NSData *data, NSError *error))callback
+- (void)objectFromMemoryWithURL:(NSURL *)objectURL callback:(void (^)(id object))callback
 {
-    NSURL *localURL = [APStoragePathHelper storageURLForNetworkURL:networkURL];
-    // object found at file
-    if (!isSkipFileStorage && [self.fileManager isFileExistsForURL:localURL])
+    [self.memoryStorage objectWithURL:objectURL callback:callback];
+}
+
+- (void)objectFromFileWithURL:(NSURL *)url callback:(void (^)(id object, NSError *error))callback
+{
+    __weak __typeof(self) weakSelf = self;
+    [self.fileStorage dataWithURL:url callback:^(NSData *data)
     {
-        [self.fileManager loadFileAtURL:localURL callback:callback];
-    }
-    // load object from network
-    else
+        if (data)
+        {
+            id result = weakSelf.parsingBlock ? weakSelf.parsingBlock(data, url) : data;
+            [weakSelf.memoryStorage setObject:result forURL:url];
+            callback(result, nil);
+        }
+        else
+        {
+            [weakSelf objectFromNetworkWithURL:url callback:callback];
+        }
+    }];
+}
+
+- (void)objectFromNetworkWithURL:(NSURL *)url callback:(void (^)(id object, NSError *error))callback
+{
+    __weak NSThread *weakThread = NSThread.currentThread;
+    __weak __typeof(self) weakSelf = self;
+    [self.networkStorage downloadURL:url callback:^(NSString *path, NSError *error)
     {
-        [self.networkLoader loadObjectWithURL:networkURL toFileURL:localURL callback:callback];
-    }
+        if (path && !error)
+        {
+            [weakSelf.fileStorage moveDataWithURL:url downloadedToPath:path];
+        }
+        [NSThread performOnThread:weakThread block:^
+        {
+            path && !error ? [weakSelf objectFromFileWithURL:url callback:callback] :
+            callback(nil, error);
+        }];
+    }];
 }
 
 - (void)didReceiveMemoryWarning:(NSNotification *)notification
 {
     [self.memoryStorage removeAllObjects];
     _memoryStorage = nil;
-    _fileManager = nil;
-    _networkLoader = nil;
+    _fileStorage = nil;
+    _networkStorage = nil;
 }
 
 @end

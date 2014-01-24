@@ -1,5 +1,5 @@
 //
-//  APAsyncDictionary+RemoveAnyObject.h
+//  APAsyncDictionary+TrimCount.h
 //  APSmartStorage
 //
 //  Created by Alexey Belkevich on 1/20/14.
@@ -8,7 +8,7 @@
 
 #import "APAsyncDictionary.h"
 
-@interface APAsyncDictionary (RemoveAnyObject)
+@interface APAsyncDictionary (TrimCount)
 
 - (void)trimObjectsToCount:(NSUInteger)maxCount;
 

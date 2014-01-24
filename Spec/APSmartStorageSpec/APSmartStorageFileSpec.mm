@@ -14,8 +14,7 @@ using namespace Cedar::Matchers;
 using namespace Cedar::Doubles;
 
 @interface APSmartStorage (Private)
-- (void)loadDataWithNetworkURLFromMemoryStorage:(NSURL *)objectURL
-                                       callback:(void (^)(id object))callback;
+- (void)objectFromMemoryWithURL:(NSURL *)objectURL callback:(void (^)(id object))callback;
 @end
 
 SPEC_BEGIN(APSmartStorageFileSpec)
@@ -53,7 +52,7 @@ describe(@"APSmartStorage", ^
     {
         __block BOOL isFileExists = NO;
         __block id checkObject = nil;
-        [storage loadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
         {
             isFileExists = [NSFileManager.defaultManager fileExistsAtPath:filePath];
             // remove network mock
@@ -61,36 +60,13 @@ describe(@"APSmartStorage", ^
             // remove file
             [NSFileManager.defaultManager removeItemAtPath:filePath error:nil];
             // check memory
-            [storage loadDataWithNetworkURLFromMemoryStorage:objectURL callback:^(id obj)
+            [storage objectFromMemoryWithURL:objectURL callback:^(id obj)
             {
                 checkObject = obj;
             }];
         }];
         in_time(isFileExists) should equal(YES);
         in_time(checkObject) should equal(responseObject);
-    });
-
-    it(@"should load object from network, store it to file and don't keep it in memory", ^
-    {
-        // loading object and check file and memory
-        __block BOOL isFileExists = NO;
-        __block id checkObject = [[NSObject alloc] init];
-        [storage loadObjectWithURL:objectURL keepInMemory:NO callback:^(id object, NSError *error)
-        {
-            isFileExists = [NSFileManager.defaultManager fileExistsAtPath:filePath];
-            // remove network mock
-            [OHHTTPStubs removeAllStubs];
-            [OHHTTPStubs stubAllRequestsWithNetworkDown];
-            // remove file
-            [NSFileManager.defaultManager removeItemAtPath:filePath error:nil];
-            // check memory
-            [storage loadDataWithNetworkURLFromMemoryStorage:objectURL callback:^(id obj)
-            {
-                checkObject = obj;
-            }];
-        }];
-        in_time(isFileExists) should equal(YES);
-        in_time(checkObject) should be_nil;
     });
 
     it(@"should rewrite file on reload", ^
@@ -103,7 +79,7 @@ describe(@"APSmartStorage", ^
         [OHHTTPStubs stubAllRequestsWithResponseData:anotherData];
         // loading object
         __block id checkData;
-        [storage reloadObjectWithURL:objectURL keepInMemory:YES callback:^(id object, NSError *error)
+        [storage reloadObjectWithURL:objectURL callback:^(id object, NSError *error)
         {
             checkData = [NSData dataWithContentsOfFile:filePath];
         }];

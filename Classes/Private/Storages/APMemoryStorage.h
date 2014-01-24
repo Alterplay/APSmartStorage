@@ -13,9 +13,9 @@
 @property (nonatomic, assign) NSUInteger maxCount;
 
 - (id)initWithMaxObjectCount:(NSUInteger)count;
-- (void)objectForLocalURL:(NSURL *)localURL callback:(void(^)(id object))callback;
-- (void)setObject:(id)object forLocalURL:(NSURL *)localURL;
-- (void)removeObjectForLocalURL:(NSURL *)localURL;
+- (void)objectWithURL:(NSURL *)url callback:(void(^)(id object))callback;
+- (void)setObject:(id)object forURL:(NSURL *)url;
+- (void)removeObjectForURL:(NSURL *)url;
 - (void)removeAllObjects;
 
 @end

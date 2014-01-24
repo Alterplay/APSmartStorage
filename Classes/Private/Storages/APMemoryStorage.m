@@ -8,7 +8,7 @@
 
 #import "APMemoryStorage.h"
 #import "APAsyncDictionary.h"
-#import "APAsyncDictionary+RemoveAnyObject.h"
+#import "APAsyncDictionary+TrimCount.h"
 
 @interface APMemoryStorage ()
 {
@@ -33,27 +33,27 @@
 
 #pragma mark - public
 
-- (void)objectForLocalURL:(NSURL *)localURL callback:(void (^)(id object))callback
+- (void)objectWithURL:(NSURL *)url callback:(void (^)(id object))callback
 {
-    [dictionary objectForKey:localURL.path callback:^(id <NSCopying> key, id object)
+    [dictionary objectForKey:url.absoluteString callback:^(id <NSCopying> key, id object)
     {
         callback ? callback(object) : nil;
     }];
 }
 
-- (void)setObject:(id)object forLocalURL:(NSURL *)localURL
+- (void)setObject:(id)object forURL:(NSURL *)url
 {
     // is need to check stored object count
     if (self.maxCount > 0)
     {
         [dictionary trimObjectsToCount:(self.maxCount - 1)];
     }
-    [dictionary setObject:object forKey:localURL.path];
+    [dictionary setObject:object forKey:url.absoluteString];
 }
 
-- (void)removeObjectForLocalURL:(NSURL *)localURL
+- (void)removeObjectForURL:(NSURL *)url
 {
-    [dictionary removeObjectForKey:localURL.path];
+    [dictionary removeObjectForKey:url.absoluteString];
 }
 
 - (void)removeAllObjects

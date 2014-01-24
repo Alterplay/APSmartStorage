@@ -1,22 +1,21 @@
 //
-//  APNetworkLoader.m
+//  APNetworkStorage.m
 //  APSmartStorage
 //
 //  Created by Alexey Belkevich on 1/17/14.
 //  Copyright (c) 2014 alterplay. All rights reserved.
 //
 
-#import "APNetworkLoader.h"
-#import "NSFileManager+Storage.h"
+#import "APNetworkStorage.h"
 
-@interface APNetworkLoader ()
+@interface APNetworkStorage ()
 {
     NSURLSession *session;
     NSOperationQueue *queue;
 }
 @end
 
-@implementation APNetworkLoader
+@implementation APNetworkStorage
 
 #pragma mark - life cycle
 
@@ -40,19 +39,12 @@
 
 #pragma mark - public
 
-- (void)loadObjectWithURL:(NSURL *)objectURL toFileURL:(NSURL *)fileURL
-                 callback:(void (^)(NSData *data, NSError *error))callback
+- (void)downloadURL:(NSURL *)url callback:(void (^)(NSString *path, NSError *error))callback
 {
-    [[session downloadTaskWithURL:objectURL
+    [[session downloadTaskWithURL:url
                 completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error)
     {
-        NSData *data;
-        if (!error)
-        {
-            data = [NSData dataWithContentsOfURL:location];
-            [NSFileManager moveFileAtURL:location toURL:fileURL];
-        }
-        callback ? callback(data, error) : nil;
+        callback ? callback(location.path, error) : nil;
     }] resume];
 }
 

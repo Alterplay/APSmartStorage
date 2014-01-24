@@ -19,15 +19,15 @@ typedef id (^APParsingBlock)(NSData *data, NSURL *url);
 - (id)initWithCustomSessionConfiguration:(NSURLSessionConfiguration *)configuration
                           maxObjectCount:(NSUInteger)count;
 // load object
-- (void)loadObjectWithURL:(NSURL *)objectURL keepInMemory:(BOOL)keepInMemory
-                 callback:(void (^)(id object, NSError *))callback;
-- (void)reloadObjectWithURL:(NSURL *)objectURL keepInMemory:(BOOL)keepInMemory
-                   callback:(void (^)(id object, NSError *))callback;
+- (void)loadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback;
+- (void)reloadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback;
 // remove object
 - (void)removeObjectWithURL:(NSURL *)objectURL;
 - (void)removeAllObjects;
 // clean object (also remove files)
-- (void)cleanObjectWithURL:(NSURL *)objectURL;
+- (void)cleanObjectWithURL:(NSURL *)url;
 - (void)cleanAllObjects;
 
+- (void)objectFromFileWithURL:(NSURL *)url callback:(void (^)(id object, NSError *error))callback;
+- (void)objectFromNetworkWithURL:(NSURL *)url callback:(void (^)(id object, NSError *error))callback;
 @end

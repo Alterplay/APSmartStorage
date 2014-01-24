@@ -14,8 +14,7 @@ using namespace Cedar::Matchers;
 using namespace Cedar::Doubles;
 
 @interface APSmartStorage (Private)
-- (void)loadDataWithNetworkURLFromMemoryStorage:(NSURL *)objectURL
-                                       callback:(void (^)(id object))callback;
+- (void)objectFromMemoryWithURL:(NSURL *)objectURL callback:(void (^)(id object))callback;
 - (void)didReceiveMemoryWarning:(NSNotification *)notification;
 @end
 
@@ -63,12 +62,12 @@ describe(@"APSmartStorage", ^
         // loading object and check file and memory
         __block BOOL isFileExists = NO;
         __block id checkObject = [[NSObject alloc] init];
-        [storage loadObjectWithURL:objectURL1 keepInMemory:YES callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
         {
             // remove object
             [storage removeObjectWithURL:objectURL1];
             // check existence
-            [storage loadDataWithNetworkURLFromMemoryStorage:objectURL1 callback:^(id obj)
+            [storage objectFromMemoryWithURL:objectURL1 callback:^(id obj)
             {
                 isFileExists = [NSFileManager.defaultManager fileExistsAtPath:filePath1];
                 checkObject = obj;
@@ -83,12 +82,12 @@ describe(@"APSmartStorage", ^
         // loading object and check file and memory
         __block BOOL isFileExists = YES;
         __block id checkObject = [[NSObject alloc] init];
-        [storage loadObjectWithURL:objectURL1 keepInMemory:YES callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
         {
             // remove object
             [storage cleanObjectWithURL:objectURL1];
             // check is exist
-            [storage loadDataWithNetworkURLFromMemoryStorage:objectURL1 callback:^(id obj)
+            [storage objectFromMemoryWithURL:objectURL1 callback:^(id obj)
             {
                 isFileExists = [NSFileManager.defaultManager fileExistsAtPath:filePath1];
                 checkObject = obj;
@@ -103,16 +102,18 @@ describe(@"APSmartStorage", ^
         // loading object
         __block id object1 = [[NSObject alloc] init];
         __block id object2 = nil;
-        [storage loadObjectWithURL:objectURL1 keepInMemory:YES callback:nil];
-        [storage loadObjectWithURL:objectURL2 keepInMemory:YES callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
         {
-            [storage loadDataWithNetworkURLFromMemoryStorage:objectURL1 callback:^(id obj)
+            [storage loadObjectWithURL:objectURL2 callback:^(id obj, NSError *err)
             {
-                object1 = obj;
-            }];
-            [storage loadDataWithNetworkURLFromMemoryStorage:objectURL2 callback:^(id obj)
-            {
-                object2 = obj;
+                [storage objectFromMemoryWithURL:objectURL1 callback:^(id obj1)
+                {
+                    object1 = obj1;
+                }];
+                [storage objectFromMemoryWithURL:objectURL2 callback:^(id obj2)
+                {
+                    object2 = obj2;
+                }];
             }];
         }];
         in_time(object1) should be_nil;
@@ -125,16 +126,16 @@ describe(@"APSmartStorage", ^
         // loading object
         __block id object1 = [[NSObject alloc] init];
         __block id object2 = [[NSObject alloc] init];
-        [storage loadObjectWithURL:objectURL1 keepInMemory:YES callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
         {
             storage.maxObjectCount = 2;
-            [storage loadObjectWithURL:objectURL2 keepInMemory:YES callback:^(id obj, NSError *err)
+            [storage loadObjectWithURL:objectURL2 callback:^(id obj, NSError *err)
             {
-                [storage loadDataWithNetworkURLFromMemoryStorage:objectURL1 callback:^(id obj1)
+                [storage objectFromMemoryWithURL:objectURL1 callback:^(id obj1)
                 {
                     object1 = obj1;
                 }];
-                [storage loadDataWithNetworkURLFromMemoryStorage:objectURL2 callback:^(id obj2)
+                [storage objectFromMemoryWithURL:objectURL2 callback:^(id obj2)
                 {
                     object2 = obj2;
                 }];
@@ -150,16 +151,16 @@ describe(@"APSmartStorage", ^
         __block id object1 = [[NSObject alloc] init];
         __block id object2 = [[NSObject alloc] init];
         storage.maxObjectCount = 2;
-        [storage loadObjectWithURL:objectURL1 keepInMemory:YES callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
         {
             storage.maxObjectCount = 1;
-            [storage loadObjectWithURL:objectURL2 keepInMemory:YES callback:^(id obj, NSError *err)
+            [storage loadObjectWithURL:objectURL2 callback:^(id obj, NSError *err)
             {
-                [storage loadDataWithNetworkURLFromMemoryStorage:objectURL1 callback:^(id obj1)
+                [storage objectFromMemoryWithURL:objectURL1 callback:^(id obj1)
                 {
                     object1 = obj1;
                 }];
-                [storage loadDataWithNetworkURLFromMemoryStorage:objectURL2 callback:^(id obj2)
+                [storage objectFromMemoryWithURL:objectURL2 callback:^(id obj2)
                 {
                     object2 = obj2;
                 }];
@@ -174,16 +175,16 @@ describe(@"APSmartStorage", ^
         // loading object
         __block id object1 = [[NSObject alloc] init];
         __block id object2 = [[NSObject alloc] init];
-        [storage loadObjectWithURL:objectURL1 keepInMemory:YES callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
         {
-            [storage loadObjectWithURL:objectURL2 keepInMemory:YES callback:^(id obj, NSError *err)
+            [storage loadObjectWithURL:objectURL2 callback:^(id obj, NSError *err)
             {
                 [storage didReceiveMemoryWarning:nil];
-                [storage loadDataWithNetworkURLFromMemoryStorage:objectURL1 callback:^(id obj1)
+                [storage objectFromMemoryWithURL:objectURL1 callback:^(id obj1)
                 {
                     object1 = obj1;
                 }];
-                [storage loadDataWithNetworkURLFromMemoryStorage:objectURL2 callback:^(id obj2)
+                [storage objectFromMemoryWithURL:objectURL2 callback:^(id obj2)
                 {
                     object2 = obj2;
                 }];

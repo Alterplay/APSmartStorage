@@ -1,5 +1,5 @@
 //
-//  APNetworkLoader.h
+//  APNetworkStorage.h
 //  APSmartStorage
 //
 //  Created by Alexey Belkevich on 1/17/14.
@@ -8,12 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface APNetworkLoader : NSObject
+@interface APNetworkStorage : NSObject
 
-// initialization
 - (id)initWithURLSessionConfiguration:(NSURLSessionConfiguration *)configuration;
-// actions
-- (void)loadObjectWithURL:(NSURL *)objectURL toFileURL:(NSURL *)fileURL
-                 callback:(void (^)(NSData *data, NSError *error))callback;
+- (void)downloadURL:(NSURL *)url callback:(void (^)(NSString *path, NSError *error))callback;
 
 @end

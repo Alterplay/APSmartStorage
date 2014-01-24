@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		F6841D59D49E4FD4AFFA475C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE27DF55FBD4DDB9FFA4B1C /* libPods.a */; };
-		FA281DC8188927FC00A77EB0 /* APNetworkLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = FA281DC7188927FC00A77EB0 /* APNetworkLoader.m */; };
-		FA281DCB18893BE000A77EB0 /* APStoragePathHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = FA281DCA18893BE000A77EB0 /* APStoragePathHelper.m */; };
-		FA281DCE1889444A00A77EB0 /* NSFileManager+Storage.m in Sources */ = {isa = PBXBuildFile; fileRef = FA281DCD1889444A00A77EB0 /* NSFileManager+Storage.m */; };
 		FA68F29A188FC56E007CCE3E /* APSmartStorageBaseSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA68F299188FC56E007CCE3E /* APSmartStorageBaseSpec.mm */; };
 		FA68F29C188FC57E007CCE3E /* APSmartStorageFileSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA68F29B188FC57E007CCE3E /* APSmartStorageFileSpec.mm */; };
 		FA68F29E188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA68F29D188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm */; };
@@ -21,21 +18,20 @@
 		FA6E6FC01887B6C300E8DF46 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FA6E6FBE1887B6C300E8DF46 /* InfoPlist.strings */; };
 		FA6E6FC21887B6C300E8DF46 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6E6FC11887B6C300E8DF46 /* main.m */; };
 		FA6E6FC81887B6C300E8DF46 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA6E6FC71887B6C300E8DF46 /* Images.xcassets */; };
-		FAB00554188D10BF00A0D654 /* APMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAB00553188D10BF00A0D654 /* APMemoryStorage.m */; };
-		FAB00557188D587C00A0D654 /* APAsyncDictionary+RemoveAnyObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FAB00556188D587C00A0D654 /* APAsyncDictionary+RemoveAnyObject.m */; };
+		FAD37B83189110F000825EB6 /* APFileStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B75189110F000825EB6 /* APFileStorage.m */; };
+		FAD37B84189110F000825EB6 /* APMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B77189110F000825EB6 /* APMemoryStorage.m */; };
+		FAD37B85189110F000825EB6 /* APNetworkStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B79189110F000825EB6 /* APNetworkStorage.m */; };
+		FAD37B86189110F000825EB6 /* APTaskModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B7C189110F000825EB6 /* APTaskModel.m */; };
+		FAD37B87189110F000825EB6 /* APAsyncDictionary+TrimCount.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B7F189110F000825EB6 /* APAsyncDictionary+TrimCount.m */; };
+		FAD37B88189110F000825EB6 /* NSFileManager+Storage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B81189110F000825EB6 /* NSFileManager+Storage.m */; };
+		FAD37B8B1891116D00825EB6 /* APTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B8A1891116D00825EB6 /* APTaskManager.m */; };
+		FAD37B9C1891411200825EB6 /* APBlockQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B9B1891411200825EB6 /* APBlockQueue.m */; };
 		FAE4DAD61887BA5B003541A9 /* APSmartStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE4DAD51887BA5B003541A9 /* APSmartStorage.m */; };
-		FAE4DB001887FFC5003541A9 /* APFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE4DAFF1887FFC5003541A9 /* APFileManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3623D18215C44D7FA210E476 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		DDE27DF55FBD4DDB9FFA4B1C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		FA281DC6188927FC00A77EB0 /* APNetworkLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APNetworkLoader.h; sourceTree = "<group>"; };
-		FA281DC7188927FC00A77EB0 /* APNetworkLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APNetworkLoader.m; sourceTree = "<group>"; };
-		FA281DC918893BE000A77EB0 /* APStoragePathHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APStoragePathHelper.h; sourceTree = "<group>"; };
-		FA281DCA18893BE000A77EB0 /* APStoragePathHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APStoragePathHelper.m; sourceTree = "<group>"; };
-		FA281DCC1889444A00A77EB0 /* NSFileManager+Storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+Storage.h"; sourceTree = "<group>"; };
-		FA281DCD1889444A00A77EB0 /* NSFileManager+Storage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+Storage.m"; sourceTree = "<group>"; };
 		FA68F299188FC56E007CCE3E /* APSmartStorageBaseSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageBaseSpec.mm; sourceTree = "<group>"; };
 		FA68F29B188FC57E007CCE3E /* APSmartStorageFileSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageFileSpec.mm; sourceTree = "<group>"; };
 		FA68F29D188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageRemoveSpec.mm; sourceTree = "<group>"; };
@@ -51,14 +47,24 @@
 		FA6E6FC31887B6C300E8DF46 /* APSmartStorageSpec-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "APSmartStorageSpec-Prefix.pch"; sourceTree = "<group>"; };
 		FA6E6FC71887B6C300E8DF46 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		FA6E6FCE1887B6C300E8DF46 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		FAB00552188D10BF00A0D654 /* APMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APMemoryStorage.h; sourceTree = "<group>"; };
-		FAB00553188D10BF00A0D654 /* APMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APMemoryStorage.m; sourceTree = "<group>"; };
-		FAB00555188D587C00A0D654 /* APAsyncDictionary+RemoveAnyObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "APAsyncDictionary+RemoveAnyObject.h"; sourceTree = "<group>"; };
-		FAB00556188D587C00A0D654 /* APAsyncDictionary+RemoveAnyObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "APAsyncDictionary+RemoveAnyObject.m"; sourceTree = "<group>"; };
+		FAD37B74189110F000825EB6 /* APFileStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APFileStorage.h; sourceTree = "<group>"; };
+		FAD37B75189110F000825EB6 /* APFileStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APFileStorage.m; sourceTree = "<group>"; };
+		FAD37B76189110F000825EB6 /* APMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APMemoryStorage.h; sourceTree = "<group>"; };
+		FAD37B77189110F000825EB6 /* APMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APMemoryStorage.m; sourceTree = "<group>"; };
+		FAD37B78189110F000825EB6 /* APNetworkStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APNetworkStorage.h; sourceTree = "<group>"; };
+		FAD37B79189110F000825EB6 /* APNetworkStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APNetworkStorage.m; sourceTree = "<group>"; };
+		FAD37B7B189110F000825EB6 /* APTaskModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APTaskModel.h; sourceTree = "<group>"; };
+		FAD37B7C189110F000825EB6 /* APTaskModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APTaskModel.m; sourceTree = "<group>"; };
+		FAD37B7E189110F000825EB6 /* APAsyncDictionary+TrimCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "APAsyncDictionary+TrimCount.h"; sourceTree = "<group>"; };
+		FAD37B7F189110F000825EB6 /* APAsyncDictionary+TrimCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "APAsyncDictionary+TrimCount.m"; sourceTree = "<group>"; };
+		FAD37B80189110F000825EB6 /* NSFileManager+Storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+Storage.h"; sourceTree = "<group>"; };
+		FAD37B81189110F000825EB6 /* NSFileManager+Storage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+Storage.m"; sourceTree = "<group>"; };
+		FAD37B891891116D00825EB6 /* APTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APTaskManager.h; path = Manager/APTaskManager.h; sourceTree = "<group>"; };
+		FAD37B8A1891116D00825EB6 /* APTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APTaskManager.m; path = Manager/APTaskManager.m; sourceTree = "<group>"; };
+		FAD37B9A1891411200825EB6 /* APBlockQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APBlockQueue.h; sourceTree = "<group>"; };
+		FAD37B9B1891411200825EB6 /* APBlockQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APBlockQueue.m; sourceTree = "<group>"; };
 		FAE4DAD41887BA5B003541A9 /* APSmartStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APSmartStorage.h; sourceTree = "<group>"; };
 		FAE4DAD51887BA5B003541A9 /* APSmartStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APSmartStorage.m; sourceTree = "<group>"; };
-		FAE4DAFE1887FFC5003541A9 /* APFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APFileManager.h; sourceTree = "<group>"; };
-		FAE4DAFF1887FFC5003541A9 /* APFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APFileManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +154,73 @@
 			name = Spec;
 			sourceTree = "<group>";
 		};
+		FAD37B73189110F000825EB6 /* Storages */ = {
+			isa = PBXGroup;
+			children = (
+				FAD37B9D18915AFB00825EB6 /* Memory */,
+				FAD37B9E189168F200825EB6 /* File */,
+				FAD37B78189110F000825EB6 /* APNetworkStorage.h */,
+				FAD37B79189110F000825EB6 /* APNetworkStorage.m */,
+			);
+			path = Storages;
+			sourceTree = "<group>";
+		};
+		FAD37B7A189110F000825EB6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				FAD37B7B189110F000825EB6 /* APTaskModel.h */,
+				FAD37B7C189110F000825EB6 /* APTaskModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		FAD37B7D189110F000825EB6 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				FAD37B7E189110F000825EB6 /* APAsyncDictionary+TrimCount.h */,
+				FAD37B7F189110F000825EB6 /* APAsyncDictionary+TrimCount.m */,
+				FAD37B80189110F000825EB6 /* NSFileManager+Storage.h */,
+				FAD37B81189110F000825EB6 /* NSFileManager+Storage.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		FAD37B8C1891117400825EB6 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				FAD37B891891116D00825EB6 /* APTaskManager.h */,
+				FAD37B8A1891116D00825EB6 /* APTaskManager.m */,
+			);
+			name = Manager;
+			sourceTree = "<group>";
+		};
+		FAD37B991891411200825EB6 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				FAD37B9A1891411200825EB6 /* APBlockQueue.h */,
+				FAD37B9B1891411200825EB6 /* APBlockQueue.m */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
+		FAD37B9D18915AFB00825EB6 /* Memory */ = {
+			isa = PBXGroup;
+			children = (
+				FAD37B76189110F000825EB6 /* APMemoryStorage.h */,
+				FAD37B77189110F000825EB6 /* APMemoryStorage.m */,
+			);
+			name = Memory;
+			sourceTree = "<group>";
+		};
+		FAD37B9E189168F200825EB6 /* File */ = {
+			isa = PBXGroup;
+			children = (
+				FAD37B74189110F000825EB6 /* APFileStorage.h */,
+				FAD37B75189110F000825EB6 /* APFileStorage.m */,
+			);
+			name = File;
+			sourceTree = "<group>";
+		};
 		FAE4DAD11887BA5B003541A9 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,18 +234,11 @@
 		FAE4DAD21887BA5B003541A9 /* Private */ = {
 			isa = PBXGroup;
 			children = (
-				FAB00552188D10BF00A0D654 /* APMemoryStorage.h */,
-				FAB00553188D10BF00A0D654 /* APMemoryStorage.m */,
-				FAE4DAFE1887FFC5003541A9 /* APFileManager.h */,
-				FAE4DAFF1887FFC5003541A9 /* APFileManager.m */,
-				FA281DC6188927FC00A77EB0 /* APNetworkLoader.h */,
-				FA281DC7188927FC00A77EB0 /* APNetworkLoader.m */,
-				FA281DC918893BE000A77EB0 /* APStoragePathHelper.h */,
-				FA281DCA18893BE000A77EB0 /* APStoragePathHelper.m */,
-				FAB00555188D587C00A0D654 /* APAsyncDictionary+RemoveAnyObject.h */,
-				FAB00556188D587C00A0D654 /* APAsyncDictionary+RemoveAnyObject.m */,
-				FA281DCC1889444A00A77EB0 /* NSFileManager+Storage.h */,
-				FA281DCD1889444A00A77EB0 /* NSFileManager+Storage.m */,
+				FAD37B7A189110F000825EB6 /* Model */,
+				FAD37B8C1891117400825EB6 /* Manager */,
+				FAD37B73189110F000825EB6 /* Storages */,
+				FAD37B7D189110F000825EB6 /* Categories */,
+				FAD37B991891411200825EB6 /* Other */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -285,17 +351,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA68F29C188FC57E007CCE3E /* APSmartStorageFileSpec.mm in Sources */,
-				FA281DCE1889444A00A77EB0 /* NSFileManager+Storage.m in Sources */,
-				FAB00554188D10BF00A0D654 /* APMemoryStorage.m in Sources */,
 				FA6E6FC21887B6C300E8DF46 /* main.m in Sources */,
+				FAD37B88189110F000825EB6 /* NSFileManager+Storage.m in Sources */,
 				FA68F2A5188FE84E007CCE3E /* OHHTTPStubs+AllRequests.m in Sources */,
 				FA68F29E188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm in Sources */,
+				FAD37B8B1891116D00825EB6 /* APTaskManager.m in Sources */,
+				FAD37B86189110F000825EB6 /* APTaskModel.m in Sources */,
+				FAD37B85189110F000825EB6 /* APNetworkStorage.m in Sources */,
+				FAD37B84189110F000825EB6 /* APMemoryStorage.m in Sources */,
+				FAD37B9C1891411200825EB6 /* APBlockQueue.m in Sources */,
 				FA68F29A188FC56E007CCE3E /* APSmartStorageBaseSpec.mm in Sources */,
-				FA281DCB18893BE000A77EB0 /* APStoragePathHelper.m in Sources */,
-				FAB00557188D587C00A0D654 /* APAsyncDictionary+RemoveAnyObject.m in Sources */,
+				FAD37B83189110F000825EB6 /* APFileStorage.m in Sources */,
 				FAE4DAD61887BA5B003541A9 /* APSmartStorage.m in Sources */,
-				FA281DC8188927FC00A77EB0 /* APNetworkLoader.m in Sources */,
-				FAE4DB001887FFC5003541A9 /* APFileManager.m in Sources */,
+				FAD37B87189110F000825EB6 /* APAsyncDictionary+TrimCount.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
