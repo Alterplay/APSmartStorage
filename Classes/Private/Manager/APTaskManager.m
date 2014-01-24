@@ -35,7 +35,7 @@
 #pragma mark - public
 
 - (void)taskWithURL:(NSURL *)url block:(APTaskCallbackBlock)block
-           callback:(void (^)(APTaskModel *task))callback
+                              callback:(void (^)(BOOL isShouldRunTask))callback
 {
     NSString *key = url.absoluteString;
     if (key)
@@ -51,9 +51,10 @@
                 [weakDictionary setObject:task forKey:key];
             }
             [task updateCallbackBlockWithThread:weakThread block:block];
+            BOOL run = task.isShouldRunTask;
             [NSThread performOnThread:weakThread block:^
             {
-                callback(task);
+                callback(run);
             }];
         }];
     }

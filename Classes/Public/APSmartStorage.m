@@ -63,9 +63,9 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
 - (void)loadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback
 {
     __weak __typeof(self) weakSelf = self;
-    [self.taskManager taskWithURL:url block:callback callback:^(APTaskModel *task)
+    [self.taskManager taskWithURL:url block:callback callback:^(BOOL isShouldRunTask)
     {
-        if (task.isShouldRunTask)
+        if (isShouldRunTask)
         {
             [weakSelf objectFromStorageWithURL:url callback:^(id object, NSError *error)
             {

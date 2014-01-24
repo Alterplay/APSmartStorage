@@ -12,7 +12,7 @@
 @interface APTaskManager : NSObject
 
 - (void)taskWithURL:(NSURL *)url block:(APTaskCallbackBlock)block
-           callback:(void (^)(APTaskModel *task))callback;
+                              callback:(void (^)(BOOL isShouldRunTask))callback;
 - (void)finishTaskWithURL:(NSURL *)url object:(id)object error:(NSError *)error;
 
 @end
