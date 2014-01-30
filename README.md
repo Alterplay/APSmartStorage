@@ -12,7 +12,7 @@ APSmartStorage is an easy way to get data from network or cache with single inte
 * Store loaded object to **memory**
 * Parse loaded data from network (for instance, [NSData](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSData_Class/Reference/Reference.html) to [UIImage](https://developer.apple.com/library/ios/documentation/uikit/reference/UIImage_Class/Reference/Reference.html))
 * Automatically purge memory cache on **memory warning**
-* Set max object in memory count to prevent memory overflow
+* Set max object count to keep in memory to prevent memory overflow
 * Set custom [NSURLSessionConfiguration](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSessionConfiguration_class/Reference/Reference.html#//apple_ref/doc/c_ref/NSURLSessionConfiguration)
 
 #### Installation
@@ -26,10 +26,12 @@ Here is example how to use `APSmartStorage` to store images
 // setup data parsing block
 APSmartStorage.sharedInstance.parsingBlock = ^(NSData *data, NSURL *url)
 {
-    return = [UIImage imageWithData:data scale:UIScreen.mainScreen.scale];
+    return [UIImage imageWithData:data scale:UIScreen.mainScreen.scale];
 };
-// load object with URL
+...
 // show some progress/activity
+...
+// load object with URL
 [APSmartStorage.sharedInstance loadObjectWithURL:imageURL callback:(id object, NSError *error)
 {
     // hide progress/activity
@@ -76,7 +78,25 @@ Objects stored at files could become outdated after some time, and application s
 [APSmartStorage.sharedInstance cleanAllObjects];
 ```
 
-###### Set max objects in memory count
+###### Parse network and file data
+If `parsingBlock` doesn't set you will receive raw `NSData` downloaded from network or read from file. So you should set one in most cases. If you need to parse data of different formats it will be a bit more complicated:
+```objective-c
+APSmartStorage.sharedInstance.parsingBlock = ^(NSData *data, NSURL *url)
+{
+    // is URL of image
+    if ([url isImageURL])
+    {
+        return [UIImage imageWithData:data scale:UIScreen.mainScreen.scale];
+    }
+    // this is URL of something else
+    else
+    {
+        return [SomeObject objectWithData:data];
+    }
+};
+```
+
+###### Set max objects count to keep in memory
 If max object count reached random object will be removed from memory before add next one
 ```objective-c
 APSmartStorage.sharedInstance.maxObjectCount = 10;
