@@ -28,6 +28,4 @@ typedef id (^APParsingBlock)(NSData *data, NSURL *url);
 - (void)cleanObjectWithURL:(NSURL *)url;
 - (void)cleanAllObjects;
 
-- (void)objectFromFileWithURL:(NSURL *)url callback:(void (^)(id object, NSError *error))callback;
-- (void)objectFromNetworkWithURL:(NSURL *)url callback:(void (^)(id object, NSError *error))callback;
 @end
