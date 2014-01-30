@@ -1,8 +1,6 @@
 <img src="https://dl.dropboxusercontent.com/u/2334198/APSmartStorage-git-teaser.png">
 
-APSmartStorage helps to get data from network and automatically caches data on disk or in memory in a smart configurable way. 
-
-Here is how `APSmartStorage` flow diagram looks like:
+APSmartStorage helps to get data from network and automatically caches data on disk or in memory in a smart configurable way. Here is how the `APSmartStorage` flow diagram looks like:
 <img src="https://dl.dropboxusercontent.com/u/2334198/APSmartStorage-git-illustration.png">
 
 #### Features
