@@ -14,10 +14,10 @@ typedef id (^APParsingBlock)(NSData *data, NSURL *url);
 
 @property (nonatomic, copy) APParsingBlock parsingBlock;
 @property (nonatomic, assign) NSUInteger maxObjectCount;
+@property (nonatomic, strong) NSURLSessionConfiguration *sessionConfiguration;
 
-// initialization
-- (id)initWithCustomSessionConfiguration:(NSURLSessionConfiguration *)configuration
-                          maxObjectCount:(NSUInteger)count;
+// singleton
++ (instancetype)sharedInstance;
 // load object
 - (void)loadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback;
 - (void)reloadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback;

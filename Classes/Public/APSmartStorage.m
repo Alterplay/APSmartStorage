@@ -15,7 +15,6 @@
 
 @interface APSmartStorage ()
 @property (nonatomic, readonly) APTaskManager *taskManager;
-@property (nonatomic, readonly) NSURLSessionConfiguration *sessionConfiguration;
 @property (nonatomic, readonly) APMemoryStorage *memoryStorage;
 @property (nonatomic, readonly) APFileStorage *fileStorage;
 @property (nonatomic, readonly) APNetworkStorage *networkStorage;
@@ -41,21 +40,22 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
     return self;
 }
 
-- (id)initWithCustomSessionConfiguration:(NSURLSessionConfiguration *)configuration
-                          maxObjectCount:(NSUInteger)count
-{
-    self = [self init];
-    if (self)
-    {
-        self.maxObjectCount = count;
-        _sessionConfiguration = configuration;
-    }
-    return self;
-}
-
 - (void)dealloc
 {
     [NSNotificationCenter.defaultCenter removeObserver:self];
+}
+
+#pragma mark - singleton
+
++ (instancetype)sharedInstance
+{
+    static id sharedInstance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^
+    {
+        sharedInstance = [[self alloc] init];
+    });
+    return sharedInstance;
 }
 
 #pragma mark - public
@@ -110,12 +110,21 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
     self.memoryStorage.maxCount = maxObjectCount;
 }
 
-#pragma mark - private properties
-
 - (NSURLSessionConfiguration *)sessionConfiguration
 {
     return _sessionConfiguration ?: [NSURLSessionConfiguration defaultSessionConfiguration];
 }
+
+- (void)setSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration
+{
+    if (_sessionConfiguration != sessionConfiguration)
+    {
+        _sessionConfiguration = sessionConfiguration;
+        _networkStorage = nil;
+    }
+}
+
+#pragma mark - private properties
 
 - (APMemoryStorage *)memoryStorage
 {

@@ -29,8 +29,8 @@ describe(@"APSmartStorage", ^
 
     beforeEach((id)^
     {
-        storage = [[APSmartStorage alloc] initWithCustomSessionConfiguration:nil
-                                                              maxObjectCount:1];
+        storage = [[APSmartStorage alloc] init];
+        storage.maxObjectCount = 1;
         objectURL1 = [NSURL URLWithString:@"http://example.com/object_data1"];
         objectURL2 = [NSURL URLWithString:@"http://example.com/object_data2"];
         responseObject1 = [@"response 1" dataUsingEncoding:NSUTF8StringEncoding];
