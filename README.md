@@ -107,10 +107,9 @@ APSmartStorage.sharedInstance.maxObjectCount = 10;
 APSmartStorage.sharedInstance.sessionConfiguration = sessionConfiguration;
 ```
 
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/6766cbe79673060fa2c0ec4291519ad0 "githalytics.com")](http://githalytics.com/Alterplay/APSmartStorage)
-If you have improvements or concerns, feel free to post [an issue](https://github.com/Alterplay/APAsyncDictionary/issues) and write details.
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/d6acc1315fe3f24e01e0a3a77b220f59 "githalytics.com")](http://githalytics.com/Alterplay/APSmartStorage)
+If you have improvements or concerns, feel free to post [an issue](https://github.com/Alterplay/APSmartStorage/issues) and write details.
 
-#### Contacts
-
+=======================
 [Check out](https://github.com/Alterplay) all Alterplay's GitHub projects.
 [Email us](mailto:hello@alterplay.com?subject=From%20GitHub%20APSmartStorage) with other ideas and projects.
