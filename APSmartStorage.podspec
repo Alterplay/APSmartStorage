@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "APSmartStorage"
-  s.version      = "0.0.2"
+  s.version      = "0.0.3"
   s.summary      = "Smart Storage (network -> file -> memory)"
   s.homepage     = "https://github.com/Alterplay/APSmartStorage"
   s.license      = { :type => 'MIT', :file => 'LICENSE.txt' }
