@@ -33,16 +33,20 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
     if (self)
     {
         _taskManager = [[APTaskManager alloc] init];
+#if TARGET_OS_IPHONE
         NSNotificationCenter *center = NSNotificationCenter.defaultCenter;
         [center addObserver:self selector:@selector(didReceiveMemoryWarning:)
                        name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+#endif
     }
     return self;
 }
 
 - (void)dealloc
 {
+#if TARGET_OS_IPHONE
     [NSNotificationCenter.defaultCenter removeObserver:self];
+#endif
 }
 
 #pragma mark - singleton
@@ -212,6 +216,7 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
     }];
 }
 
+#if TARGET_OS_IPHONE
 - (void)didReceiveMemoryWarning:(NSNotification *)notification
 {
     [self.memoryStorage removeAllObjects];
@@ -219,5 +224,6 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
     _fileStorage = nil;
     _networkStorage = nil;
 }
+#endif
 
 @end
