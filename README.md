@@ -1,7 +1,8 @@
 <img src="https://dl.dropboxusercontent.com/u/2334198/APSmartStorage-git-teaser.png">
 
-#### About
-APSmartStorage is an easy way to get data from network or cache with single interface. Here is the `APSmartStorage` flow diagram:
+APSmartStorage helps to get data from network and automatically caches data on disk or in memory in a smart configurable way. 
+
+Here is how `APSmartStorage` flow diagram looks like:
 <img src="https://dl.dropboxusercontent.com/u/2334198/APSmartStorage-git-illustration.png">
 
 #### Features
