@@ -126,6 +126,22 @@ describe(@"APSmartStorage", ^
         in_time(checkObject) should_not be_nil;
         in_time(checkObject) should equal(@"APSmartStorage string");
     });
+
+    it(@"should not throw exception if block returns nil", ^
+    {
+        // parsing block
+        storage.parsingBlock = ^(NSData *data, NSURL *url)
+        {
+            return data ? nil : data;
+        };
+        // loading object
+        __block BOOL isCallbackCalled = NO;
+        [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
+        {
+            isCallbackCalled = YES;
+        }];
+        in_time(isCallbackCalled) should equal(YES);
+    });
 });
 
 SPEC_END

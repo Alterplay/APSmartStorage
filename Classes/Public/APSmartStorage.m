@@ -188,7 +188,10 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
         if (data)
         {
             id result = weakSelf.parsingBlock ? weakSelf.parsingBlock(data, url) : data;
-            [weakSelf.memoryStorage setObject:result forURL:url];
+            if (result)
+            {
+                [weakSelf.memoryStorage setObject:result forURL:url];
+            }
             callback(result, nil);
         }
         else
