@@ -6,14 +6,12 @@
 //  Copyright (c) 2014 alterplay. All rights reserved.
 //
 
+#import <APAsyncDictionary/APAsyncDictionary.h>
 #import "APTaskManager.h"
-#import "APBlockQueue.h"
-#import "NSThread+Block.h"
 
 @interface APTaskManager ()
 {
-    APBlockQueue *queue;
-    NSMutableDictionary *tasksDictionary;
+    APAsyncDictionary *tasksDictionary;
 }
 @end
 
@@ -26,8 +24,7 @@
     self = [super init];
     if (self)
     {
-        tasksDictionary = [[NSMutableDictionary alloc] init];
-        queue = [[APBlockQueue alloc] init];
+        tasksDictionary = [[APAsyncDictionary alloc] init];
     }
     return self;
 }
@@ -40,36 +37,25 @@
     NSString *key = url.absoluteString;
     if (key)
     {
-        __weak NSMutableDictionary *weakDictionary = tasksDictionary;
-        __weak NSThread *weakThread = NSThread.currentThread;
-        [queue enqueueBlock:^
+        BOOL isShouldRunTask = NO;
+        APTaskModel *task = [tasksDictionary objectForKeySynchronously:key];
+        if (!task)
         {
-            APTaskModel *task = [weakDictionary objectForKey:key];
-            if (!task)
-            {
-                task = [[APTaskModel alloc] init];
-                [weakDictionary setObject:task forKey:key];
-            }
-            [task updateCallbackBlockWithThread:weakThread block:block];
-            BOOL run = task.isShouldRunTask;
-            [NSThread performOnThread:weakThread block:^
-            {
-                callback(run);
-            }];
-        }];
+            task = [[APTaskModel alloc] init];
+            [tasksDictionary setObject:task forKey:key];
+            isShouldRunTask = YES;
+        }
+        [task updateCallbackBlockWithThread:NSThread.currentThread block:block];
+        callback(isShouldRunTask);
     }
 }
 
 - (void)finishTaskWithURL:(NSURL *)url object:(id)object error:(NSError *)error
 {
     NSString *key = url.absoluteString;
-    __weak NSMutableDictionary *weakDictionary = tasksDictionary;
-    [queue enqueueBlock:^
-    {
-        APTaskModel *task = [weakDictionary objectForKey:key];
-        [weakDictionary removeObjectForKey:key];
-        [task performCallbackBlockWithObject:object error:error];
-    }];
+    APTaskModel *task = [tasksDictionary objectForKeySynchronously:key];
+    [tasksDictionary removeObjectForKey:key];
+    [task performCallbackBlockWithObject:object error:error];
 }
 
 @end

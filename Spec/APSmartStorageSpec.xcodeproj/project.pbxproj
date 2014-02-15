@@ -26,7 +26,6 @@
 		FAD37B87189110F000825EB6 /* APAsyncDictionary+TrimCount.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B7F189110F000825EB6 /* APAsyncDictionary+TrimCount.m */; };
 		FAD37B88189110F000825EB6 /* NSFileManager+Storage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B81189110F000825EB6 /* NSFileManager+Storage.m */; };
 		FAD37B8B1891116D00825EB6 /* APTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B8A1891116D00825EB6 /* APTaskManager.m */; };
-		FAD37B9C1891411200825EB6 /* APBlockQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B9B1891411200825EB6 /* APBlockQueue.m */; };
 		FAE4DAD61887BA5B003541A9 /* APSmartStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE4DAD51887BA5B003541A9 /* APSmartStorage.m */; };
 /* End PBXBuildFile section */
 
@@ -63,8 +62,6 @@
 		FAD37B81189110F000825EB6 /* NSFileManager+Storage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+Storage.m"; sourceTree = "<group>"; };
 		FAD37B891891116D00825EB6 /* APTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APTaskManager.h; path = Manager/APTaskManager.h; sourceTree = "<group>"; };
 		FAD37B8A1891116D00825EB6 /* APTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APTaskManager.m; path = Manager/APTaskManager.m; sourceTree = "<group>"; };
-		FAD37B9A1891411200825EB6 /* APBlockQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APBlockQueue.h; sourceTree = "<group>"; };
-		FAD37B9B1891411200825EB6 /* APBlockQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APBlockQueue.m; sourceTree = "<group>"; };
 		FAE4DAD41887BA5B003541A9 /* APSmartStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APSmartStorage.h; sourceTree = "<group>"; };
 		FAE4DAD51887BA5B003541A9 /* APSmartStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APSmartStorage.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -157,13 +154,21 @@
 			name = Spec;
 			sourceTree = "<group>";
 		};
+		FAA0FC8818AFDFEA00BAAC5D /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				FAD37B78189110F000825EB6 /* APNetworkStorage.h */,
+				FAD37B79189110F000825EB6 /* APNetworkStorage.m */,
+			);
+			name = Network;
+			sourceTree = "<group>";
+		};
 		FAD37B73189110F000825EB6 /* Storages */ = {
 			isa = PBXGroup;
 			children = (
 				FAD37B9D18915AFB00825EB6 /* Memory */,
 				FAD37B9E189168F200825EB6 /* File */,
-				FAD37B78189110F000825EB6 /* APNetworkStorage.h */,
-				FAD37B79189110F000825EB6 /* APNetworkStorage.m */,
+				FAA0FC8818AFDFEA00BAAC5D /* Network */,
 			);
 			path = Storages;
 			sourceTree = "<group>";
@@ -195,15 +200,6 @@
 				FAD37B8A1891116D00825EB6 /* APTaskManager.m */,
 			);
 			name = Manager;
-			sourceTree = "<group>";
-		};
-		FAD37B991891411200825EB6 /* Other */ = {
-			isa = PBXGroup;
-			children = (
-				FAD37B9A1891411200825EB6 /* APBlockQueue.h */,
-				FAD37B9B1891411200825EB6 /* APBlockQueue.m */,
-			);
-			path = Other;
 			sourceTree = "<group>";
 		};
 		FAD37B9D18915AFB00825EB6 /* Memory */ = {
@@ -241,7 +237,6 @@
 				FAD37B8C1891117400825EB6 /* Manager */,
 				FAD37B73189110F000825EB6 /* Storages */,
 				FAD37B7D189110F000825EB6 /* Categories */,
-				FAD37B991891411200825EB6 /* Other */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -362,7 +357,6 @@
 				FAD37B86189110F000825EB6 /* APTaskModel.m in Sources */,
 				FAD37B85189110F000825EB6 /* APNetworkStorage.m in Sources */,
 				FAD37B84189110F000825EB6 /* APMemoryStorage.m in Sources */,
-				FAD37B9C1891411200825EB6 /* APBlockQueue.m in Sources */,
 				FACB9664189292C000739080 /* APSmartStorageTaskSpec.mm in Sources */,
 				FA68F29A188FC56E007CCE3E /* APSmartStorageBaseSpec.mm in Sources */,
 				FAD37B83189110F000825EB6 /* APFileStorage.m in Sources */,

@@ -33,12 +33,9 @@
 
 #pragma mark - public
 
-- (void)objectWithURL:(NSURL *)url callback:(void (^)(id object))callback
+- (id)objectWithURL:(NSURL *)url
 {
-    [dictionary objectForKey:url.absoluteString callback:^(id <NSCopying> key, id object)
-    {
-        callback ? callback(object) : nil;
-    }];
+    return [dictionary objectForKeySynchronously:url.absoluteString];
 }
 
 - (void)setObject:(id)object forURL:(NSURL *)url
