@@ -9,14 +9,14 @@
 #import "APAsyncDictionary+TrimCount.h"
 
 @interface APAsyncDictionary ()
-- (void)runDictionaryOperationBlock:(void(^)(NSMutableDictionary *dictionary))operationBlock;
+- (void)runDictionaryAsynchronousBlock:(void(^)(NSMutableDictionary *dictionary))operationBlock;
 @end
 
 @implementation APAsyncDictionary (TrimCount)
 
 - (void)trimObjectsToCount:(NSUInteger)maxCount
 {
-    [self runDictionaryOperationBlock:^(NSMutableDictionary *dictionary)
+    [self runDictionaryAsynchronousBlock:^(NSMutableDictionary *dictionary)
     {
         while (dictionary.count > maxCount)
         {

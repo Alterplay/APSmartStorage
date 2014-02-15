@@ -177,7 +177,7 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
 
 - (void)objectFromMemoryWithURL:(NSURL *)objectURL callback:(void (^)(id object))callback
 {
-    [self.memoryStorage objectWithURL:objectURL callback:callback];
+    callback([self.memoryStorage objectWithURL:objectURL]);
 }
 
 - (void)objectFromFileWithURL:(NSURL *)url callback:(void (^)(id object, NSError *error))callback

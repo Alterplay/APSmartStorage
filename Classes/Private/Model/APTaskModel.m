@@ -15,18 +15,6 @@
 
 @implementation APTaskModel
 
-#pragma mark - life cycle
-
-- (id)init
-{
-    self = [super init];
-    if (self)
-    {
-        _isShouldRunTask = YES;
-    }
-    return self;
-}
-
 #pragma mark - public
 
 - (void)updateCallbackBlockWithThread:(NSThread *)thread block:(APTaskCallbackBlock)block
@@ -48,7 +36,6 @@
                 previousBlock(object, error);
                 threadBlock(object, error);
             };
-            _isShouldRunTask = NO;
         }
     }
 }
