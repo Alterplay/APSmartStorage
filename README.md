@@ -112,6 +112,9 @@ APSmartStorage.sharedInstance.sessionConfiguration = sessionConfiguration;
 * Improved callbacks to run immediately if object found in memory storage
 
 **Version 0.0.6**
+* Fixed crash on 'nil' object set to memory storage
+
+**Version 0.0.5**
 * Public release
 
 =======================
