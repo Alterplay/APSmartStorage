@@ -1,0 +1,11 @@
+language: objective-c
+
+before_install:
+        - sudo gem update --system
+        - sudo gem install cocoapods
+        - sudo gem install ios_ci
+        - brew install ios-sim
+        - cd Spec
+        - pod 
+
+script: ios_ci cedar --source-root $TRAVIS_BUILD_DIR/Spec --workspace APSmartStorageSpec.xcworkspace --scheme APSmartStorageSpec --build-path Build/Products
