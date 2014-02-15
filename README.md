@@ -2,6 +2,7 @@
 
 APSmartStorage helps to get data from network and automatically caches data on disk or in memory in a smart configurable way. Here is how the `APSmartStorage` flow diagram looks like:
 <img src="https://dl.dropboxusercontent.com/u/2334198/APSmartStorage-git-illustration.png">
+[![Build Status](https://travis-ci.org/Alterplay/APSmartStorage.png?branch=master)](https://travis-ci.org/Alterplay/APSmartStorage)
 
 #### Features
 * Load cached object from **memory** by URL
