@@ -106,6 +106,14 @@ APSmartStorage.sharedInstance.maxObjectCount = 10;
 APSmartStorage.sharedInstance.sessionConfiguration = sessionConfiguration;
 ```
 
+#### Versions
+
+**Version 0.0.7**
+* Improved callbacks to run immediately if object found in memory storage
+
+**Version 0.0.6**
+* Public release
+
 =======================
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/d6acc1315fe3f24e01e0a3a77b220f59 "githalytics.com")](http://githalytics.com/Alterplay/APSmartStorage)
 If you have improvements or concerns, feel free to post [an issue](https://github.com/Alterplay/APSmartStorage/issues) and write details.
