@@ -18,14 +18,14 @@
 		FA6E6FC01887B6C300E8DF46 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FA6E6FBE1887B6C300E8DF46 /* InfoPlist.strings */; };
 		FA6E6FC21887B6C300E8DF46 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6E6FC11887B6C300E8DF46 /* main.m */; };
 		FA6E6FC81887B6C300E8DF46 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA6E6FC71887B6C300E8DF46 /* Images.xcassets */; };
+		FA75559718E587920000D700 /* APTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA75559318E587920000D700 /* APTaskManager.m */; };
+		FA75559818E587920000D700 /* APTaskModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FA75559618E587920000D700 /* APTaskModel.m */; };
 		FACB9664189292C000739080 /* APSmartStorageTaskSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FACB9663189292C000739080 /* APSmartStorageTaskSpec.mm */; };
 		FAD37B83189110F000825EB6 /* APFileStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B75189110F000825EB6 /* APFileStorage.m */; };
 		FAD37B84189110F000825EB6 /* APMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B77189110F000825EB6 /* APMemoryStorage.m */; };
 		FAD37B85189110F000825EB6 /* APNetworkStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B79189110F000825EB6 /* APNetworkStorage.m */; };
-		FAD37B86189110F000825EB6 /* APTaskModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B7C189110F000825EB6 /* APTaskModel.m */; };
 		FAD37B87189110F000825EB6 /* APAsyncDictionary+TrimCount.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B7F189110F000825EB6 /* APAsyncDictionary+TrimCount.m */; };
 		FAD37B88189110F000825EB6 /* NSFileManager+Storage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B81189110F000825EB6 /* NSFileManager+Storage.m */; };
-		FAD37B8B1891116D00825EB6 /* APTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B8A1891116D00825EB6 /* APTaskManager.m */; };
 		FAE4DAD61887BA5B003541A9 /* APSmartStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE4DAD51887BA5B003541A9 /* APSmartStorage.m */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +47,10 @@
 		FA6E6FC31887B6C300E8DF46 /* APSmartStorageSpec-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "APSmartStorageSpec-Prefix.pch"; sourceTree = "<group>"; };
 		FA6E6FC71887B6C300E8DF46 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		FA6E6FCE1887B6C300E8DF46 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		FA75559218E587920000D700 /* APTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APTaskManager.h; sourceTree = "<group>"; };
+		FA75559318E587920000D700 /* APTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APTaskManager.m; sourceTree = "<group>"; };
+		FA75559518E587920000D700 /* APTaskModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APTaskModel.h; sourceTree = "<group>"; };
+		FA75559618E587920000D700 /* APTaskModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APTaskModel.m; sourceTree = "<group>"; };
 		FACB9663189292C000739080 /* APSmartStorageTaskSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageTaskSpec.mm; sourceTree = "<group>"; };
 		FAD37B74189110F000825EB6 /* APFileStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APFileStorage.h; sourceTree = "<group>"; };
 		FAD37B75189110F000825EB6 /* APFileStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APFileStorage.m; sourceTree = "<group>"; };
@@ -54,14 +58,10 @@
 		FAD37B77189110F000825EB6 /* APMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APMemoryStorage.m; sourceTree = "<group>"; };
 		FAD37B78189110F000825EB6 /* APNetworkStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APNetworkStorage.h; sourceTree = "<group>"; };
 		FAD37B79189110F000825EB6 /* APNetworkStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APNetworkStorage.m; sourceTree = "<group>"; };
-		FAD37B7B189110F000825EB6 /* APTaskModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APTaskModel.h; sourceTree = "<group>"; };
-		FAD37B7C189110F000825EB6 /* APTaskModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APTaskModel.m; sourceTree = "<group>"; };
 		FAD37B7E189110F000825EB6 /* APAsyncDictionary+TrimCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "APAsyncDictionary+TrimCount.h"; sourceTree = "<group>"; };
 		FAD37B7F189110F000825EB6 /* APAsyncDictionary+TrimCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "APAsyncDictionary+TrimCount.m"; sourceTree = "<group>"; };
 		FAD37B80189110F000825EB6 /* NSFileManager+Storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+Storage.h"; sourceTree = "<group>"; };
 		FAD37B81189110F000825EB6 /* NSFileManager+Storage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+Storage.m"; sourceTree = "<group>"; };
-		FAD37B891891116D00825EB6 /* APTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APTaskManager.h; path = Manager/APTaskManager.h; sourceTree = "<group>"; };
-		FAD37B8A1891116D00825EB6 /* APTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APTaskManager.m; path = Manager/APTaskManager.m; sourceTree = "<group>"; };
 		FAE4DAD41887BA5B003541A9 /* APSmartStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APSmartStorage.h; sourceTree = "<group>"; };
 		FAE4DAD51887BA5B003541A9 /* APSmartStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APSmartStorage.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -154,6 +154,24 @@
 			name = Spec;
 			sourceTree = "<group>";
 		};
+		FA75559118E587920000D700 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				FA75559218E587920000D700 /* APTaskManager.h */,
+				FA75559318E587920000D700 /* APTaskManager.m */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		FA75559418E587920000D700 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FA75559518E587920000D700 /* APTaskModel.h */,
+				FA75559618E587920000D700 /* APTaskModel.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		FAA0FC8818AFDFEA00BAAC5D /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,15 +191,6 @@
 			path = Storages;
 			sourceTree = "<group>";
 		};
-		FAD37B7A189110F000825EB6 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				FAD37B7B189110F000825EB6 /* APTaskModel.h */,
-				FAD37B7C189110F000825EB6 /* APTaskModel.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		FAD37B7D189110F000825EB6 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
@@ -191,15 +200,6 @@
 				FAD37B81189110F000825EB6 /* NSFileManager+Storage.m */,
 			);
 			path = Categories;
-			sourceTree = "<group>";
-		};
-		FAD37B8C1891117400825EB6 /* Manager */ = {
-			isa = PBXGroup;
-			children = (
-				FAD37B891891116D00825EB6 /* APTaskManager.h */,
-				FAD37B8A1891116D00825EB6 /* APTaskManager.m */,
-			);
-			name = Manager;
 			sourceTree = "<group>";
 		};
 		FAD37B9D18915AFB00825EB6 /* Memory */ = {
@@ -233,8 +233,8 @@
 		FAE4DAD21887BA5B003541A9 /* Private */ = {
 			isa = PBXGroup;
 			children = (
-				FAD37B7A189110F000825EB6 /* Model */,
-				FAD37B8C1891117400825EB6 /* Manager */,
+				FA75559418E587920000D700 /* Models */,
+				FA75559118E587920000D700 /* Managers */,
 				FAD37B73189110F000825EB6 /* Storages */,
 				FAD37B7D189110F000825EB6 /* Categories */,
 			);
@@ -278,7 +278,7 @@
 		FA6E6FAA1887B6C300E8DF46 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = alterplay;
 			};
 			buildConfigurationList = FA6E6FAD1887B6C300E8DF46 /* Build configuration list for PBXProject "APSmartStorageSpec" */;
@@ -353,15 +353,15 @@
 				FAD37B88189110F000825EB6 /* NSFileManager+Storage.m in Sources */,
 				FA68F2A5188FE84E007CCE3E /* OHHTTPStubs+AllRequests.m in Sources */,
 				FA68F29E188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm in Sources */,
-				FAD37B8B1891116D00825EB6 /* APTaskManager.m in Sources */,
-				FAD37B86189110F000825EB6 /* APTaskModel.m in Sources */,
 				FAD37B85189110F000825EB6 /* APNetworkStorage.m in Sources */,
 				FAD37B84189110F000825EB6 /* APMemoryStorage.m in Sources */,
 				FACB9664189292C000739080 /* APSmartStorageTaskSpec.mm in Sources */,
+				FA75559718E587920000D700 /* APTaskManager.m in Sources */,
 				FA68F29A188FC56E007CCE3E /* APSmartStorageBaseSpec.mm in Sources */,
 				FAD37B83189110F000825EB6 /* APFileStorage.m in Sources */,
 				FAE4DAD61887BA5B003541A9 /* APSmartStorage.m in Sources */,
 				FAD37B87189110F000825EB6 /* APAsyncDictionary+TrimCount.m in Sources */,
+				FA75559818E587920000D700 /* APTaskModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,7 +383,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -422,7 +421,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
