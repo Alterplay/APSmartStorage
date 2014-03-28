@@ -11,6 +11,6 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = "6.0"
   s.osx.deployment_target = "10.8"
   s.requires_arc = true
-  s.dependency 'APAsyncDictionary', '0.0.4'
+  s.dependency 'APAsyncDictionary', '0.0.5'
   s.dependency 'MD5Digest', '0.1.0'
 end
