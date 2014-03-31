@@ -11,7 +11,6 @@
 #import "APNetworkStorage.h"
 #import "APFileStorage.h"
 #import "APMemoryStorage.h"
-#import "NSThread+Block.h"
 
 @interface APSmartStorage ()
 @property (nonatomic, readonly) APTaskManager *taskManager;
@@ -66,21 +65,21 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
 
 - (void)loadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback
 {
-    __weak __typeof(self) weakSelf = self;
-    [self.taskManager taskWithURL:url block:callback callback:^(BOOL isShouldRunTask)
+    BOOL isShouldStart = NO;
+    [self.taskManager addTaskWithURL:url block:callback shouldStart:&isShouldStart];
+    if (isShouldStart)
     {
-        if (isShouldRunTask)
+        __weak __typeof(self) weakSelf = self;
+        [self objectFromStorageWithURL:url callback:^(id object, NSError *error)
         {
-            [weakSelf objectFromStorageWithURL:url callback:^(id object, NSError *error)
-            {
-                [weakSelf.taskManager finishTaskWithURL:url object:object error:error];
-            }];
-        }
-    }];
+            [weakSelf.taskManager finishTaskWithURL:url object:object error:error];
+        }];
+    }
 }
 
 - (void)reloadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback
 {
+    [self.networkStorage cancelDownloadURL:url];
     [self objectFromNetworkWithURL:url callback:callback];
 }
 
@@ -96,14 +95,18 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
 
 - (void)cleanObjectWithURL:(NSURL *)url
 {
-    [self.memoryStorage removeObjectForURL:url];
+    [self.networkStorage cancelDownloadURL:url];
     [self.fileStorage removeFileForURL:url];
+    [self.memoryStorage removeObjectForURL:url];
+    [self.taskManager cancelTaskWithURL:url];
 }
 
 - (void)cleanAllObjects
 {
-    [self removeAllObjects];
+    [self.networkStorage cancelAllDownloads];
     [self.fileStorage removeAllFiles];
+    [self removeAllObjects];
+    [self.taskManager cancelAllTasks];
 }
 
 #pragma mark - public properties
@@ -164,14 +167,7 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
     __weak __typeof(self) weakSelf = self;
     [self objectFromMemoryWithURL:url callback:^(id object)
     {
-        if (object)
-        {
-            callback(object, nil);
-        }
-        else
-        {
-            [weakSelf objectFromFileWithURL:url callback:callback];
-        }
+        object ? callback(object, nil) : [weakSelf objectFromFileWithURL:url callback:callback];
     }];
 }
 
@@ -185,15 +181,14 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
     __weak __typeof(self) weakSelf = self;
     [self.fileStorage dataWithURL:url callback:^(NSData *data)
     {
+        // performed in background thread!
         if (data)
         {
             id result = weakSelf.parsingBlock ? weakSelf.parsingBlock(data, url) : data;
-            if (result)
-            {
-                [weakSelf.memoryStorage setObject:result forURL:url];
-            }
+            [weakSelf.memoryStorage setObject:result forURL:url];
             callback(result, nil);
         }
+        // if no data then load from network
         else
         {
             [weakSelf objectFromNetworkWithURL:url callback:callback];
@@ -203,26 +198,30 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
 
 - (void)objectFromNetworkWithURL:(NSURL *)url callback:(void (^)(id object, NSError *error))callback
 {
-    __weak NSThread *weakThread = NSThread.currentThread;
     __weak __typeof(self) weakSelf = self;
-    [self.networkStorage downloadURL:url callback:^(NSString *path, NSError *error)
+    [self.networkStorage downloadURL:url callback:^(NSString *path, NSError *networkError)
     {
-        if (path && !error)
+        // performed in background thread!
+        NSError *fileError = nil;
+        // file has been downloaded and moved
+        if (path && !networkError && [weakSelf.fileStorage moveDataWithURL:url downloadedToPath:path
+                                                                     error:&fileError])
         {
-            [weakSelf.fileStorage moveDataWithURL:url downloadedToPath:path];
+            [weakSelf objectFromFileWithURL:url callback:callback];
         }
-        [NSThread performOnThread:weakThread block:^
+        else
         {
-            path && !error ? [weakSelf objectFromFileWithURL:url callback:callback] :
-            callback(nil, error);
-        }];
+            callback(nil, networkError ?: fileError);
+        }
     }];
 }
 
 #if TARGET_OS_IPHONE
 - (void)didReceiveMemoryWarning:(NSNotification *)notification
 {
+    [self.networkStorage cancelAllDownloads];
     [self.memoryStorage removeAllObjects];
+    [self.taskManager cancelAllTasks];
     _memoryStorage = nil;
     _fileStorage = nil;
     _networkStorage = nil;

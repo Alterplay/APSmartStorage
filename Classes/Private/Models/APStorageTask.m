@@ -1,33 +1,33 @@
 //
-//  APTaskModel.m
+//  APStorageTask.m
 //  APSmartStorage
 //
 //  Created by Alexey Belkevich on 1/23/14.
 //  Copyright (c) 2014 alterplay. All rights reserved.
 //
 
-#import "APTaskModel.h"
+#import "APStorageTask.h"
 #import "NSThread+Block.h"
 
-@interface APTaskModel ()
+@interface APStorageTask ()
 @property (nonatomic, copy) APTaskCallbackBlock callbackBlock;
 @end
 
-@implementation APTaskModel
+@implementation APStorageTask
 
 #pragma mark - public
 
-- (void)updateCallbackBlockWithThread:(NSThread *)thread block:(APTaskCallbackBlock)block
+- (void)addCallbackBlock:(APTaskCallbackBlock)block thread:(NSThread *)thread
 {
     if (block)
     {
-        APTaskCallbackBlock threadBlock = [self callbackThread:thread block:block];
-        // no callback block exists
+        APTaskCallbackBlock threadBlock = [self wrapBlock:block toThread:thread];
+        // there are no callback block exists
         if (!self.callbackBlock)
         {
             self.callbackBlock = threadBlock;
         }
-        // there are
+        // add callback block to existing ones
         else
         {
             APTaskCallbackBlock previousBlock = [self.callbackBlock copy];
@@ -40,14 +40,14 @@
     }
 }
 
-- (void)performCallbackBlockWithObject:(id)object error:(NSError *)error
+- (void)performCallbackWithObject:(id)object error:(NSError *)error
 {
     self.callbackBlock ? self.callbackBlock(object, error) : nil;
 }
 
 #pragma mark - private
 
-- (APTaskCallbackBlock)callbackThread:(NSThread *)thread block:(APTaskCallbackBlock)block
+- (APTaskCallbackBlock)wrapBlock:(APTaskCallbackBlock)block toThread:(NSThread *)thread
 {
     return ^(id object, NSError *error)
     {

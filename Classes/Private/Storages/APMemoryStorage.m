@@ -40,12 +40,15 @@
 
 - (void)setObject:(id)object forURL:(NSURL *)url
 {
-    // is need to check stored object count
-    if (self.maxCount > 0)
+    if (object)
     {
-        [dictionary trimObjectsToCount:(self.maxCount - 1)];
+        // is need to check stored object count
+        if (self.maxCount > 0)
+        {
+            [dictionary trimObjectsToCount:(self.maxCount - 1)];
+        }
+        [dictionary setObject:object forKey:url.absoluteString];
     }
-    [dictionary setObject:object forKey:url.absoluteString];
 }
 
 - (void)removeObjectForURL:(NSURL *)url

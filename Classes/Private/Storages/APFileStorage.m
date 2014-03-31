@@ -8,11 +8,10 @@
 
 #import <MD5Digest/NSString+MD5.h>
 #import "APFileStorage.h"
-#import "NSThread+Block.h"
 #import "NSFileManager+Storage.h"
 
 @interface APFileStorage ()
-@property (readonly) NSString *storageDirectory;
+@property (nonatomic, readonly) NSString *storageDirectory;
 @end
 
 @implementation APFileStorage
@@ -35,7 +34,6 @@
 
 - (void)dataWithURL:(NSURL *)url callback:(void (^)(NSData *data))callback
 {
-    __weak NSThread *thread = NSThread.currentThread;
     __weak __typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
     {
@@ -52,17 +50,15 @@
                 data = nil;
             }
         }
-        [NSThread performOnThread:thread block:^
-        {
-            callback(data);
-        }];
+        callback(data);
     });
 }
 
-- (void)moveDataWithURL:(NSURL *)url downloadedToPath:(NSString *)path
+- (BOOL)moveDataWithURL:(NSURL *)url downloadedToPath:(NSString *)path error:(NSError **)error
 {
     NSString *newPath = [self filePathForURL:url];
-    [NSFileManager moveFileAtPath:path toPath:newPath];
+    [NSFileManager moveFileAtPath:path toPath:newPath error:error];
+    return !*error;
 }
 
 - (void)removeFileForURL:(NSURL *)url

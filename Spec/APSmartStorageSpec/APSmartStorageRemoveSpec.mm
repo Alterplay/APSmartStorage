@@ -40,7 +40,8 @@ describe(@"APSmartStorage", ^
         {
             NSData *data = [request.URL.absoluteString isEqualToString:objectURL1.absoluteString] ?
                            responseObject1 : responseObject2;
-            return [OHHTTPStubsResponse responseWithData:data statusCode:200 headers:nil];
+            return [[OHHTTPStubsResponse responseWithData:data statusCode:200 headers:nil]
+                                         requestTime:0.1f responseTime:0.1f];
         }];
         // create dir
         NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -117,6 +118,7 @@ describe(@"APSmartStorage", ^
             }];
         }];
         in_time(object1) should be_nil;
+        in_time(object1) should_not equal(responseObject1);
         in_time(object2) should_not be_nil;
         in_time(object2) should equal(responseObject2);
     });
@@ -153,9 +155,9 @@ describe(@"APSmartStorage", ^
         storage.maxObjectCount = 2;
         [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
         {
-            storage.maxObjectCount = 1;
             [storage loadObjectWithURL:objectURL2 callback:^(id obj, NSError *err)
             {
+                storage.maxObjectCount = 1;
                 [storage objectFromMemoryWithURL:objectURL1 callback:^(id obj1)
                 {
                     object1 = obj1;
@@ -166,15 +168,15 @@ describe(@"APSmartStorage", ^
                 }];
             }];
         }];
-        in_time(object1) should be_nil;
-        in_time(object2) should equal(responseObject2);
+        in_time(object1 && object2) should equal(NO);
+        in_time(object1 || object2) should equal(YES);
     });
 
     it(@"should remove memory objects on memory warning", ^
     {
         // loading object
-        __block id object1 = [[NSObject alloc] init];
-        __block id object2 = [[NSObject alloc] init];
+        __block id object1 = responseObject1;
+        __block id object2 = responseObject2;
         [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
         {
             [storage loadObjectWithURL:objectURL2 callback:^(id obj, NSError *err)

@@ -16,28 +16,31 @@
 }
 
 + (void)moveFileAtPath:(NSString *)sourcePath toPath:(NSString *)destinationPath
+                 error:(NSError **)error
 {
-    NSError *error = nil;
     NSFileManager *manager = NSFileManager.defaultManager;
     if ([manager fileExistsAtPath:destinationPath])
     {
         [self removeItemAtPath:destinationPath];
     }
-    [manager moveItemAtPath:sourcePath toPath:destinationPath error:&error];
-    if (error)
+    [manager moveItemAtPath:sourcePath toPath:destinationPath error:error];
+    if (*error)
     {
         NSLog(@"Error moving file '%@' to '%@'\n%@", sourcePath, destinationPath,
-              error.localizedDescription);
+              (*error).localizedDescription);
     }
 }
 
 + (void)removeItemAtPath:(NSString *)path
 {
-    NSError *error = nil;
-    [NSFileManager.defaultManager removeItemAtPath:path error:&error];
-    if (error)
+    if ([NSFileManager.defaultManager fileExistsAtPath:path])
     {
-        NSLog(@"Error removing file at path '%@'\n%@", path, error.localizedDescription);
+        NSError *error = nil;
+        [NSFileManager.defaultManager removeItemAtPath:path error:&error];
+        if (error)
+        {
+            NSLog(@"Error removing file at path '%@'\n%@", path, error.localizedDescription);
+        }
     }
 }
 

@@ -12,5 +12,7 @@
 
 - (id)initWithURLSessionConfiguration:(NSURLSessionConfiguration *)configuration;
 - (void)downloadURL:(NSURL *)url callback:(void (^)(NSString *path, NSError *error))callback;
+- (void)cancelDownloadURL:(NSURL *)url;
+- (void)cancelAllDownloads;
 
 @end

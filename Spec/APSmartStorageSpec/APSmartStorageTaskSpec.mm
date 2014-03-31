@@ -34,7 +34,8 @@ describe(@"APSmartStorage", ^
         {
             NSData *data = requestCount > 0 ? responseObject2 : responseObject1;
             requestCount++;
-            return [OHHTTPStubsResponse responseWithData:data statusCode:200 headers:nil];
+            return [[OHHTTPStubsResponse responseWithData:data statusCode:200 headers:nil]
+                                         requestTime:0.1f responseTime:0.1f];
         }];
     });
 

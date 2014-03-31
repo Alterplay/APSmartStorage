@@ -17,7 +17,8 @@
         return YES;
     }            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request)
     {
-        return [OHHTTPStubsResponse responseWithData:data statusCode:200 headers:nil];
+        return [[OHHTTPStubsResponse responseWithData:data statusCode:200 headers:nil]
+                                     requestTime:0.1f responseTime:0.1f];
     }];
 }
 
@@ -38,7 +39,7 @@
     {
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain
                                              code:kCFURLErrorNotConnectedToInternet userInfo:nil];
-        return [OHHTTPStubsResponse responseWithError:error];
+        return [[OHHTTPStubsResponse responseWithError:error] requestTime:0.1f responseTime:0.1f];
     }];
 }
 

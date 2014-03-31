@@ -6,13 +6,14 @@
 //  Copyright (c) 2014 alterplay. All rights reserved.
 //
 
+#import <APAsyncDictionary/APAsyncDictionary.h>
 #import "APNetworkStorage.h"
 
 @interface APNetworkStorage ()
 {
-    NSURLSession *session;
-    NSOperationQueue *queue;
+    NSURLSession *_session;
 }
+@property (nonatomic, readonly) APAsyncDictionary *dictionary;
 @end
 
 @implementation APNetworkStorage
@@ -30,9 +31,10 @@
     self = [super init];
     if (self)
     {
-        queue = [[NSOperationQueue alloc] init];
-        session = [NSURLSession sessionWithConfiguration:configuration delegate:nil
-                                           delegateQueue:queue];
+        NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+        _session = [NSURLSession sessionWithConfiguration:configuration delegate:nil
+                                            delegateQueue:queue];
+        _dictionary = [[APAsyncDictionary alloc] init];
     }
     return self;
 }
@@ -41,11 +43,38 @@
 
 - (void)downloadURL:(NSURL *)url callback:(void (^)(NSString *path, NSError *error))callback
 {
-    [[session downloadTaskWithURL:url
-                completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error)
+    __weak __typeof(self) weakSelf = self;
+    NSString *key = url.absoluteString;
+    NSURLSessionDownloadTask *task = [_session downloadTaskWithURL:url
+                                                 completionHandler:^(NSURL *location,
+                                                                     NSURLResponse *response,
+                                                                     NSError *error)
     {
+        [weakSelf.dictionary removeObjectForKey:key];
         callback ? callback(location.path, error) : nil;
-    }] resume];
+    }];
+    [self.dictionary setObject:task forKey:key];
+    [task resume];
+}
+
+- (void)cancelDownloadURL:(NSURL *)url
+{
+    NSString *key = url.absoluteString;
+    [self.dictionary objectForKey:key callback:^(id <NSCopying> key, id object)
+    {
+        NSURLSessionDownloadTask *task = object;
+        [task cancel];
+    }];
+    [self.dictionary removeObjectForKey:key];
+}
+
+- (void)cancelAllDownloads
+{
+    [self.dictionary allObjectsCallback:^(NSArray *objects)
+    {
+        [objects makeObjectsPerformSelector:@selector(cancel)];
+    }];
+    [self.dictionary removeAllObjects];
 }
 
 @end

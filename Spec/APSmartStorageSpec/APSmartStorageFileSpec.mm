@@ -55,11 +55,6 @@ describe(@"APSmartStorage", ^
         [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
         {
             isFileExists = [NSFileManager.defaultManager fileExistsAtPath:filePath];
-            // remove network mock
-            [OHHTTPStubs removeAllStubs];
-            // remove file
-            [NSFileManager.defaultManager removeItemAtPath:filePath error:nil];
-            // check memory
             [storage objectFromMemoryWithURL:objectURL callback:^(id obj)
             {
                 checkObject = obj;

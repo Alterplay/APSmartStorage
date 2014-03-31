@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "APTaskModel.h"
+#import "APStorageTask.h"
 
 @interface APTaskManager : NSObject
 
-- (void)taskWithURL:(NSURL *)url block:(APTaskCallbackBlock)block
-                              callback:(void (^)(BOOL isShouldRunTask))callback;
+- (void)addTaskWithURL:(NSURL *)url block:(APTaskCallbackBlock)block
+           shouldStart:(BOOL *)shouldStart;
 - (void)finishTaskWithURL:(NSURL *)url object:(id)object error:(NSError *)error;
+- (void)cancelTaskWithURL:(NSURL *)url;
+- (void)cancelAllTasks;
 
 @end

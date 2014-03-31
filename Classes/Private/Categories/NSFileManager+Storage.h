@@ -11,7 +11,8 @@
 @interface NSFileManager (Storage)
 
 + (BOOL)fileExistsAtPath:(NSString *)path;
-+ (void)moveFileAtPath:(NSString *)sourcePath toPath:(NSString *)destinationPath;
++ (void)moveFileAtPath:(NSString *)sourcePath toPath:(NSString *)destinationPath
+                 error:(NSError **)error;
 + (void)removeItemAtPath:(NSString *)path;
 + (void)createDirectoryAtPath:(NSString *)path;
 + (NSString *)documentsDirectoryPath;
