@@ -65,18 +65,19 @@ Objects stored at files could become outdated after some time, and application s
 ###### Remove objects from memory
 ```objective-c
 // remove object from memory
-[APSmartStorage.sharedInstance removeObjectWithURL:objectURL];
+[APSmartStorage.sharedInstance removeObjectWithURLFromMemory:objectURL];
 // remove all objects form memory
-[APSmartStorage.sharedInstance removeAllObjects];
+[APSmartStorage.sharedInstance removeAllFromMemory];
 ```
 
 ###### Remove object from memory and delete file storage
 ```objective-c
-// remove object from memory and remove file
-[APSmartStorage.sharedInstance cleanObjectWithURL:objectURL];
+// remove object from memory and remove it file
+[APSmartStorage.sharedInstance removeObjectWithURLFromStorage:objectURL];
 // remove all objects from memory and all storage files
-[APSmartStorage.sharedInstance cleanAllObjects];
+[APSmartStorage.sharedInstance removeAllFromStorage];
 ```
+> This methods also cancel network requests. And if request has been cancelled, callbacks will run with `nil` as `object` and with error with code 701.
 
 ###### Parse network and file data
 If `parsingBlock` doesn't set you will receive raw `NSData` downloaded from network or read from file. So you should set one in most cases. If you need to parse data of different formats it will be a bit more complicated:
@@ -107,7 +108,11 @@ APSmartStorage.sharedInstance.maxObjectCount = 10;
 APSmartStorage.sharedInstance.sessionConfiguration = sessionConfiguration;
 ```
 
-#### Versions
+#### History
+
+**Version 0.1.0**
+* Added cancel network requests on object remove
+* Renamed methods
 
 **Version 0.0.7**
 * Improved callbacks to run immediately if object found in memory storage
