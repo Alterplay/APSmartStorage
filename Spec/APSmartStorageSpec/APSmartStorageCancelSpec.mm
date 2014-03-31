@@ -39,7 +39,7 @@ describe(@"APSmartStorage", ^
 
     afterEach((id)^
     {
-        [storage cleanAllObjects];
+        [storage removeAllFromStorage];
         [OHHTTPStubs removeAllStubs];
     });
 
@@ -52,7 +52,7 @@ describe(@"APSmartStorage", ^
             checkObject1 = object;
             receivedError = error;
         }];
-        [storage cleanObjectWithURL:objectURL1];
+        [storage removeObjectWithURLFromStorage:objectURL1];
         in_time(checkObject1) should be_nil;
         in_time(receivedError) should_not be_nil;
     });
@@ -73,7 +73,7 @@ describe(@"APSmartStorage", ^
             checkObject2 = object;
             receivedError2 = error;
         }];
-        [storage cleanObjectWithURL:objectURL1];
+        [storage removeObjectWithURLFromStorage:objectURL1];
         in_time(checkObject1) should be_nil;
         in_time(receivedError1) should_not be_nil;
         in_time(checkObject2) should be_nil;
@@ -96,7 +96,7 @@ describe(@"APSmartStorage", ^
             checkObject2 = object;
             receivedError2 = error;
         }];
-        [storage cleanAllObjects];
+        [storage removeAllFromStorage];
         in_time(checkObject1) should be_nil;
         in_time(receivedError1) should_not be_nil;
         in_time(checkObject2) should be_nil;

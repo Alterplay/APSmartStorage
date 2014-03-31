@@ -54,7 +54,7 @@ describe(@"APSmartStorage", ^
 
     afterEach((id)^
     {
-        [storage cleanAllObjects];
+        [storage removeAllFromStorage];
         [OHHTTPStubs removeAllStubs];
     });
 
@@ -66,7 +66,7 @@ describe(@"APSmartStorage", ^
         [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
         {
             // remove object
-            [storage removeObjectWithURL:objectURL1];
+            [storage removeObjectWithURLFromMemory:objectURL1];
             // check existence
             [storage objectFromMemoryWithURL:objectURL1 callback:^(id obj)
             {
@@ -86,7 +86,7 @@ describe(@"APSmartStorage", ^
         [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
         {
             // remove object
-            [storage cleanObjectWithURL:objectURL1];
+            [storage removeObjectWithURLFromStorage:objectURL1];
             // check is exist
             [storage objectFromMemoryWithURL:objectURL1 callback:^(id obj)
             {

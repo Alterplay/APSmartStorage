@@ -16,16 +16,18 @@ typedef id (^APParsingBlock)(NSData *data, NSURL *url);
 @property (nonatomic, assign) NSUInteger maxObjectCount;
 @property (nonatomic, strong) NSURLSessionConfiguration *sessionConfiguration;
 
-// singleton
 + (instancetype)sharedInstance;
-// load object
 - (void)loadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback;
 - (void)reloadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback;
-// remove object
-- (void)removeObjectWithURL:(NSURL *)objectURL;
-- (void)removeAllObjects;
-// clean object (also remove files)
-- (void)cleanObjectWithURL:(NSURL *)url;
-- (void)cleanAllObjects;
+- (void)removeObjectWithURLFromMemory:(NSURL *)url;
+- (void)removeObjectWithURLFromStorage:(NSURL *)url;
+- (void)removeAllFromMemory;
+- (void)removeAllFromStorage;
+
+// deprecated
+- (void)removeObjectWithURL:(NSURL *)objectURL __attribute__((deprecated("Use 'removeObjectWithURLFromMemory:' instead")));
+- (void)removeAllObjects __attribute__((deprecated("Use 'removeAllFromMemory' instead")));
+- (void)cleanObjectWithURL:(NSURL *)url __attribute__((deprecated("Use 'removeObjectWithURLFromStorage:' instead")));
+- (void)cleanAllObjects __attribute__((deprecated("Use 'removeAllFromStorage' instead")));
 
 @end

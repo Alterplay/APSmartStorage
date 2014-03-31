@@ -41,7 +41,7 @@ describe(@"APSmartStorage", ^
 
     afterEach((id)^
     {
-        [storage cleanAllObjects];
+        [storage removeAllFromStorage];
         [OHHTTPStubs removeAllStubs];
     });
 

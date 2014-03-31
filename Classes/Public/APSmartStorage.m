@@ -83,17 +83,12 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
     [self objectFromNetworkWithURL:url callback:callback];
 }
 
-- (void)removeObjectWithURL:(NSURL *)objectURL
+- (void)removeObjectWithURLFromMemory:(NSURL *)url
 {
-    [self.memoryStorage removeObjectForURL:objectURL];
+    [self.memoryStorage removeObjectForURL:url];
 }
 
-- (void)removeAllObjects
-{
-    [self.memoryStorage removeAllObjects];
-}
-
-- (void)cleanObjectWithURL:(NSURL *)url
+- (void)removeObjectWithURLFromStorage:(NSURL *)url
 {
     [self.networkStorage cancelDownloadURL:url];
     [self.fileStorage removeFileForURL:url];
@@ -101,11 +96,16 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
     [self.taskManager cancelTaskWithURL:url];
 }
 
-- (void)cleanAllObjects
+- (void)removeAllFromMemory
+{
+    [self.memoryStorage removeAllObjects];
+}
+
+- (void)removeAllFromStorage
 {
     [self.networkStorage cancelAllDownloads];
     [self.fileStorage removeAllFiles];
-    [self removeAllObjects];
+    [self removeAllFromMemory];
     [self.taskManager cancelAllTasks];
 }
 
@@ -227,5 +227,27 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
     _networkStorage = nil;
 }
 #endif
+
+#pragma mark - deprecated
+
+- (void)removeObjectWithURL:(NSURL *)url
+{
+    [self removeObjectWithURLFromMemory:url];
+}
+
+- (void)removeAllObjects
+{
+    [self removeAllFromMemory];
+}
+
+- (void)cleanObjectWithURL:(NSURL *)url
+{
+    [self removeObjectWithURLFromStorage:url];
+}
+
+- (void)cleanAllObjects
+{
+    [self removeAllFromStorage];
+}
 
 @end
