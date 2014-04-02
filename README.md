@@ -20,7 +20,7 @@ Add `APSmartStorage` pod to Podfile
 
 #### Using
 
-###### Example
+###### Load object
 Here is example how to use `APSmartStorage` to store images
 ```objective-c
 // setup data parsing block
@@ -32,7 +32,7 @@ APSmartStorage.sharedInstance.parsingBlock = ^(NSData *data, NSURL *url)
 // show some progress/activity
 ...
 // load object with URL
-[APSmartStorage.sharedInstance loadObjectWithURL:imageURL callback:(id object, NSError *error)
+[APSmartStorage.sharedInstance loadObjectWithURL:imageURL callback:^(id object, NSError *error)
 {
     // hide progress/activity
     if (error)
@@ -45,6 +45,15 @@ APSmartStorage.sharedInstance.parsingBlock = ^(NSData *data, NSURL *url)
     }
 }];
 ```
+
+Very often you don't need to store downloaded object in memory. For instance, you perform some background download for future, and you don't want to keep this objects in memory right now.
+```objective-c
+[APSmartStorage.sharedInstance loadObjectWithURL:someURL storeInMemory:NO callback:^(id object, NSError *error)
+{
+    // do something
+}];
+```
+But if any method call sets `storeInMemory:YES` object will be stored in memory 
 
 ###### Update stored object
 Objects stored at files could become outdated after some time, and application should reload it from network
@@ -109,6 +118,9 @@ APSmartStorage.sharedInstance.sessionConfiguration = sessionConfiguration;
 ```
 
 #### History
+
+**Version 0.1.1**
+* Added ability to prevent object from been saved in memory
 
 **Version 0.1.0**
 * Added cancel network requests on object remove
