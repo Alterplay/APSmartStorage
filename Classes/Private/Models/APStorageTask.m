@@ -10,10 +10,23 @@
 #import "NSThread+Block.h"
 
 @interface APStorageTask ()
-@property (nonatomic, copy) APTaskCallbackBlock callbackBlock;
+@property (atomic, copy) APTaskCallbackBlock callbackBlock;
 @end
 
 @implementation APStorageTask
+
+#pragma mark - life cycle
+
+- (id)initWithTaskURL:(NSURL *)url
+{
+    self = [super init];
+    if (self)
+    {
+        _url = url;
+        _isShouldRun = YES;
+    }
+    return self;
+}
 
 #pragma mark - public
 
@@ -36,6 +49,7 @@
                 previousBlock(object, error);
                 threadBlock(object, error);
             };
+            _isShouldRun = NO;
         }
     }
 }

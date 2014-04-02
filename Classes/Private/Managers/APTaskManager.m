@@ -32,25 +32,26 @@
 
 #pragma mark - public
 
-- (void)addTaskWithURL:(NSURL *)url block:(APTaskCallbackBlock)block shouldStart:(BOOL *)shouldStart
+- (APStorageTask *)addTaskWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
+                    callbackBlock:(APTaskCallbackBlock)callbackBlock
 {
+    APStorageTask *task;
     NSString *key = url.absoluteString;
     if (key)
     {
-        BOOL isShouldStartTask = NO;
-        APStorageTask *task = [_dictionary objectForKeySynchronously:key];
+        task = [_dictionary objectForKeySynchronously:key];
         if (!task)
         {
-            task = [[APStorageTask alloc] init];
+            task = [[APStorageTask alloc] initWithTaskURL:url];
             [_dictionary setObject:task forKey:key];
-            isShouldStartTask = YES;
         }
-        [task addCallbackBlock:block thread:NSThread.currentThread];
-        if (shouldStart)
+        if (storeInMemory)
         {
-            *shouldStart = isShouldStartTask;
+            task.storeInMemory = storeInMemory;
         }
+        [task addCallbackBlock:callbackBlock thread:NSThread.currentThread];
     }
+    return task;
 }
 
 - (void)finishTaskWithURL:(NSURL *)url object:(id)object error:(NSError *)error

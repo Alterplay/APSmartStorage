@@ -7,15 +7,11 @@
 //
 
 #import "CedarAsync.h"
-#import "APSmartStorage.h"
+#import "APSmartStorage+Memory.h"
 #import "OHHTTPStubs+AllRequests.h"
 
 using namespace Cedar::Matchers;
 using namespace Cedar::Doubles;
-
-@interface APSmartStorage (Private)
-- (void)objectFromMemoryWithURL:(NSURL *)objectURL callback:(void (^)(id object))callback;
-@end
 
 SPEC_BEGIN(APSmartStorageBaseSpec)
 
@@ -108,6 +104,41 @@ describe(@"APSmartStorage", ^
         }];
         in_time(checkObject) should_not be_nil;
         in_time(checkObject) should equal(responseObject);
+    });
+
+    it(@"should load object from network write it to file and don't store it in memory", ^
+    {
+        __block id loadedObject = [[NSObject alloc] init];
+        __block id memoryObject = [[NSObject alloc] init];
+        __block BOOL fileExists = NO;
+        [storage loadObjectWithURL:objectURL storeInMemory:NO callback:^(id object, NSError *error)
+        {
+            loadedObject = object;
+            fileExists = [NSFileManager.defaultManager fileExistsAtPath:filePath];
+            // loading object from memory
+            [storage objectFromMemoryWithURL:objectURL callback:^(id obj)
+            {
+                memoryObject = obj;
+            }];
+        }];
+        in_time(fileExists) should equal(YES);
+        in_time(memoryObject) should be_nil;
+        in_time(loadedObject) should equal(responseObject);
+    });
+
+    it(@"should load object and store it in memory if at least one call needs to store", ^
+    {
+        __block id memoryObject = [[NSObject alloc] init];
+        [storage loadObjectWithURL:objectURL storeInMemory:NO callback:^(id object, NSError *error)
+        {
+            // loading object from memory
+            [storage objectFromMemoryWithURL:objectURL callback:^(id obj)
+            {
+                memoryObject = obj;
+            }];
+        }];
+        [storage loadObjectWithURL:objectURL storeInMemory:YES callback:nil];
+        in_time(memoryObject) should equal(responseObject);
     });
 
     it(@"should parse loaded object with block", ^

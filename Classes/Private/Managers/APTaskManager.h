@@ -11,8 +11,8 @@
 
 @interface APTaskManager : NSObject
 
-- (void)addTaskWithURL:(NSURL *)url block:(APTaskCallbackBlock)block
-           shouldStart:(BOOL *)shouldStart;
+- (APStorageTask *)addTaskWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
+                    callbackBlock:(APTaskCallbackBlock)callbackBlock;
 - (void)finishTaskWithURL:(NSURL *)url object:(id)object error:(NSError *)error;
 - (void)cancelTaskWithURL:(NSURL *)url;
 - (void)cancelAllTasks;

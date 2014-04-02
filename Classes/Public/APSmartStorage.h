@@ -18,7 +18,11 @@ typedef id (^APParsingBlock)(NSData *data, NSURL *url);
 
 + (instancetype)sharedInstance;
 - (void)loadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback;
+- (void)loadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
+                 callback:(void (^)(id object, NSError *))callback;
 - (void)reloadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback;
+- (void)reloadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
+                   callback:(void (^)(id object, NSError *))callback;
 - (void)removeObjectWithURLFromMemory:(NSURL *)url;
 - (void)removeObjectWithURLFromStorage:(NSURL *)url;
 - (void)removeAllFromMemory;

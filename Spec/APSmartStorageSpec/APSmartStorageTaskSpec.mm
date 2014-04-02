@@ -45,7 +45,7 @@ describe(@"APSmartStorage", ^
         [OHHTTPStubs removeAllStubs];
     });
 
-    it(@"should call 2 callbacks on first load", ^
+    it(@"should call 2 callbacks if URL download executed 2 times before complete", ^
     {
         // loading object and check file and memory
         __block id checkObject1 = [[NSObject alloc] init];

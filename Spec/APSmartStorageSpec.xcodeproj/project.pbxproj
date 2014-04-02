@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F6841D59D49E4FD4AFFA475C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE27DF55FBD4DDB9FFA4B1C /* libPods.a */; };
+		FA00E22118EC2DFB00723260 /* APSmartStorage+Memory.m in Sources */ = {isa = PBXBuildFile; fileRef = FA00E22018EC2DFB00723260 /* APSmartStorage+Memory.m */; };
 		FA68F29A188FC56E007CCE3E /* APSmartStorageBaseSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA68F299188FC56E007CCE3E /* APSmartStorageBaseSpec.mm */; };
 		FA68F29C188FC57E007CCE3E /* APSmartStorageFileSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA68F29B188FC57E007CCE3E /* APSmartStorageFileSpec.mm */; };
 		FA68F29E188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA68F29D188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm */; };
@@ -34,6 +35,8 @@
 /* Begin PBXFileReference section */
 		3623D18215C44D7FA210E476 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		DDE27DF55FBD4DDB9FFA4B1C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA00E21F18EC2DFB00723260 /* APSmartStorage+Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "APSmartStorage+Memory.h"; sourceTree = "<group>"; };
+		FA00E22018EC2DFB00723260 /* APSmartStorage+Memory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "APSmartStorage+Memory.m"; sourceTree = "<group>"; };
 		FA68F299188FC56E007CCE3E /* APSmartStorageBaseSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageBaseSpec.mm; sourceTree = "<group>"; };
 		FA68F29B188FC57E007CCE3E /* APSmartStorageFileSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageFileSpec.mm; sourceTree = "<group>"; };
 		FA68F29D188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageRemoveSpec.mm; sourceTree = "<group>"; };
@@ -91,6 +94,8 @@
 			children = (
 				FA68F2A3188FE84E007CCE3E /* OHHTTPStubs+AllRequests.h */,
 				FA68F2A4188FE84E007CCE3E /* OHHTTPStubs+AllRequests.m */,
+				FA00E21F18EC2DFB00723260 /* APSmartStorage+Memory.h */,
+				FA00E22018EC2DFB00723260 /* APSmartStorage+Memory.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -357,6 +362,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA68F29C188FC57E007CCE3E /* APSmartStorageFileSpec.mm in Sources */,
+				FA00E22118EC2DFB00723260 /* APSmartStorage+Memory.m in Sources */,
 				FA6E6FC21887B6C300E8DF46 /* main.m in Sources */,
 				FAD37B88189110F000825EB6 /* NSFileManager+Storage.m in Sources */,
 				FA68F2A5188FE84E007CCE3E /* OHHTTPStubs+AllRequests.m in Sources */,

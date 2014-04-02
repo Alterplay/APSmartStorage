@@ -65,12 +65,18 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
 
 - (void)loadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback
 {
-    BOOL isShouldStart = NO;
-    [self.taskManager addTaskWithURL:url block:callback shouldStart:&isShouldStart];
-    if (isShouldStart)
+    [self loadObjectWithURL:url storeInMemory:YES callback:callback];
+}
+
+- (void)loadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
+                 callback:(void (^)(id object, NSError *))callback
+{
+    APStorageTask *task = [self.taskManager addTaskWithURL:url storeInMemory:storeInMemory
+                                             callbackBlock:callback];
+    if (task.isShouldRun)
     {
         __weak __typeof(self) weakSelf = self;
-        [self objectFromStorageWithURL:url callback:^(id object, NSError *error)
+        [self storageObjectForTask:task callback:^(id object, NSError *error)
         {
             [weakSelf.taskManager finishTaskWithURL:url object:object error:error];
         }];
@@ -79,8 +85,14 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
 
 - (void)reloadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback
 {
-    [self.networkStorage cancelDownloadURL:url];
-    [self objectFromNetworkWithURL:url callback:callback];
+    [self reloadObjectWithURL:url storeInMemory:NO callback:callback];
+}
+
+- (void)reloadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
+                   callback:(void (^)(id object, NSError *))callback
+{
+    [self removeObjectWithURLFromStorage:url];
+    [self loadObjectWithURL:url storeInMemory:storeInMemory callback:callback];
 }
 
 - (void)removeObjectWithURLFromMemory:(NSURL *)url
@@ -162,22 +174,24 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
 
 #pragma mark - private methods
 
-- (void)objectFromStorageWithURL:(NSURL *)url callback:(void (^)(id object, NSError *error))callback
+- (void)storageObjectForTask:(APStorageTask *)task callback:(void (^)(id object, NSError *error))callback
 {
     __weak __typeof(self) weakSelf = self;
-    [self objectFromMemoryWithURL:url callback:^(id object)
+    [self memoryObjectForTask:task callback:^(id object)
     {
-        object ? callback(object, nil) : [weakSelf objectFromFileWithURL:url callback:callback];
+        object ? callback(object, nil) : [weakSelf fileObjectForTask:task callback:callback];
     }];
 }
 
-- (void)objectFromMemoryWithURL:(NSURL *)objectURL callback:(void (^)(id object))callback
+- (void)memoryObjectForTask:(APStorageTask *)task callback:(void (^)(id object))callback
 {
-    callback([self.memoryStorage objectWithURL:objectURL]);
+    callback([self.memoryStorage objectWithURL:task.url]);
 }
 
-- (void)objectFromFileWithURL:(NSURL *)url callback:(void (^)(id object, NSError *error))callback
+- (void)fileObjectForTask:(APStorageTask *)task callback:(void (^)(id object, NSError *error))callback
 {
+    NSURL *url = task.url;
+    BOOL shouldStoreInMemory = task.storeInMemory;
     __weak __typeof(self) weakSelf = self;
     [self.fileStorage dataWithURL:url callback:^(NSData *data)
     {
@@ -185,29 +199,33 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
         if (data)
         {
             id result = weakSelf.parsingBlock ? weakSelf.parsingBlock(data, url) : data;
-            [weakSelf.memoryStorage setObject:result forURL:url];
+            if (shouldStoreInMemory)
+            {
+                [weakSelf.memoryStorage setObject:result forURL:url];
+            }
             callback(result, nil);
         }
         // if no data then load from network
         else
         {
-            [weakSelf objectFromNetworkWithURL:url callback:callback];
+            [weakSelf networkObjectForTask:task callback:callback];
         }
     }];
 }
 
-- (void)objectFromNetworkWithURL:(NSURL *)url callback:(void (^)(id object, NSError *error))callback
+- (void)networkObjectForTask:(APStorageTask *)task callback:(void (^)(id object, NSError *error))callback
 {
+    NSURL *url = task.url;
     __weak __typeof(self) weakSelf = self;
     [self.networkStorage downloadURL:url callback:^(NSString *path, NSError *networkError)
     {
         // performed in background thread!
         NSError *fileError = nil;
         // file has been downloaded and moved
-        if (path && !networkError && [weakSelf.fileStorage moveDataWithURL:url downloadedToPath:path
-                                                                     error:&fileError])
+        if (path && !networkError &&
+            [weakSelf.fileStorage moveDataWithURL:url downloadedToPath:path error:&fileError])
         {
-            [weakSelf objectFromFileWithURL:url callback:callback];
+            [weakSelf fileObjectForTask:task callback:callback];
         }
         else
         {

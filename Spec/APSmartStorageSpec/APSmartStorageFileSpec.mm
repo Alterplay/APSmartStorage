@@ -7,15 +7,11 @@
 //
 
 #import "CedarAsync.h"
-#import "APSmartStorage.h"
+#import "APSmartStorage+Memory.h"
 #import "OHHTTPStubs+AllRequests.h"
 
 using namespace Cedar::Matchers;
 using namespace Cedar::Doubles;
-
-@interface APSmartStorage (Private)
-- (void)objectFromMemoryWithURL:(NSURL *)objectURL callback:(void (^)(id object))callback;
-@end
 
 SPEC_BEGIN(APSmartStorageFileSpec)
 
