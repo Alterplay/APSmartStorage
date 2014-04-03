@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Deprecated.h"
 
 typedef id (^APParsingBlock)(NSData *data, NSURL *url);
 
@@ -17,21 +18,34 @@ typedef id (^APParsingBlock)(NSData *data, NSURL *url);
 @property (nonatomic, strong) NSURLSessionConfiguration *sessionConfiguration;
 
 + (instancetype)sharedInstance;
-- (void)loadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback;
+- (void)loadObjectWithURL:(NSURL *)url completion:(void (^)(id object, NSError *))completion;
 - (void)loadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
-                 callback:(void (^)(id object, NSError *))callback;
-- (void)reloadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback;
+                 completion:(void (^)(id object, NSError *))completion;
+- (void)reloadObjectWithURL:(NSURL *)url completion:(void (^)(id object, NSError *))completion;
 - (void)reloadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
-                   callback:(void (^)(id object, NSError *))callback;
+                   completion:(void (^)(id object, NSError *))completion;
 - (void)removeObjectWithURLFromMemory:(NSURL *)url;
 - (void)removeObjectWithURLFromStorage:(NSURL *)url;
 - (void)removeAllFromMemory;
 - (void)removeAllFromStorage;
 
-// deprecated
-- (void)removeObjectWithURL:(NSURL *)objectURL __attribute__((deprecated("Use 'removeObjectWithURLFromMemory:' instead")));
-- (void)removeAllObjects __attribute__((deprecated("Use 'removeAllFromMemory' instead")));
-- (void)cleanObjectWithURL:(NSURL *)url __attribute__((deprecated("Use 'removeObjectWithURLFromStorage:' instead")));
-- (void)cleanAllObjects __attribute__((deprecated("Use 'removeAllFromStorage' instead")));
+@end
+
+@interface APSmartStorage (Deprecated)
+
+- (void)loadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback
+AP_DEPRECATED("loadObjectWithURL:(NSURL *)url completion:");
+- (void)loadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
+                 callback:(void (^)(id object, NSError *))callback
+AP_DEPRECATED("loadObjectWithURL:storeInMemory:completion:");
+- (void)reloadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback
+AP_DEPRECATED("reloadObjectWithURL:completion:");
+- (void)reloadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
+                   callback:(void (^)(id object, NSError *))callback
+AP_DEPRECATED("reloadObjectWithURL:storeInMemory:completion:");
+- (void)removeObjectWithURL:(NSURL *)objectURL AP_DEPRECATED("removeObjectWithURLFromMemory:");
+- (void)removeAllObjects AP_DEPRECATED("removeAllFromMemory");
+- (void)cleanObjectWithURL:(NSURL *)url AP_DEPRECATED("removeAllFromMemory");
+- (void)cleanAllObjects AP_DEPRECATED("removeAllFromStorage");
 
 @end

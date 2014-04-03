@@ -63,16 +63,16 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
 
 #pragma mark - public
 
-- (void)loadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback
+- (void)loadObjectWithURL:(NSURL *)url completion:(void (^)(id object, NSError *))completion
 {
-    [self loadObjectWithURL:url storeInMemory:YES callback:callback];
+    [self loadObjectWithURL:url storeInMemory:YES completion:completion];
 }
 
 - (void)loadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
-                 callback:(void (^)(id object, NSError *))callback
+               completion:(void (^)(id object, NSError *))completion
 {
     APStorageTask *task = [self.taskManager addTaskWithURL:url storeInMemory:storeInMemory
-                                             callbackBlock:callback];
+                                             callbackBlock:completion];
     if (task.isShouldRun)
     {
         __weak __typeof(self) weakSelf = self;
@@ -83,16 +83,16 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
     }
 }
 
-- (void)reloadObjectWithURL:(NSURL *)url callback:(void (^)(id object, NSError *))callback
+- (void)reloadObjectWithURL:(NSURL *)url completion:(void (^)(id object, NSError *))completion
 {
-    [self reloadObjectWithURL:url storeInMemory:NO callback:callback];
+    [self reloadObjectWithURL:url storeInMemory:YES completion:completion];
 }
 
 - (void)reloadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
-                   callback:(void (^)(id object, NSError *))callback
+                 completion:(void (^)(id object, NSError *))completion
 {
     [self removeObjectWithURLFromStorage:url];
-    [self loadObjectWithURL:url storeInMemory:storeInMemory callback:callback];
+    [self loadObjectWithURL:url storeInMemory:storeInMemory completion:completion];
 }
 
 - (void)removeObjectWithURLFromMemory:(NSURL *)url
@@ -245,27 +245,5 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
     _networkStorage = nil;
 }
 #endif
-
-#pragma mark - deprecated
-
-- (void)removeObjectWithURL:(NSURL *)url
-{
-    [self removeObjectWithURLFromMemory:url];
-}
-
-- (void)removeAllObjects
-{
-    [self removeAllFromMemory];
-}
-
-- (void)cleanObjectWithURL:(NSURL *)url
-{
-    [self removeObjectWithURLFromStorage:url];
-}
-
-- (void)cleanAllObjects
-{
-    [self removeAllFromStorage];
-}
 
 @end
