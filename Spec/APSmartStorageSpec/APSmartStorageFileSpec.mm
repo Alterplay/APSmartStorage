@@ -48,7 +48,7 @@ describe(@"APSmartStorage", ^
     {
         __block BOOL isFileExists = NO;
         __block id checkObject = nil;
-        [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL completion:^(id object, NSError *error)
         {
             isFileExists = [NSFileManager.defaultManager fileExistsAtPath:filePath];
             [storage objectFromMemoryWithURL:objectURL callback:^(id obj)
@@ -70,7 +70,7 @@ describe(@"APSmartStorage", ^
         [OHHTTPStubs stubAllRequestsWithResponseData:anotherData];
         // loading object
         __block id checkData;
-        [storage reloadObjectWithURL:objectURL callback:^(id object, NSError *error)
+        [storage reloadObjectWithURL:objectURL completion:^(id object, NSError *error)
         {
             checkData = [NSData dataWithContentsOfFile:filePath];
         }];

@@ -62,7 +62,7 @@ describe(@"APSmartStorage", ^
         // loading object and check file and memory
         __block BOOL isFileExists = NO;
         __block id checkObject = [[NSObject alloc] init];
-        [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL1 completion:^(id object, NSError *error)
         {
             // remove object
             [storage removeObjectWithURLFromMemory:objectURL1];
@@ -82,7 +82,7 @@ describe(@"APSmartStorage", ^
         // loading object and check file and memory
         __block BOOL isFileExists = YES;
         __block id checkObject = [[NSObject alloc] init];
-        [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL1 completion:^(id object, NSError *error)
         {
             // remove object
             [storage removeObjectWithURLFromStorage:objectURL1];
@@ -102,9 +102,9 @@ describe(@"APSmartStorage", ^
         // loading object
         __block id object1 = [[NSObject alloc] init];
         __block id object2 = nil;
-        [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL1 completion:^(id object, NSError *error)
         {
-            [storage loadObjectWithURL:objectURL2 callback:^(id obj, NSError *err)
+            [storage loadObjectWithURL:objectURL2 completion:^(id obj, NSError *err)
             {
                 [storage objectFromMemoryWithURL:objectURL1 callback:^(id obj1)
                 {
@@ -127,10 +127,10 @@ describe(@"APSmartStorage", ^
         // loading object
         __block id object1 = [[NSObject alloc] init];
         __block id object2 = [[NSObject alloc] init];
-        [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL1 completion:^(id object, NSError *error)
         {
             storage.maxObjectCount = 2;
-            [storage loadObjectWithURL:objectURL2 callback:^(id obj, NSError *err)
+            [storage loadObjectWithURL:objectURL2 completion:^(id obj, NSError *err)
             {
                 [storage objectFromMemoryWithURL:objectURL1 callback:^(id obj1)
                 {
@@ -152,9 +152,9 @@ describe(@"APSmartStorage", ^
         __block id object1 = [[NSObject alloc] init];
         __block id object2 = [[NSObject alloc] init];
         storage.maxObjectCount = 2;
-        [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL1 completion:^(id object, NSError *error)
         {
-            [storage loadObjectWithURL:objectURL2 callback:^(id obj, NSError *err)
+            [storage loadObjectWithURL:objectURL2 completion:^(id obj, NSError *err)
             {
                 storage.maxObjectCount = 1;
                 [storage objectFromMemoryWithURL:objectURL1 callback:^(id obj1)
@@ -176,9 +176,9 @@ describe(@"APSmartStorage", ^
         // loading object
         __block id object1 = responseObject1;
         __block id object2 = responseObject2;
-        [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL1 completion:^(id object, NSError *error)
         {
-            [storage loadObjectWithURL:objectURL2 callback:^(id obj, NSError *err)
+            [storage loadObjectWithURL:objectURL2 completion:^(id obj, NSError *err)
             {
                 [storage didReceiveMemoryWarning:nil];
                 [storage objectFromMemoryWithURL:objectURL1 callback:^(id obj1)

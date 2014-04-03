@@ -50,11 +50,11 @@ describe(@"APSmartStorage", ^
         // loading object and check file and memory
         __block id checkObject1 = [[NSObject alloc] init];
         __block id checkObject2 = [[NSObject alloc] init];
-        [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL completion:^(id object, NSError *error)
         {
             checkObject1 = object;
         }];
-        [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL completion:^(id object, NSError *error)
         {
             checkObject2 = object;
         }];

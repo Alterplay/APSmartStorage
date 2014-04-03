@@ -47,7 +47,7 @@ describe(@"APSmartStorage", ^
     {
         __block id checkObject1 = [[NSObject alloc] init];
         __block NSError *receivedError = nil;
-        [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL1 completion:^(id object, NSError *error)
         {
             checkObject1 = object;
             receivedError = error;
@@ -63,12 +63,12 @@ describe(@"APSmartStorage", ^
         __block id checkObject2 = [[NSObject alloc] init];
         __block NSError *receivedError1 = nil;
         __block NSError *receivedError2 = nil;
-        [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL1 completion:^(id object, NSError *error)
         {
             checkObject1 = object;
             receivedError1 = error;
         }];
-        [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL1 completion:^(id object, NSError *error)
         {
             checkObject2 = object;
             receivedError2 = error;
@@ -86,12 +86,12 @@ describe(@"APSmartStorage", ^
         __block id checkObject2 = [[NSObject alloc] init];
         __block NSError *receivedError1 = nil;
         __block NSError *receivedError2 = nil;
-        [storage loadObjectWithURL:objectURL1 callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL1 completion:^(id object, NSError *error)
         {
             checkObject1 = object;
             receivedError1 = error;
         }];
-        [storage loadObjectWithURL:objectURL2 callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL2 completion:^(id object, NSError *error)
         {
             checkObject2 = object;
             receivedError2 = error;

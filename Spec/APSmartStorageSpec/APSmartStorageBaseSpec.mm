@@ -48,7 +48,7 @@ describe(@"APSmartStorage", ^
     {
         __block NSThread *callbackThread;
         NSThread *currentThread = NSThread.currentThread;
-        [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL completion:^(id object, NSError *error)
         {
             callbackThread = NSThread.currentThread;
         }];
@@ -60,7 +60,7 @@ describe(@"APSmartStorage", ^
     {
         // loading object
         __block id checkObject = nil;
-        [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL completion:^(id object, NSError *error)
         {
             checkObject = object;
         }];
@@ -78,7 +78,7 @@ describe(@"APSmartStorage", ^
         [responseObject writeToURL:url atomically:YES];
         // loading object
         __block id checkObject = nil;
-        [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL completion:^(id object, NSError *error)
         {
             checkObject = object;
         }];
@@ -89,7 +89,7 @@ describe(@"APSmartStorage", ^
     it(@"should load object from memory storage", ^
     {
         __block id checkObject = nil;
-        [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL completion:^(id object, NSError *error)
         {
             // remove network mock
             [OHHTTPStubs removeAllStubs];
@@ -111,7 +111,7 @@ describe(@"APSmartStorage", ^
         __block id loadedObject = [[NSObject alloc] init];
         __block id memoryObject = [[NSObject alloc] init];
         __block BOOL fileExists = NO;
-        [storage loadObjectWithURL:objectURL storeInMemory:NO callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL storeInMemory:NO completion:^(id object, NSError *error)
         {
             loadedObject = object;
             fileExists = [NSFileManager.defaultManager fileExistsAtPath:filePath];
@@ -129,7 +129,7 @@ describe(@"APSmartStorage", ^
     it(@"should load object and store it in memory if at least one call needs to store", ^
     {
         __block id memoryObject = [[NSObject alloc] init];
-        [storage loadObjectWithURL:objectURL storeInMemory:NO callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL storeInMemory:NO completion:^(id object, NSError *error)
         {
             // loading object from memory
             [storage objectFromMemoryWithURL:objectURL callback:^(id obj)
@@ -137,7 +137,7 @@ describe(@"APSmartStorage", ^
                 memoryObject = obj;
             }];
         }];
-        [storage loadObjectWithURL:objectURL storeInMemory:YES callback:nil];
+        [storage loadObjectWithURL:objectURL storeInMemory:YES completion:nil];
         in_time(memoryObject) should equal(responseObject);
     });
 
@@ -150,7 +150,7 @@ describe(@"APSmartStorage", ^
         };
         // loading object
         __block id checkObject = nil;
-        [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL completion:^(id object, NSError *error)
         {
             checkObject = object;
         }];
@@ -167,7 +167,7 @@ describe(@"APSmartStorage", ^
         };
         // loading object
         __block BOOL isCallbackCalled = NO;
-        [storage loadObjectWithURL:objectURL callback:^(id object, NSError *error)
+        [storage loadObjectWithURL:objectURL completion:^(id object, NSError *error)
         {
             isCallbackCalled = YES;
         }];
