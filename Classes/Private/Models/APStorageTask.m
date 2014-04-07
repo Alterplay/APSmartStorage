@@ -13,6 +13,7 @@
 @property (atomic, copy) APTaskCompletionBlock completionBlock;
 @property (atomic, copy) APTaskProgressBlock progressBlock;
 @property (atomic, assign) BOOL isShouldRun;
+@property (atomic, assign) NSUInteger progressPercent;
 @end
 
 @implementation APStorageTask
@@ -72,11 +73,13 @@
             previousBlock(percents);
             threadBlock(percents);
         };
+        threadBlock(self.progressPercent);
     }
 }
 
 - (void)performProgressWithPercents:(NSUInteger)percents
 {
+    self.progressPercent = percents;
     self.progressBlock ? self.progressBlock(percents) : nil;
 }
 
