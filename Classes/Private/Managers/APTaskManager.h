@@ -12,7 +12,9 @@
 @interface APTaskManager : NSObject
 
 - (APStorageTask *)addTaskWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
-                    callbackBlock:(APTaskCallbackBlock)callbackBlock;
+                  completionBlock:(APTaskCompletionBlock)completionBlock
+                    progressBlock:(APTaskProgressBlock)progressBlock;
+- (void)progressTaskWithURL:(NSURL *)url percents:(NSUInteger)percents;
 - (void)finishTaskWithURL:(NSURL *)url object:(id)object error:(NSError *)error;
 - (void)cancelTaskWithURL:(NSURL *)url;
 - (void)cancelAllTasks;

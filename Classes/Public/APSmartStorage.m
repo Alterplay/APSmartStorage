@@ -13,6 +13,7 @@
 #import "APMemoryStorage.h"
 
 @interface APSmartStorage ()
+
 @property (nonatomic, readonly) APTaskManager *taskManager;
 @property (nonatomic, readonly) APMemoryStorage *memoryStorage;
 @property (nonatomic, readonly) APFileStorage *fileStorage;
@@ -71,12 +72,23 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
 - (void)loadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
                completion:(void (^)(id object, NSError *))completion
 {
+    [self loadObjectWithURL:url storeInMemory:storeInMemory progress:nil
+                 completion:completion];
+}
+
+- (void)loadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
+                 progress:(void (^)(NSUInteger percents))progress
+               completion:(void (^)(id object, NSError *))completion
+{
     APStorageTask *task = [self.taskManager addTaskWithURL:url storeInMemory:storeInMemory
-                                             callbackBlock:completion];
+                                           completionBlock:completion progressBlock:progress];
     if (task.isShouldRun)
     {
-        __weak __typeof(self) weakSelf = self;
-        [self storageObjectForTask:task callback:^(id object, NSError *error)
+        __weak __typeof (self) weakSelf = self;
+        [self storageObjectForTask:task progress:^(NSUInteger percents)
+        {
+            [weakSelf.taskManager progressTaskWithURL:url percents:percents];
+        }               completion:^(id object, NSError *error)
         {
             [weakSelf.taskManager finishTaskWithURL:url object:object error:error];
         }];
@@ -91,8 +103,16 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
 - (void)reloadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
                  completion:(void (^)(id object, NSError *))completion
 {
+    [self reloadObjectWithURL:url storeInMemory:storeInMemory progress:nil
+                   completion:completion];
+}
+
+- (void)reloadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
+                   progress:(void (^)(NSUInteger percents))progress
+                 completion:(void (^)(id object, NSError *))completion
+{
     [self removeObjectWithURLFromStorage:url];
-    [self loadObjectWithURL:url storeInMemory:storeInMemory completion:completion];
+    [self loadObjectWithURL:url storeInMemory:storeInMemory progress:progress completion:completion];
 }
 
 - (void)removeObjectWithURLFromMemory:(NSURL *)url
@@ -167,33 +187,37 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
 {
     if (!_networkStorage)
     {
-        _networkStorage = [[APNetworkStorage alloc] initWithURLSessionConfiguration:self.sessionConfiguration];
+        _networkStorage = [[APNetworkStorage alloc]
+                                             initWithURLSessionConfiguration:self.sessionConfiguration];
     }
     return _networkStorage;
 }
 
 #pragma mark - private methods
 
-- (void)storageObjectForTask:(APStorageTask *)task callback:(void (^)(id object, NSError *error))callback
+- (void)storageObjectForTask:(APStorageTask *)task progress:(void (^)(NSUInteger percents))progress
+                  completion:(void (^)(id object, NSError *error))completion
 {
-    __weak __typeof(self) weakSelf = self;
-    [self memoryObjectForTask:task callback:^(id object)
+    __weak __typeof (self) weakSelf = self;
+    [self memoryObjectForTask:task completion:^(id object)
     {
-        object ? callback(object, nil) : [weakSelf fileObjectForTask:task callback:callback];
+        object ? completion(object, nil) :
+        [weakSelf fileObjectForTask:task progress:progress completion:completion];
     }];
 }
 
-- (void)memoryObjectForTask:(APStorageTask *)task callback:(void (^)(id object))callback
+- (void)memoryObjectForTask:(APStorageTask *)task completion:(void (^)(id object))completion
 {
-    callback([self.memoryStorage objectWithURL:task.url]);
+    completion([self.memoryStorage objectWithURL:task.url]);
 }
 
-- (void)fileObjectForTask:(APStorageTask *)task callback:(void (^)(id object, NSError *error))callback
+- (void)fileObjectForTask:(APStorageTask *)task progress:(void (^)(NSUInteger percents))progress
+               completion:(void (^)(id object, NSError *error))completion
 {
     NSURL *url = task.url;
     BOOL shouldStoreInMemory = task.storeInMemory;
-    __weak __typeof(self) weakSelf = self;
-    [self.fileStorage dataWithURL:url callback:^(NSData *data)
+    __weak __typeof (self) weakSelf = self;
+    [self.fileStorage dataWithURL:url progress:progress completion:^(NSData *data)
     {
         // performed in background thread!
         if (data)
@@ -203,21 +227,23 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
             {
                 [weakSelf.memoryStorage setObject:result forURL:url];
             }
-            callback(result, nil);
+            completion(result, nil);
         }
         // if no data then load from network
         else
         {
-            [weakSelf networkObjectForTask:task callback:callback];
+            [weakSelf networkObjectForTask:task progress:progress completion:completion];
         }
     }];
 }
 
-- (void)networkObjectForTask:(APStorageTask *)task callback:(void (^)(id object, NSError *error))callback
+- (void)networkObjectForTask:(APStorageTask *)task progress:(void (^)(NSUInteger percents))progress
+                  completion:(void (^)(id object, NSError *error))completion
 {
     NSURL *url = task.url;
-    __weak __typeof(self) weakSelf = self;
-    [self.networkStorage downloadURL:url callback:^(NSString *path, NSError *networkError)
+    __weak __typeof (self) weakSelf = self;
+    [self.networkStorage downloadURL:url progress:progress
+                          completion:^(NSString *path, NSError *networkError)
     {
         // performed in background thread!
         NSError *fileError = nil;
@@ -225,11 +251,11 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
         if (path && !networkError &&
             [weakSelf.fileStorage moveDataWithURL:url downloadedToPath:path error:&fileError])
         {
-            [weakSelf fileObjectForTask:task callback:callback];
+            [weakSelf fileObjectForTask:task progress:progress completion:completion];
         }
         else
         {
-            callback(nil, networkError ?: fileError);
+            completion(nil, networkError ?: fileError);
         }
     }];
 }

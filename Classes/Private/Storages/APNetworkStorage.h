@@ -11,7 +11,8 @@
 @interface APNetworkStorage : NSObject
 
 - (id)initWithURLSessionConfiguration:(NSURLSessionConfiguration *)configuration;
-- (void)downloadURL:(NSURL *)url callback:(void (^)(NSString *path, NSError *error))callback;
+- (void)downloadURL:(NSURL *)url progress:(void (^)(NSUInteger percents))progress
+         completion:(void (^)(NSString *path, NSError *error))completion;
 - (void)cancelDownloadURL:(NSURL *)url;
 - (void)cancelAllDownloads;
 

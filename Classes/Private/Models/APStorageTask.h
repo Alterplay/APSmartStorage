@@ -8,16 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void (^APTaskCallbackBlock)(id object, NSError *error);
+typedef void (^APTaskCompletionBlock)(id object, NSError *error);
+typedef void (^APTaskProgressBlock)(NSUInteger percents);
 
 @interface APStorageTask : NSObject
 
 @property (nonatomic, readonly) NSURL *url;
-@property (nonatomic, readonly) BOOL isShouldRun;
+@property (atomic, readonly) BOOL isShouldRun;
 @property (atomic, assign) BOOL storeInMemory;
 
 - (id)initWithTaskURL:(NSURL *)url;
-- (void)addCallbackBlock:(APTaskCallbackBlock)block thread:(NSThread *)thread;
-- (void)performCallbackWithObject:(id)object error:(NSError *)error;
+- (void)addCompletionBlock:(APTaskCompletionBlock)block thread:(NSThread *)thread;
+- (void)performCompletionWithObject:(id)object error:(NSError *)error;
+- (void)addProgressBlock:(APTaskProgressBlock)block thread:(NSThread *)thread;
+- (void)performProgressWithPercents:(NSUInteger)percents;
 
 @end

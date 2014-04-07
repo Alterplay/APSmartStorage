@@ -23,6 +23,8 @@
 		FA75559718E587920000D700 /* APTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA75559318E587920000D700 /* APTaskManager.m */; };
 		FA75559818E587920000D700 /* APStorageTask.m in Sources */ = {isa = PBXBuildFile; fileRef = FA75559618E587920000D700 /* APStorageTask.m */; };
 		FA75559D18E5D28C0000D700 /* APSmartStorageCancelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA75559C18E5D28C0000D700 /* APSmartStorageCancelSpec.mm */; };
+		FA93532A18F2AA360084AAED /* APNetworkTask.m in Sources */ = {isa = PBXBuildFile; fileRef = FA93532918F2AA360084AAED /* APNetworkTask.m */; };
+		FA93532C18F2CC4A0084AAED /* APSmartStorageProgressSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA93532B18F2CC4A0084AAED /* APSmartStorageProgressSpec.mm */; };
 		FACB9664189292C000739080 /* APSmartStorageTaskSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FACB9663189292C000739080 /* APSmartStorageTaskSpec.mm */; };
 		FAD37B83189110F000825EB6 /* APFileStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B75189110F000825EB6 /* APFileStorage.m */; };
 		FAD37B84189110F000825EB6 /* APMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD37B77189110F000825EB6 /* APMemoryStorage.m */; };
@@ -60,6 +62,9 @@
 		FA75559518E587920000D700 /* APStorageTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APStorageTask.h; sourceTree = "<group>"; };
 		FA75559618E587920000D700 /* APStorageTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APStorageTask.m; sourceTree = "<group>"; };
 		FA75559C18E5D28C0000D700 /* APSmartStorageCancelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageCancelSpec.mm; sourceTree = "<group>"; };
+		FA93532818F2AA360084AAED /* APNetworkTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APNetworkTask.h; sourceTree = "<group>"; };
+		FA93532918F2AA360084AAED /* APNetworkTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APNetworkTask.m; sourceTree = "<group>"; };
+		FA93532B18F2CC4A0084AAED /* APSmartStorageProgressSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageProgressSpec.mm; sourceTree = "<group>"; };
 		FACB9663189292C000739080 /* APSmartStorageTaskSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APSmartStorageTaskSpec.mm; sourceTree = "<group>"; };
 		FAD37B74189110F000825EB6 /* APFileStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APFileStorage.h; sourceTree = "<group>"; };
 		FAD37B75189110F000825EB6 /* APFileStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APFileStorage.m; sourceTree = "<group>"; };
@@ -168,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				FA68F299188FC56E007CCE3E /* APSmartStorageBaseSpec.mm */,
+				FA93532B18F2CC4A0084AAED /* APSmartStorageProgressSpec.mm */,
 				FA68F29B188FC57E007CCE3E /* APSmartStorageFileSpec.mm */,
 				FA68F29D188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm */,
 				FACB9663189292C000739080 /* APSmartStorageTaskSpec.mm */,
@@ -190,6 +196,8 @@
 			children = (
 				FA75559518E587920000D700 /* APStorageTask.h */,
 				FA75559618E587920000D700 /* APStorageTask.m */,
+				FA93532818F2AA360084AAED /* APNetworkTask.h */,
+				FA93532918F2AA360084AAED /* APNetworkTask.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -381,8 +389,10 @@
 				FA68F2A5188FE84E007CCE3E /* OHHTTPStubs+AllRequests.m in Sources */,
 				FA04057118ED6D3F00B03CAE /* APSmartStorage+Deprecated.m in Sources */,
 				FA68F29E188FC58D007CCE3E /* APSmartStorageRemoveSpec.mm in Sources */,
+				FA93532A18F2AA360084AAED /* APNetworkTask.m in Sources */,
 				FA75559D18E5D28C0000D700 /* APSmartStorageCancelSpec.mm in Sources */,
 				FAF7766D18E94BB0006DCBF0 /* NSError+APSmartStorage.m in Sources */,
+				FA93532C18F2CC4A0084AAED /* APSmartStorageProgressSpec.mm in Sources */,
 				FAD37B85189110F000825EB6 /* APNetworkStorage.m in Sources */,
 				FAD37B84189110F000825EB6 /* APMemoryStorage.m in Sources */,
 				FACB9664189292C000739080 /* APSmartStorageTaskSpec.mm in Sources */,

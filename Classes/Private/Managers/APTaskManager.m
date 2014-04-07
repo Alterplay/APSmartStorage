@@ -33,7 +33,8 @@
 #pragma mark - public
 
 - (APStorageTask *)addTaskWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
-                    callbackBlock:(APTaskCallbackBlock)callbackBlock
+                  completionBlock:(APTaskCompletionBlock)completionBlock
+                    progressBlock:(APTaskProgressBlock)progressBlock
 {
     APStorageTask *task;
     NSString *key = url.absoluteString;
@@ -49,9 +50,17 @@
         {
             task.storeInMemory = storeInMemory;
         }
-        [task addCallbackBlock:callbackBlock thread:NSThread.currentThread];
+        NSThread *thread = NSThread.currentThread;
+        [task addCompletionBlock:completionBlock thread:thread];
+        [task addProgressBlock:progressBlock thread:thread];
     }
     return task;
+}
+
+- (void)progressTaskWithURL:(NSURL *)url percents:(NSUInteger)percents
+{
+    APStorageTask *task = [_dictionary objectForKeySynchronously:url.absoluteString];
+    [task performProgressWithPercents:percents];
 }
 
 - (void)finishTaskWithURL:(NSURL *)url object:(id)object error:(NSError *)error
@@ -59,12 +68,16 @@
     NSString *key = url.absoluteString;
     APStorageTask *task = [_dictionary objectForKeySynchronously:key];
     [_dictionary removeObjectForKey:key];
-    [task performCallbackWithObject:object error:error];
+    if (object && !error)
+    {
+        [task performProgressWithPercents:100];
+    }
+    [task performCompletionWithObject:object error:error];
 }
 
 - (void)cancelTaskWithURL:(NSURL *)url
 {
-    [self finishTaskWithURL:url object:nil error:[NSError errorTaskWithURLCancelled:nil ]];
+    [self finishTaskWithURL:url object:nil error:[NSError errorTaskWithURLCancelled:url]];
 }
 
 - (void)cancelAllTasks
@@ -74,7 +87,7 @@
         NSError *error = [NSError errorTaskWithURLCancelled:nil ];
         for (APStorageTask *task in objects)
         {
-            [task performCallbackWithObject:nil error:error];
+            [task performCompletionWithObject:nil error:error];
         }
     }];
     [_dictionary removeAllObjects];

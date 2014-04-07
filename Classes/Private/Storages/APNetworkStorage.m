@@ -8,8 +8,9 @@
 
 #import <APAsyncDictionary/APAsyncDictionary.h>
 #import "APNetworkStorage.h"
+#import "APNetworkTask.h"
 
-@interface APNetworkStorage ()
+@interface APNetworkStorage () <NSURLSessionDownloadDelegate>
 {
     NSURLSession *_session;
 }
@@ -31,9 +32,8 @@
     self = [super init];
     if (self)
     {
-        NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-        _session = [NSURLSession sessionWithConfiguration:configuration delegate:nil
-                                            delegateQueue:queue];
+        _session = [NSURLSession sessionWithConfiguration:configuration delegate:self
+                                            delegateQueue:nil];
         _dictionary = [[APAsyncDictionary alloc] init];
     }
     return self;
@@ -41,29 +41,23 @@
 
 #pragma mark - public
 
-- (void)downloadURL:(NSURL *)url callback:(void (^)(NSString *path, NSError *error))callback
+- (void)downloadURL:(NSURL *)url progress:(void (^)(NSUInteger percents))progress
+         completion:(void (^)(NSString *path, NSError *error))completion
 {
-    __weak __typeof(self) weakSelf = self;
     NSString *key = url.absoluteString;
-    NSURLSessionDownloadTask *task = [_session downloadTaskWithURL:url
-                                                 completionHandler:^(NSURL *location,
-                                                                     NSURLResponse *response,
-                                                                     NSError *error)
-    {
-        [weakSelf.dictionary removeObjectForKey:key];
-        callback ? callback(location.path, error) : nil;
-    }];
+    APNetworkTask *task = [[APNetworkTask alloc] initWithDownloadTask:[_session downloadTaskWithURL:url]];
     [self.dictionary setObject:task forKey:key];
-    [task resume];
+    task.progressBlock = progress;
+    task.completionBlock = completion;
+    [task start];
 }
 
 - (void)cancelDownloadURL:(NSURL *)url
 {
     NSString *key = url.absoluteString;
-    [self.dictionary objectForKey:key callback:^(id <NSCopying> key, id object)
+    [self.dictionary objectForKey:key callback:^(id <NSCopying> key, APNetworkTask *networkTask)
     {
-        NSURLSessionDownloadTask *task = object;
-        [task cancel];
+        [networkTask cancel];
     }];
     [self.dictionary removeObjectForKey:key];
 }
@@ -75,6 +69,61 @@
         [objects makeObjectsPerformSelector:@selector(cancel)];
     }];
     [self.dictionary removeAllObjects];
+}
+
+#pragma mark - URL session download delegate implementation
+
+- (void)       URLSession:(NSURLSession *)session
+             downloadTask:(NSURLSessionDownloadTask *)downloadTask
+didFinishDownloadingToURL:(NSURL *)location
+{
+    NSString *key = downloadTask.originalRequest.URL.absoluteString;
+    APNetworkTask *networkTask = [self.dictionary objectForKeySynchronously:key];
+    if (networkTask.completionBlock)
+    {
+        networkTask.completionBlock(location.path, nil);
+    }
+    [self.dictionary removeObjectForKey:key];
+}
+
+- (void)  URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
+didCompleteWithError:(NSError *)error
+{
+    if (error)
+    {
+        NSString *key = task.originalRequest.URL.absoluteString;
+        APNetworkTask *networkTask = [self.dictionary objectForKeySynchronously:key];
+        if (networkTask.completionBlock)
+        {
+            networkTask.completionBlock(nil, error);
+        }
+        [self.dictionary removeObjectForKey:key];
+    }
+}
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask
+             didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten
+totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
+{
+    NSString *key = downloadTask.originalRequest.URL.absoluteString;
+    NSUInteger progress = 0;
+    if (totalBytesExpectedToWrite != NSURLSessionTransferSizeUnknown)
+    {
+        CGFloat relation = (CGFloat)totalBytesWritten / (CGFloat)totalBytesExpectedToWrite;
+        // we should end with 90% because we need to read data from file and parse it
+        progress = (NSUInteger)(relation * 90.f);
+    }
+    APNetworkTask *networkTask = [self.dictionary objectForKeySynchronously:key];
+    if (networkTask.progressBlock)
+    {
+        networkTask.progressBlock(progress);
+    }
+}
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask
+ didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes
+{
+    // does nothing
 }
 
 @end

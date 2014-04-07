@@ -10,7 +10,7 @@
 #import "APStorageTask.h"
 
 @interface APSmartStorage (Private)
-- (void)memoryObjectForTask:(APStorageTask *)task callback:(void (^)(id object))callback;
+- (void)memoryObjectForTask:(APStorageTask *)task completion:(void (^)(id object))completion;
 @end
 
 @implementation APSmartStorage (Memory)
@@ -18,7 +18,7 @@
 - (void)objectFromMemoryWithURL:(NSURL *)objectURL callback:(void (^)(id object))callback
 {
     APStorageTask *task = [[APStorageTask alloc] initWithTaskURL:objectURL];
-    [self memoryObjectForTask:task callback:callback];
+    [self memoryObjectForTask:task completion:callback];
 }
 
 @end

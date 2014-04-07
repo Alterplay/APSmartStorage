@@ -32,7 +32,8 @@
 
 #pragma mark - public
 
-- (void)dataWithURL:(NSURL *)url callback:(void (^)(NSData *data))callback
+- (void)dataWithURL:(NSURL *)url progress:(void (^)(NSUInteger percents))progress
+         completion:(void (^)(NSData *data))completion
 {
     __weak __typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
@@ -41,6 +42,8 @@
         NSString *path = [weakSelf filePathForURL:url];
         if ([NSFileManager fileExistsAtPath:path])
         {
+            // we are always starting from 90%
+            progress(90);
             NSError *error = nil;
             data = [[NSData alloc] initWithContentsOfFile:path options:NSDataReadingMappedIfSafe
                                                     error:&error];
@@ -50,7 +53,7 @@
                 data = nil;
             }
         }
-        callback(data);
+        completion(data);
     });
 }
 

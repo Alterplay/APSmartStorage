@@ -10,7 +10,9 @@
 #import "NSThread+Block.h"
 
 @interface APStorageTask ()
-@property (atomic, copy) APTaskCallbackBlock callbackBlock;
+@property (atomic, copy) APTaskCompletionBlock completionBlock;
+@property (atomic, copy) APTaskProgressBlock progressBlock;
+@property (atomic, assign) BOOL isShouldRun;
 @end
 
 @implementation APStorageTask
@@ -30,44 +32,74 @@
 
 #pragma mark - public
 
-- (void)addCallbackBlock:(APTaskCallbackBlock)block thread:(NSThread *)thread
+- (void)addCompletionBlock:(APTaskCompletionBlock)block thread:(NSThread *)thread
 {
     if (block)
     {
-        APTaskCallbackBlock threadBlock = [self wrapBlock:block toThread:thread];
+        APTaskCompletionBlock threadBlock = [self wrapCompletionBlock:block toThread:thread];
         // there are no callback block exists
-        if (!self.callbackBlock)
+        if (!self.completionBlock)
         {
-            self.callbackBlock = threadBlock;
+            self.completionBlock = threadBlock;
         }
         // add callback block to existing ones
         else
         {
-            APTaskCallbackBlock previousBlock = [self.callbackBlock copy];
-            self.callbackBlock = ^(id object, NSError *error)
+            APTaskCompletionBlock previousBlock = [self.completionBlock copy];
+            self.completionBlock = ^(id object, NSError *error)
             {
                 previousBlock(object, error);
                 threadBlock(object, error);
             };
-            _isShouldRun = NO;
+            self.isShouldRun = NO;
         }
     }
 }
 
-- (void)performCallbackWithObject:(id)object error:(NSError *)error
+- (void)performCompletionWithObject:(id)object error:(NSError *)error
 {
-    self.callbackBlock ? self.callbackBlock(object, error) : nil;
+    self.completionBlock ? self.completionBlock(object, error) : nil;
+}
+
+- (void)addProgressBlock:(APTaskProgressBlock)block thread:(NSThread *)thread
+{
+    if (block)
+    {
+        APTaskProgressBlock threadBlock = [self wrapProgressBlock:block toThread:thread];
+        APTaskProgressBlock previousBlock = [self.progressBlock copy];
+        self.progressBlock = !previousBlock ? threadBlock : ^(NSUInteger percents)
+        {
+            previousBlock(percents);
+            threadBlock(percents);
+        };
+    }
+}
+
+- (void)performProgressWithPercents:(NSUInteger)percents
+{
+    self.progressBlock ? self.progressBlock(percents) : nil;
 }
 
 #pragma mark - private
 
-- (APTaskCallbackBlock)wrapBlock:(APTaskCallbackBlock)block toThread:(NSThread *)thread
+- (APTaskCompletionBlock)wrapCompletionBlock:(APTaskCompletionBlock)block toThread:(NSThread *)thread
 {
     return ^(id object, NSError *error)
     {
         [NSThread performOnThread:thread block:^
         {
             block(object, error);
+        }];
+    };
+}
+
+- (APTaskProgressBlock)wrapProgressBlock:(APTaskProgressBlock)block toThread:(NSThread *)thread
+{
+    return ^(NSUInteger percents)
+    {
+        [NSThread performOnThread:thread block:^
+        {
+            block(percents);
         }];
     };
 }

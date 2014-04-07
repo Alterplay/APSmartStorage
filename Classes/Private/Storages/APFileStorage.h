@@ -10,7 +10,8 @@
 
 @interface APFileStorage : NSObject
 
-- (void)dataWithURL:(NSURL *)url callback:(void(^)(NSData *data))callback;
+- (void)dataWithURL:(NSURL *)url progress:(void (^)(NSUInteger percents))progress
+         completion:(void (^)(NSData *data))completion;
 - (BOOL)moveDataWithURL:(NSURL *)url downloadedToPath:(NSString *)path error:(NSError **)error;
 - (void)removeFileForURL:(NSURL *)url;
 - (void)removeAllFiles;

@@ -21,9 +21,15 @@ typedef id (^APParsingBlock)(NSData *data, NSURL *url);
 - (void)loadObjectWithURL:(NSURL *)url completion:(void (^)(id object, NSError *))completion;
 - (void)loadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
                  completion:(void (^)(id object, NSError *))completion;
+- (void)loadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
+                 progress:(void (^)(NSUInteger percents))progress
+               completion:(void (^)(id object, NSError *))completion;
 - (void)reloadObjectWithURL:(NSURL *)url completion:(void (^)(id object, NSError *))completion;
 - (void)reloadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
                    completion:(void (^)(id object, NSError *))completion;
+- (void)reloadObjectWithURL:(NSURL *)url storeInMemory:(BOOL)storeInMemory
+                   progress:(void (^)(NSUInteger percents))progress
+                 completion:(void (^)(id object, NSError *))completion;
 - (void)removeObjectWithURLFromMemory:(NSURL *)url;
 - (void)removeObjectWithURLFromStorage:(NSURL *)url;
 - (void)removeAllFromMemory;
