@@ -15,7 +15,7 @@
     return [NSFileManager.defaultManager fileExistsAtPath:path];
 }
 
-+ (void)moveFileAtPath:(NSString *)sourcePath toPath:(NSString *)destinationPath
++ (BOOL)moveFileAtPath:(NSString *)sourcePath toPath:(NSString *)destinationPath
                  error:(NSError **)error
 {
     NSFileManager *manager = NSFileManager.defaultManager;
@@ -23,12 +23,13 @@
     {
         [self removeItemAtPath:destinationPath];
     }
-    [manager moveItemAtPath:sourcePath toPath:destinationPath error:error];
+    BOOL result = [manager moveItemAtPath:sourcePath toPath:destinationPath error:error];
     if (*error)
     {
         NSLog(@"Error moving file '%@' to '%@'\n%@", sourcePath, destinationPath,
               (*error).localizedDescription);
     }
+    return result;
 }
 
 + (void)removeItemAtPath:(NSString *)path
