@@ -11,6 +11,7 @@ APSmartStorage helps to get data from network and automatically caches data on d
 * Store loaded object to **file**
 * Store loaded object to **memory**
 * Parse loaded data from network (for instance, [NSData](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSData_Class/Reference/Reference.html) to [UIImage](https://developer.apple.com/library/ios/documentation/uikit/reference/UIImage_Class/Reference/Reference.html))
+* Track loading progress
 * Automatically purge memory cache on **memory warning**
 * Set max object count to keep in memory to prevent memory overflow
 * Set custom [NSURLSessionConfiguration](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSessionConfiguration_class/Reference/Reference.html#//apple_ref/doc/c_ref/NSURLSessionConfiguration)
@@ -32,7 +33,7 @@ APSmartStorage.sharedInstance.parsingBlock = ^(NSData *data, NSURL *url)
 // show some progress/activity
 ...
 // load object with URL
-[APSmartStorage.sharedInstance loadObjectWithURL:imageURL callback:^(id object, NSError *error)
+[APSmartStorage.sharedInstance loadObjectWithURL:imageURL completion:^(id object, NSError *error)
 {
     // hide progress/activity
     if (error)
@@ -48,17 +49,29 @@ APSmartStorage.sharedInstance.parsingBlock = ^(NSData *data, NSURL *url)
 
 Very often you don't need to store downloaded object in memory. For instance, you perform some background download for future, and you don't want to keep this objects in memory right now.
 ```objective-c
-[APSmartStorage.sharedInstance loadObjectWithURL:someURL storeInMemory:NO callback:^(id object, NSError *error)
+[APSmartStorage.sharedInstance loadObjectWithURL:someURL storeInMemory:NO completion:^(id object, NSError *error)
 {
     // do something
 }];
 ```
 But if any method call sets `storeInMemory:YES` object will be stored in memory 
 
+###### Track load progress
+
+```objective-c
+[APSmartStorage.sharedInstance loadObjectWithURL:someURL storeInMemory:NO progress:^(NSUInteger percents)
+{
+    // show progress percents value is between 0 and 100
+}                                     completion:^(id object, NSError *error)
+{
+    // do something
+}];
+```
+
 ###### Update stored object
 Objects stored at files could become outdated after some time, and application should reload it from network
 ```objective-c
-[APSmartStorage.sharedInstance reloadObjectWithURL:objectURL callback:(id object, NSError *error)
+[APSmartStorage.sharedInstance reloadObjectWithURL:objectURL completion:(id object, NSError *error)
 {
     if (error)
     {
@@ -118,6 +131,10 @@ APSmartStorage.sharedInstance.sessionConfiguration = sessionConfiguration;
 ```
 
 #### History
+
+**Version 0.1.2**
+* Added tracking of load progress
+* Renamed methods
 
 **Version 0.1.1**
 * Added ability to prevent object from been saved in memory
