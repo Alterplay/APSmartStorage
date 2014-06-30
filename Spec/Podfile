@@ -1,5 +1,5 @@
 platform :ios, '5.0'
-  pod 'APAsyncDictionary', '0.0.5'
+  pod 'APAsyncDictionary', '0.0.6'
   pod 'MD5Digest'
   pod 'CedarAsync'
   pod 'OHHTTPStubs'
