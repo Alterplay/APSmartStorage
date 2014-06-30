@@ -132,6 +132,9 @@ APSmartStorage.sharedInstance.sessionConfiguration = sessionConfiguration;
 
 #### History
 
+**Version 0.1.3**
+* Migrated to [APAsyncDictionary](https://github.com/Alterplay/APAsyncDictionary) version 0.0.6
+
 **Version 0.1.2**
 * Added tracking of load progress
 * Renamed methods
