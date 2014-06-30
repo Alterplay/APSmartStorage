@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "APSmartStorage"
-  s.version      = "0.1.2"
+  s.version      = "0.1.3"
   s.summary      = "A smart storage for network resources by @Alterplay folks. It automatically caches data on disk or in memory. #iosdev"
   s.homepage     = "https://github.com/Alterplay/APSmartStorage"
   s.license      = { :type => 'MIT', :file => 'LICENSE.txt' }
@@ -11,6 +11,6 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = "7.0"
   s.osx.deployment_target = "10.9"
   s.requires_arc = true
-  s.dependency 'APAsyncDictionary', '0.0.5'
+  s.dependency 'APAsyncDictionary', '0.0.6'
   s.dependency 'MD5Digest', '0.1.0'
 end
