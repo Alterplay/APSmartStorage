@@ -40,7 +40,7 @@ APSmartStorage.sharedInstance.parsingBlock = ^(NSData *data, NSURL *url)
     {
         // show error
     }
-    else 
+    else
     {
         // do something with object
     }
@@ -54,7 +54,7 @@ Very often you don't need to store downloaded object in memory. For instance, yo
     // do something
 }];
 ```
-But if any method call sets `storeInMemory:YES` object will be stored in memory 
+But if any method call sets `storeInMemory:YES` object will be stored in memory
 
 ###### Track load progress
 
@@ -131,29 +131,7 @@ APSmartStorage.sharedInstance.sessionConfiguration = sessionConfiguration;
 ```
 
 #### History
-
-**Version 0.1.3**
-* Migrated to [APAsyncDictionary](https://github.com/Alterplay/APAsyncDictionary) version 0.0.6
-
-**Version 0.1.2**
-* Added tracking of load progress
-* Renamed methods
-
-**Version 0.1.1**
-* Added ability to prevent object from been saved in memory
-
-**Version 0.1.0**
-* Added cancel network requests on object remove
-* Renamed methods
-
-**Version 0.0.7**
-* Improved callbacks to run immediately if object found in memory storage
-
-**Version 0.0.6**
-* Fixed crash on 'nil' object set to memory storage
-
-**Version 0.0.5**
-* Public release
+[Releases](https://github.com/Alterplay/APSmartStorage/releases)
 
 =======================
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/d6acc1315fe3f24e01e0a3a77b220f59 "githalytics.com")](http://githalytics.com/Alterplay/APSmartStorage)
