@@ -1,0 +1,22 @@
+PODS:
+  - APAsyncDictionary (0.0.6)
+  - Cedar (0.9.7)
+  - CedarAsync (0.0.1):
+    - Cedar
+  - MD5Digest (0.1.0)
+  - OHHTTPStubs (3.1.2)
+
+DEPENDENCIES:
+  - APAsyncDictionary (= 0.0.6)
+  - CedarAsync
+  - MD5Digest
+  - OHHTTPStubs
+
+SPEC CHECKSUMS:
+  APAsyncDictionary: b08b66da0ee06aadd811227f43369c94db1308ec
+  Cedar: d704a464f628b39ce763d49f42b5510a9e0b03b9
+  CedarAsync: 65137f0cef5f3f38ceaff5fc2aaa45a8792f3a08
+  MD5Digest: 058b7162b1fc8c30feddf10bfe66e0565797c45f
+  OHHTTPStubs: c1c2007839687eaf9b80f061ce84440515080ebb
+
+COCOAPODS: 0.33.1
