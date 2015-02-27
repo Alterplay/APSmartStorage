@@ -33,6 +33,7 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
     if (self)
     {
         _taskManager = [[APTaskManager alloc] init];
+        _isExcludedFromBackup = YES;
 #if TARGET_OS_IPHONE
         NSNotificationCenter *center = NSNotificationCenter.defaultCenter;
         [center addObserver:self selector:@selector(didReceiveMemoryWarning:)
@@ -149,6 +150,12 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
     self.memoryStorage.maxCount = maxObjectCount;
 }
 
+- (void)setIsExcludedFromBackup:(BOOL)isExcludedFromBackup
+{
+    _isExcludedFromBackup = isExcludedFromBackup;
+    [self.fileStorage excludeFromBackup:isExcludedFromBackup];
+}
+
 - (NSURLSessionConfiguration *)sessionConfiguration
 {
     return _sessionConfiguration ?: [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -179,6 +186,7 @@ fileStorage = _fileStorage, memoryStorage = _memoryStorage;
     if (!_fileStorage)
     {
         _fileStorage = [[APFileStorage alloc] init];
+        [_fileStorage excludeFromBackup:self.isExcludedFromBackup];
     }
     return _fileStorage;
 }

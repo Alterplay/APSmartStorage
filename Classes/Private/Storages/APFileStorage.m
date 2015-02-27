@@ -76,6 +76,13 @@
     [NSFileManager createDirectoryAtPath:self.storageDirectory];
 }
 
+
+- (void)excludeFromBackup:(BOOL)exclude
+{
+    NSURL * url = [NSURL fileURLWithPath:self.storageDirectory isDirectory:YES];
+    [url setResourceValue:@(exclude) forKey:NSURLIsExcludedFromBackupKey error:nil];
+}
+
 #pragma mark - private
 
 - (NSString *)filePathForURL:(NSURL *)url

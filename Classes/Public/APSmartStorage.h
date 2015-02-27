@@ -15,6 +15,7 @@ typedef id (^APParsingBlock)(NSData *data, NSURL *url);
 
 @property (nonatomic, copy) APParsingBlock parsingBlock;
 @property (nonatomic, assign) NSUInteger maxObjectCount;
+@property (nonatomic, assign) BOOL isExcludedFromBackup;
 @property (nonatomic, strong) NSURLSessionConfiguration *sessionConfiguration;
 
 + (instancetype)sharedInstance;
